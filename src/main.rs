@@ -11,6 +11,6 @@ fn hello() -> &'static str {
 }
 
 fn main() {
-    println!("visit dirs: {}", scraper::visit_dirs());
+    scraper::index_media("/home/alexander/cloud/Backgrounds");
     rocket::ignite().mount("/", routes![hello]).launch();
 }

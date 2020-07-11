@@ -454,6 +454,7 @@ dependencies = [
 name = "nextgallery"
 version = "0.1.0"
 dependencies = [
+ "glob",
  "juniper",
  "juniper_rocket",
  "rocket",

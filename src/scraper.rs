@@ -1,19 +1,16 @@
-use std::fs::{self, DirEntry};
-use std::io;
-use std::path::Path;
+extern crate glob;
+use glob::glob;
 
-// one possible implementation of walking a directory only visiting files
-pub fn visit_dirs(dir: &Path, cb: &dyn Fn(&DirEntry)) -> io::Result<()> {
-    if dir.is_dir() {
-        for entry in fs::read_dir(dir)? {
-            let entry = entry?;
-            let path = entry.path();
-            if path.is_dir() {
-                visit_dirs(&path, cb)?;
-            } else {
-                cb(&entry);
-            }
+pub fn index_media(path: &str) {
+    let mut search_path = path.to_owned();
+    if !path.ends_with('/') {
+        search_path = search_path + "/";
+    }
+    //iterate path
+    for entry in glob(&(search_path + "**/*.*")).unwrap() {
+        match entry {
+            Ok(path) => println!("{:?}", path.display()),
+            Err(error) => println!("{:?}", error),
         }
     }
-    Ok(())
 }
