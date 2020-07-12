@@ -89,6 +89,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3441f0f7b02788e948e47f457ca01f1d7e6d92c693bc132c22b087d3141c03ff"
 
 [[package]]
+name = "bild"
+version = "0.1.0"
+dependencies = [
+ "glob",
+ "juniper",
+ "juniper_rocket",
+ "rocket",
+ "serde",
+ "toml 0.5.6",
+]
+
+[[package]]
 name = "bitflags"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -448,18 +460,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba626b8a6de5da682e1caa06bdb42a335aee5a84db8e5046a3e8ab17ba0a3ae0"
 dependencies = [
  "log 0.3.9",
-]
-
-[[package]]
-name = "nextgallery"
-version = "0.1.0"
-dependencies = [
- "glob",
- "juniper",
- "juniper_rocket",
- "rocket",
- "serde",
- "toml 0.5.6",
 ]
 
 [[package]]

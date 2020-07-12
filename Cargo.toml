@@ -1,5 +1,5 @@
 [package]
-name = "nextgallery"
+name = "bild"
 version = "0.1.0"
 authors = ["Alexander Lindberg <alexanderlndbrg@gmail.com>"]
 edition = "2018"
