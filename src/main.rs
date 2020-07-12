@@ -3,14 +3,14 @@
 #[macro_use]
 extern crate rocket;
 
-mod scraper;
+use rocket_contrib::serve::StaticFiles;
 
-#[get("/")]
-fn hello() -> &'static str {
-    "Hello, world!"
-}
+mod scraper;
 
 fn main() {
     scraper::index_media("/home/alexander/cloud/Backgrounds");
-    rocket::ignite().mount("/", routes![hello]).launch();
+
+    rocket::ignite()
+        .mount("/", StaticFiles::from("frontend/build"))
+        .launch();
 }
