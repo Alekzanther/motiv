@@ -1,54 +1,58 @@
-use juniper::{FieldResult};
-use juniper::{Context};
+use juniper::{Context, FieldResult};
 
+use crate::media::{Media, MediaDatabase};
+use rocket::{response::content, State};
+pub struct Query;
 
-impl Context for MediaDatabase;
-
-struct Query;
+impl Context for MediaDatabase {}
 
 #[juniper::object(
-    // Here we specify the context type for the object.
-    // We need to do this in every type that
-    // needs access to the context.
-    Context = Context,
+    Context = MediaDatabase,
 )]
 impl Query {
-
     fn apiVersion() -> &str {
         "1.0"
     }
 
-    // Arguments to resolvers can either be simple types or input objects.
-    // To gain access to the context, we specify a argument
-    // that is a reference to the Context type.
-    // Juniper automatically injects the correct context here.
-    fn media(context: &Context, id: String) -> FieldResult<Human> {
-        // Get a db connection.
-        let connection = context.pool.get_connection()?;
-        // Execute a db query.
-        // Note the use of `?` to propagate errors.
-        let human = connection.find_human(&id)?;
+    fn media(context: &Context, id: String) -> FieldResult<&Media> {
+        let media = context.media.get(&id)?;
         // Return the result.
-        Ok(human)
+        Ok(media)
     }
 }
 
 // Now, we do the same for our Mutation type.
 
-struct Mutation;
+pub struct Mutation;
 
 #[juniper::object(
-    Context = Context,
+    Context = MediaDatabase,
 )]
-impl Mutation {
-
-    fn createHuman(context: &Context, new_human: NewHuman) -> FieldResult<Human> {
-        let db = executor.context().pool.get_connection()?;
-        let human: Human = db.insert_human(&new_human)?;
-        Ok(human)
-    }
-}
+impl Mutation {}
 
 // A root schema consists of a query and a mutation.
 // Request queries can be executed against a RootNode.
-type Schema = juniper::RootNode<'static, Query, Mutation>;
+pub type Schema = juniper::RootNode<'static, Query, Mutation>;
+
+#[rocket::get("/graphiql")]
+pub fn graphiql() -> content::Html<String> {
+    juniper_rocket::graphiql_source("/graphql", None)
+}
+
+#[rocket::get("/graphql?<request>")]
+pub fn get_graphql_handler(
+    context: State<MediaDatabase>,
+    request: juniper_rocket::GraphQLRequest,
+    schema: State<Schema>,
+) -> juniper_rocket::GraphQLResponse {
+    request.execute_sync(&schema, &context)
+}
+
+#[rocket::post("/graphql", data = "<request>")]
+pub fn post_graphql_handler(
+    context: State<MediaDatabase>,
+    request: juniper_rocket::GraphQLRequest,
+    schema: State<Schema>,
+) -> juniper_rocket::GraphQLResponse {
+    request.execute_sync(&schema, &context)
+}
