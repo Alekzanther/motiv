@@ -17,26 +17,29 @@ impl Media {
 }
 
 pub struct MediaDatabase {
-    media: HashMap<i64, Media>,
+    media: HashMap<i32, Media>,
 }
 
 impl MediaDatabase {
     pub fn new() -> MediaDatabase {
         let mut media = HashMap::new();
         let mut index = 0;
-        for m in crate::scraper::get_media_list("/home/alexander/cloud/Backgrounds").unwrap() {
-            media.insert(
-                index,
-                Media {
-                    id: m.to_str(),
-                    name: m.file_name(),
-                },
-            );
+        for m in crate::scraper::get_media_list("/home/alexander/cloud/Backgrounds") {
+            match m {
+                Ok(path) => media.insert(
+                    index,
+                    Media {
+                        id: path.to_str().unwrap_or("").to_owned(),
+                        name: path.to_str().unwrap_or("").to_owned(),
+                    },
+                ),
+            };
+
             index += 1;
         }
         MediaDatabase { media: media }
     }
-    pub fn get_media(&self, id: &i64) -> Option<Media> {
-        self.media.get(id);
+    pub fn get_media(&self, id: &i32) -> Option<&Media> {
+        return self.media.get(id);
     }
 }

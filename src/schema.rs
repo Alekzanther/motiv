@@ -14,10 +14,9 @@ impl Query {
         "1.0"
     }
 
-    fn media(context: &Context, id: String) -> FieldResult<&Media> {
-        let media = context.media.get(&id)?;
-        // Return the result.
-        Ok(media)
+    fn media(context: &MediaDatabase, id: i32) -> FieldResult<&Media> {
+        let media = context.get_media(&id);
+        Ok(media.unwrap())
     }
 }
 
@@ -36,7 +35,7 @@ pub type Schema = juniper::RootNode<'static, Query, Mutation>;
 
 #[rocket::get("/graphiql")]
 pub fn graphiql() -> content::Html<String> {
-    juniper_rocket::graphiql_source("/graphql", None)
+    juniper_rocket::graphiql_source("/graphql")
 }
 
 #[rocket::get("/graphql?<request>")]
