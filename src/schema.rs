@@ -1,4 +1,5 @@
 use juniper::{Context, FieldResult};
+use juniper_rocket::GraphQLRequest;
 
 use crate::media::{Media, MediaDatabase};
 use rocket::{response::content, State};
