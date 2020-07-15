@@ -1,20 +1,20 @@
 [package]
-name = "bild"
+name = "actix-web-juniper-diesel"
 version = "0.1.0"
-authors = ["Alexander Lindberg <alexanderlndbrg@gmail.com>"]
+authors = ["Frank Panetta"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-rocket = "0.4.5"
-juniper = "0.14"
-juniper_rocket = "0.5"
-toml = "0.5.6"
-serde = "1.0.114"
-glob = "0.3.0"
-
-[dependencies.rocket_contrib]
-version = "0.4.5"
-default-features = false
-features = ["serve"]
+log = "0.4"
+env_logger = "0.7"
+actix = "0.8.3"
+actix-web = "1.0.7"
+actix-cors = "0.1.0"
+actix-files = "0.1"
+futures = "0.1"
+serde = "1.0"
+serde_json = "1.0"
+serde_derive = "1.0"
+diesel = { version = "1.4.2", features = ["postgres", "r2d2"] }
+dotenv = "0.14.1"
+juniper = "0.13.1"
