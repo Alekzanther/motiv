@@ -1,42 +1,90 @@
-use crate::db::PgPool;
-use crate::models::users::{NewUser, User};
-use crate::services::user::{create_user, get_user};
-
+use super::context::GraphQLContext;
+use diesel::pg::PgConnection;
 use juniper::{FieldResult, RootNode};
 
-#[derive(Clone)]
-pub struct Context {
-    pub db: PgPool,
-}
+use super::data::Todos;
+use super::models::todo::{CreateTodoInput, Todo};
 
-impl juniper::Context for Context {}
+// The root GraphQL query
+pub struct Query;
 
-pub struct QueryRoot;
+// The root Query struct relies on GraphQLContext to provide the connection pool
+// needed to execute actual Postgres queries.
+#[juniper::object(Context = GraphQLContext)]
+impl Query {
+    // This annotation isn't really necessary, as Juniper would convert the
+    // all_todos function name into CamelCase. But I like to keep it explicit.
+    #[graphql(name = "allTodos")]
+    pub fn all_todos(context: &GraphQLContext) -> FieldResult<Vec<Todo>> {
+        // TODO: pass the GraphQLContext into the querying functions rather
+        // than a PgConnection (for brevity's sake)
+        let conn: &PgConnection = &context.pool.get().unwrap();
 
-#[juniper::object(Context = Context,
-    description = "Query Root",)]
-impl QueryRoot {
-    #[graphql(description = "get a user")]
-    fn user(context: &Context, id: String) -> FieldResult<User> {
-        let conn = context.db.get()?;
-        Ok(get_user(&conn, id).expect("User does not exist"))
+        Todos::all_todos(conn)
+    }
+
+    #[graphql(name = "doneTodos")]
+    pub fn done_todos(context: &GraphQLContext) -> FieldResult<Vec<Todo>> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
+
+        Todos::done_todos(conn)
+    }
+
+    #[graphql(name = "notDoneTodos")]
+    pub fn done_todos(context: &GraphQLContext) -> FieldResult<Vec<Todo>> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
+
+        Todos::not_done_todos(conn)
+    }
+
+    #[graphql(name = "getTodoById")]
+    pub fn get_todo_by_id(
+        context: &GraphQLContext,
+        id: i32,
+    ) -> FieldResult<Option<Todo>> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
+
+        Todos::get_todo_by_id(conn, id)
     }
 }
 
-pub struct MutationRoot;
+// The root GraphQL mutation
+pub struct Mutation;
 
-#[juniper::object(Context = Context,
-    description = "Mutation Root",)]
-impl MutationRoot {
-    #[graphql(description = "create a new user")]
-    fn createUser(context: &Context, new_user: NewUser) -> FieldResult<User> {
-        let conn = context.db.get()?;
-        Ok(create_user(&conn, new_user).expect("Could not create user"))
+#[juniper::object(Context = GraphQLContext)]
+impl Mutation {
+    #[graphql(name = "createTodo")]
+    pub fn create_todo(
+        context: &GraphQLContext,
+        input: CreateTodoInput,
+    ) -> FieldResult<Todo> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
+
+        Todos::create_todo(conn, input)
+    }
+
+    #[graphql(name = "markTodoAsDone")]
+    pub fn mark_todo_as_done(context: &GraphQLContext, id: i32) -> FieldResult<Todo> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
+
+        Todos::mark_todo_as_done(conn, id)
+    }
+
+    #[graphql(name = "markTodoAsNotDone")]
+    pub fn mark_todo_as_not_done(
+        context: &GraphQLContext,
+        id: i32,
+    ) -> FieldResult<Todo> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
+
+        Todos::mark_todo_as_not_done(conn, id)
     }
 }
 
-pub type Schema = RootNode<'static, QueryRoot, MutationRoot>;
+// And finally the root schema that pulls the query and mutation together. Perhaps someday
+// you'll see a Subscription struct here as well.
+pub type Schema = RootNode<'static, Query, Mutation>;
 
 pub fn create_schema() -> Schema {
-    Schema::new(QueryRoot {}, MutationRoot {})
+    Schema::new(Query, Mutation)
 }

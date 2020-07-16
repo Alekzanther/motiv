@@ -1,29 +1,40 @@
 use crate::schema::media;
+use juniper::GraphQLInputObject;
 
-#[derive(Debug, Serialize, Queryable)]
+// The core data type undergirding the GraphQL interface
+#[derive(juniper::GraphQLObject, Queryable)]
 pub struct Media {
-    pub id: String,
+    pub id: i32,
+    pub name: String,
     pub path: String,
 }
-////////////// ENDED HERE
-///
-#[derive(juniper::GraphQLInputObject, Debug, Insertable)]
-#[graphql(description = "A New User")]
-#[table_name = "users"]
-pub struct NewMedia {
-    pub id: String,
-    pub name: String,
+
+// applying #[derive(juniper::GraphQLObject)] to the Todo struct above
+impl Media {
+    fn id(&self) -> i32 {
+        self.id
+    }
+
+    pub fn name(&self) -> &str {
+        self.name.as_str()
+    }
+
+    pub fn path(&self) -> &str {
+        self.path.as_str()
+    }
 }
 
-#[juniper::object]
-/// Information about a User
-impl User {
-    /// user id
-    fn id(&self) -> &str {
-        &self.id
-    }
-    /// user name
-    fn name(&self) -> &str {
-        &self.name
-    }
+// Used to create new Media
+#[derive(Insertable)]
+#[table_name = "media"]
+pub struct NewTodo<'a> {
+    pub name: &'a str,
+    pub path: &'a str,
+}
+
+// The GraphQL input object for creating Media
+#[derive(GraphQLInputObject)]
+pub struct CreateTodoInput {
+    pub name: String,
+    pub path: Option<String>,
 }
