@@ -1,19 +1,19 @@
 extern crate actix_files;
 extern crate actix_rt;
 extern crate actix_web;
-extern crate bild;
 extern crate diesel;
 extern crate dotenv;
 extern crate env_logger;
 extern crate juniper;
+extern crate motiv;
 extern crate r2d2;
 
 use std::{env, io};
 
 use actix_web::{middleware, App, HttpServer};
 
-use bild::db::get_pool;
-use bild::endpoints::web_endpoints;
+use motiv::db::get_pool;
+use motiv::endpoints::web_endpoints;
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {

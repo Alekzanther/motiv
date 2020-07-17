@@ -27,14 +27,14 @@ impl Media {
 // Used to create new Media
 #[derive(Insertable)]
 #[table_name = "media"]
-pub struct NewTodo<'a> {
+pub struct NewMedia<'a> {
     pub name: &'a str,
     pub path: &'a str,
 }
 
 // The GraphQL input object for creating Media
 #[derive(GraphQLInputObject)]
-pub struct CreateTodoInput {
+pub struct CreateMediaInput {
     pub name: String,
-    pub path: Option<String>,
+    pub path: String,
 }
