@@ -21,10 +21,7 @@ impl Todos {
         graphql_translate(res)
     }
 
-    pub fn create_todo(
-        conn: &PgConnection,
-        new_todo: CreateTodoInput,
-    ) -> FieldResult<Todo> {
+    pub fn create_todo(conn: &PgConnection, new_todo: CreateTodoInput) -> FieldResult<Todo> {
         use super::schema::todos;
 
         let new_todo = NewTodo {
@@ -39,10 +36,7 @@ impl Todos {
         graphql_translate(res)
     }
 
-    pub fn get_todo_by_id(
-        conn: &PgConnection,
-        todo_id: i32,
-    ) -> FieldResult<Option<Todo>> {
+    pub fn get_todo_by_id(conn: &PgConnection, todo_id: i32) -> FieldResult<Option<Todo>> {
         match todos.find(todo_id).get_result::<Todo>(conn) {
             Ok(todo) => Ok(Some(todo)),
             Err(e) => match e {
@@ -70,10 +64,7 @@ impl Todos {
         mark_todo_as(conn, todo_id, true)
     }
 
-    pub fn mark_todo_as_not_done(
-        conn: &PgConnection,
-        todo_id: i32,
-    ) -> FieldResult<Todo> {
+    pub fn mark_todo_as_not_done(conn: &PgConnection, todo_id: i32) -> FieldResult<Todo> {
         mark_todo_as(conn, todo_id, false)
     }
 }

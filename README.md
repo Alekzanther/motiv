@@ -2,7 +2,7 @@
 
 A place for your family photos and videos... Some day!
 
-## Works
+## State 
 - Serves SPAs
 - Talks GraphQL
 - Stores in postgres
