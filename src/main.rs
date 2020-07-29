@@ -14,6 +14,7 @@ use std::{env, io};
 
 use actix_web::{middleware, App, HttpServer};
 
+use motiv::config;
 use motiv::db::get_pool;
 use motiv::endpoints::web_endpoints;
 
@@ -21,6 +22,15 @@ use motiv::endpoints::web_endpoints;
 async fn main() -> io::Result<()> {
     logging_setup();
 
+    let cfg = config::read_config("./motiv.toml".to_string());
+    let cfg = match cfg {
+        Ok(result) => result,
+        Err(e) => return Err(e),
+    };
+    println!(
+        "Starting up on {}",
+        ("0.0.0.0:".to_string() + &(cfg.port.unwrap_or(4000)).to_string())
+    );
     // Instantiate a new connection pool
     let pool = get_pool();
 
