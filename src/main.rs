@@ -7,6 +7,8 @@ extern crate env_logger;
 extern crate juniper;
 extern crate motiv;
 extern crate r2d2;
+extern crate serde;
+extern crate toml;
 
 use std::{env, io};
 

@@ -1,6 +1,6 @@
 {
-  "name": "bild",
-  "proxy": "http://localhost:8000",
+  "name": "motiv",
+  "proxy": "http://localhost:4000",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
