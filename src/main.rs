@@ -27,12 +27,13 @@ async fn main() -> io::Result<()> {
         Ok(result) => result,
         Err(e) => return Err(e),
     };
-    println!(
-        "Starting up on {}",
-        ("0.0.0.0:".to_string() + &(cfg.port.unwrap_or(4000)).to_string())
-    );
+
     // Instantiate a new connection pool
     let pool = get_pool();
+
+    //set bindstr from cfg (fallback 4000)
+    let bindstr = "0.0.0.0:".to_string() + &(cfg.port.unwrap_or(4000)).to_string();
+    println!("Starting up on {}", bindstr);
 
     // Start up the server, passing in (a) the connection pool
     // to make it available to all endpoints and (b) the configuration
@@ -43,7 +44,7 @@ async fn main() -> io::Result<()> {
             .wrap(middleware::Logger::default())
             .configure(web_endpoints)
     })
-    .bind("0.0.0.0:4000")?
+    .bind(bindstr)?
     .run()
     .await
 }
