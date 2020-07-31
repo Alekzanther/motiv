@@ -3,7 +3,7 @@ use diesel::pg::PgConnection;
 use juniper::{FieldResult, RootNode};
 
 use super::data::Todos;
-use super::models::todo::{CreateTodoInput, Todo};
+use crate::models::todo::{CreateTodoInput, Todo};
 
 // The root GraphQL query
 pub struct Query;

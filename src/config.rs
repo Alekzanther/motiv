@@ -12,7 +12,7 @@ pub struct Config {
 
 #[derive(Debug, Deserialize)]
 pub struct MediaPath {
-    pub path: Option<String>,
+    pub path: String,
     pub name: Option<String>,
 }
 

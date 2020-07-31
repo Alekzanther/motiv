@@ -15,19 +15,25 @@ use std::{env, io};
 use actix_web::{middleware, App, HttpServer};
 
 use motiv::config;
-use motiv::db::get_pool;
+use motiv::data::db::get_pool;
 use motiv::endpoints::web_endpoints;
+use motiv::services::indexer;
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
     logging_setup();
-
-    let cfg = config::read_config("./motiv.toml".to_string());
+    let cfg_path = "./motiv.toml";
+    let cfg = config::read_config(cfg_path.to_string());
     let cfg = match cfg {
         Ok(result) => result,
         Err(e) => return Err(e),
     };
 
+    if let Some(media_paths) = cfg.media {
+        indexer::index_media(media_paths);
+    } else {
+        println!("No media paths configured in {}, not indexing", cfg_path);
+    }
     // Instantiate a new connection pool
     let pool = get_pool();
 

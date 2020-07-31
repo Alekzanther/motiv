@@ -1,5 +1,5 @@
-use super::models::todo::{CreateTodoInput, NewTodo, Todo};
-use super::schema::todos::dsl::*;
+use crate::models::todo::{CreateTodoInput, NewTodo, Todo};
+use crate::schema::todos::dsl::*;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use juniper::{graphql_value, FieldError, FieldResult};
@@ -21,8 +21,11 @@ impl Todos {
         graphql_translate(res)
     }
 
-    pub fn create_todo(conn: &PgConnection, new_todo: CreateTodoInput) -> FieldResult<Todo> {
-        use super::schema::todos;
+    pub fn create_todo(
+        conn: &PgConnection,
+        new_todo: CreateTodoInput,
+    ) -> FieldResult<Todo> {
+        use crate::schema::todos;
 
         let new_todo = NewTodo {
             task: &new_todo.task,
@@ -36,7 +39,10 @@ impl Todos {
         graphql_translate(res)
     }
 
-    pub fn get_todo_by_id(conn: &PgConnection, todo_id: i32) -> FieldResult<Option<Todo>> {
+    pub fn get_todo_by_id(
+        conn: &PgConnection,
+        todo_id: i32,
+    ) -> FieldResult<Option<Todo>> {
         match todos.find(todo_id).get_result::<Todo>(conn) {
             Ok(todo) => Ok(Some(todo)),
             Err(e) => match e {
@@ -64,7 +70,10 @@ impl Todos {
         mark_todo_as(conn, todo_id, true)
     }
 
-    pub fn mark_todo_as_not_done(conn: &PgConnection, todo_id: i32) -> FieldResult<Todo> {
+    pub fn mark_todo_as_not_done(
+        conn: &PgConnection,
+        todo_id: i32,
+    ) -> FieldResult<Todo> {
         mark_todo_as(conn, todo_id, false)
     }
 }
