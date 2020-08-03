@@ -9,6 +9,7 @@ pub struct Media {
     pub path: String,
 }
 
+// Methods are automatically picked up by juniper
 impl Media {
     fn id(&self) -> i32 {
         self.id
