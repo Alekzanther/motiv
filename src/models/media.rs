@@ -9,7 +9,6 @@ pub struct Media {
     pub path: String,
 }
 
-// applying #[derive(juniper::GraphQLObject)] to the Todo struct above
 impl Media {
     fn id(&self) -> i32 {
         self.id
