@@ -1,4 +1,4 @@
-name: Rust
+name: CI
 
 on:
   push:
@@ -16,6 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: borales/actions-yarn@v2.0.0
+      with:
+        cmd: --cwd frontend build
+    - uses: borales/actions-yarn@v2.0.0
+      with:
+        cmd: --cwd frontend test
     - name: Build
       run: cargo build --verbose
     - name: Run tests
