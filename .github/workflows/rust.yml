@@ -18,6 +18,9 @@ jobs:
     - uses: actions/checkout@v2
     - uses: borales/actions-yarn@v2.0.0
       with:
+        cmd: --cwd frontend install
+    - uses: borales/actions-yarn@v2.0.0
+      with:
         cmd: --cwd frontend build
     - uses: borales/actions-yarn@v2.0.0
       with:
