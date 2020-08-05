@@ -4,7 +4,10 @@ extern crate actix_web;
 extern crate diesel;
 extern crate dotenv;
 extern crate env_logger;
+extern crate exif;
+extern crate glob;
 extern crate juniper;
+extern crate log;
 extern crate motiv;
 extern crate r2d2;
 extern crate serde;
@@ -37,8 +40,8 @@ async fn main() -> io::Result<()> {
     // Instantiate a new connection pool
     let pool = get_pool();
 
-    //set bindstr from cfg (fallback 4000)
-    let bindstr = "0.0.0.0:".to_string() + &(cfg.port.unwrap_or(4000)).to_string();
+    //set bindstr from cfg (fallback 5000)
+    let bindstr = "0.0.0.0:".to_string() + &(cfg.port.unwrap_or(5000)).to_string();
     println!("Starting up on {}", bindstr);
 
     // Start up the server, passing in (a) the connection pool
@@ -57,6 +60,6 @@ async fn main() -> io::Result<()> {
 
 // TODO: more fine-grained logging setup
 fn logging_setup() {
-    env::set_var("RUST_LOG", "actix_web=info");
+    env::set_var("RUST_LOG", "motiv=debug,actix_web=info");
     env_logger::init();
 }

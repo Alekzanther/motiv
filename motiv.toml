@@ -1,2 +1,6 @@
 port = 5000
 name = "My Motiv Library"
+
+[[media]]
+#TODO: fix some proper "default" which can be used to run tests in the CLooUuud
+path = "/home/alexander/cloud/Backgrounds"
