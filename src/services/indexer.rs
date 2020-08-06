@@ -35,9 +35,16 @@ fn index_media_path(path: &String) -> Result<u32, Box<dyn Error>> {
     let mut indexed_files = 0u32;
     for entry in glob(&glob_path)? {
         if entry.is_ok() {
-            let file_info = fetch_metadata(&entry.unwrap());
+            let pathbuf = &entry.unwrap();
+            let file_info = fetch_metadata(&pathbuf);
             if file_info.is_ok() {
                 indexed_files += 1;
+            } else {
+                debug!(
+                    "Error fetching metadata for {}: {}",
+                    pathbuf.display(),
+                    file_info.unwrap_err()
+                );
             }
         }
     }
@@ -46,6 +53,25 @@ fn index_media_path(path: &String) -> Result<u32, Box<dyn Error>> {
 }
 
 fn fetch_metadata(file_path: &Path) -> Result<(), Box<dyn Error>> {
-    debug!("Reading metadata for {}", &file_path.display());
+    let file = std::fs::File::open(file_path)?;
+    let mut bufreader = std::io::BufReader::new(&file);
+    let exifreader = exif::Reader::new();
+    let exif = exifreader.read_from_container(&mut bufreader)?;
+
+    debug!("Reading metadata for {} :: ", &file_path.display());
+    if let Ok(metadata) = file.metadata() {
+        debug!("file_type :: {:?}", &metadata.file_type());
+        debug!("size :: {:?} KB", &metadata.len() / 1024);
+        debug!("modified :: {:?}", &metadata.modified());
+    }
+
+    for f in exif.fields() {
+        debug!(
+            "exif:: {} {} {}",
+            f.tag,
+            f.ifd_num,
+            f.display_value().with_unit(&exif)
+        );
+    }
     Ok(())
 }
