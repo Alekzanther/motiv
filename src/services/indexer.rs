@@ -10,15 +10,11 @@ pub fn index_media(paths: Vec<MediaPath>) {
         if index_result.is_err() {
             error!(
                 "Failed to read '{0}': {1}",
-                &mp.path,
+                mp.path,
                 &index_result.unwrap_err()
             );
         } else {
-            info!(
-                "Found {} valid files in {}",
-                index_result.unwrap(),
-                &mp.path
-            );
+            info!("Found {} valid files in {}", index_result.unwrap(), mp.path);
         }
     }
 }

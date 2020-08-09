@@ -1,9 +1,8 @@
 use super::context::GraphQLContext;
-use diesel::pg::PgConnection;
-use juniper::{FieldResult, RootNode};
-
 use super::data::Todos;
 use crate::models::todo::{CreateTodoInput, Todo};
+use diesel::pg::PgConnection;
+use juniper::{FieldError, FieldResult, RootNode};
 
 // The root GraphQL query
 pub struct Query;
@@ -87,4 +86,12 @@ pub type Schema = RootNode<'static, Query, Mutation>;
 
 pub fn create_schema() -> Schema {
     Schema::new(Query, Mutation)
+}
+
+// Helper translate method
+pub fn graphql_translate<T>(res: Result<T, diesel::result::Error>) -> FieldResult<T> {
+    match res {
+        Ok(t) => Ok(t),
+        Err(e) => FieldResult::Err(FieldError::from(e)),
+    }
 }

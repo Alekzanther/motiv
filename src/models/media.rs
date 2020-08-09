@@ -1,5 +1,9 @@
+use crate::data::graphql::graphql_translate;
 use crate::schema::media;
-use juniper::GraphQLInputObject;
+use crate::schema::media::dsl::*;
+use diesel::pg::PgConnection;
+use diesel::prelude::*;
+use juniper::{graphql_value, FieldError, FieldResult, GraphQLInputObject};
 
 // The core data type undergirding the GraphQL interface
 #[derive(juniper::GraphQLObject, Queryable)]
@@ -37,4 +41,14 @@ pub struct NewMedia<'a> {
 pub struct CreateMediaInput {
     pub name: String,
     pub path: String,
+}
+
+pub struct MediaManager;
+
+impl MediaManager {
+    pub fn all_media(conn: &PgConnection) -> FieldResult<Vec<Media>> {
+        let result = media.load::<Media>(conn);
+
+        graphql_translate(result)
+    }
 }

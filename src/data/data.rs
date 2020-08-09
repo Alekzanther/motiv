@@ -1,3 +1,4 @@
+use crate::data::graphql::graphql_translate;
 use crate::models::todo::{CreateTodoInput, NewTodo, Todo};
 use crate::schema::todos::dsl::*;
 use diesel::pg::PgConnection;
@@ -75,13 +76,6 @@ impl Todos {
         todo_id: i32,
     ) -> FieldResult<Todo> {
         mark_todo_as(conn, todo_id, false)
-    }
-}
-
-fn graphql_translate<T>(res: Result<T, diesel::result::Error>) -> FieldResult<T> {
-    match res {
-        Ok(t) => Ok(t),
-        Err(e) => FieldResult::Err(FieldError::from(e)),
     }
 }
 
