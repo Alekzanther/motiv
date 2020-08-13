@@ -1,4 +1,5 @@
 use crate::config::MediaPath;
+use crate::models::media::{MediaManager, NewMedia};
 use glob::glob;
 use log::{debug, error, info};
 use std::error::Error;
@@ -21,6 +22,7 @@ pub fn index_media(paths: Vec<MediaPath>) {
 
 fn index_media_path(path: &String) -> Result<u32, Box<dyn Error>> {
     let mut glob_path = path.clone();
+    let pool = crate::data::db::get_pool();
 
     if !glob_path.ends_with("/") {
         glob_path = glob_path + "/";
@@ -34,7 +36,15 @@ fn index_media_path(path: &String) -> Result<u32, Box<dyn Error>> {
             let pathbuf = &entry.unwrap();
             let file_info = fetch_metadata(&pathbuf);
             if file_info.is_ok() {
+                MediaManager::upsert(
+                    &pool.get().unwrap(),
+                    &NewMedia {
+                        path: &pathbuf.to_str().unwrap(),
+                        name: &pathbuf.file_name().unwrap().to_str().unwrap(),
+                    },
+                );
                 indexed_files += 1;
+                info!("Added media to db: {:?}", pathbuf);
             } else {
                 debug!(
                     "Error fetching metadata for {}: {}",

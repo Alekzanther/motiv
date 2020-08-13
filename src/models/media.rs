@@ -29,7 +29,7 @@ impl Media {
 }
 
 // Used to create new Media
-#[derive(Insertable)]
+#[derive(Insertable, AsChangeset)]
 #[table_name = "media"]
 pub struct NewMedia<'a> {
     pub name: &'a str,
@@ -37,11 +37,11 @@ pub struct NewMedia<'a> {
 }
 
 // The GraphQL input object for creating Media
-#[derive(GraphQLInputObject)]
-pub struct CreateMediaInput {
-    pub name: String,
-    pub path: String,
-}
+//#[derive(GraphQLInputObject)]
+//pub struct CreateMediaInput {
+//    pub name: String,
+//    pub path: String,
+//}
 
 pub struct MediaManager;
 
@@ -50,5 +50,21 @@ impl MediaManager {
         let result = media.load::<Media>(conn);
 
         graphql_translate(result)
+    }
+
+    pub fn upsert(conn: &PgConnection, new_media: &NewMedia) -> FieldResult<Media> {
+        let new_media = NewMedia {
+            path: &new_media.path,
+            name: &new_media.name,
+        };
+
+        let res = diesel::insert_into(media::table)
+            .values(&new_media)
+            .on_conflict(path)
+            .do_update()
+            .set(&new_media)
+            .get_result(conn);
+
+        graphql_translate(res)
     }
 }
