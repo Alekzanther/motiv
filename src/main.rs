@@ -32,13 +32,15 @@ async fn main() -> io::Result<()> {
         Err(e) => return Err(e),
     };
 
+    // Instantiate a new connection pool
+    let pool = get_pool();
+
+    // Start indexing
     if let Some(media_paths) = cfg.media {
-        indexer::index_media(media_paths);
+        indexer::index_media(&pool.clone().get().unwrap(), media_paths);
     } else {
         println!("No media paths configured in {}, not indexing", cfg_path);
     }
-    // Instantiate a new connection pool
-    let pool = get_pool();
 
     //set bindstr from cfg (fallback 5000)
     let bindstr = "0.0.0.0:".to_string() + &(cfg.port.unwrap_or(5000)).to_string();

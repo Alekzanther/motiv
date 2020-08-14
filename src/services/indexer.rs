@@ -1,13 +1,14 @@
 use crate::config::MediaPath;
 use crate::models::media::{MediaManager, NewMedia};
+use diesel::pg::PgConnection;
 use glob::glob;
 use log::{debug, error, info};
 use std::error::Error;
 use std::path::Path;
 
-pub fn index_media(paths: Vec<MediaPath>) {
+pub fn index_media(conn: &PgConnection, paths: Vec<MediaPath>) {
     for mp in paths {
-        let index_result = index_media_path(&mp.path);
+        let index_result = index_media_path(conn, &mp.path);
         if index_result.is_err() {
             error!(
                 "Failed to read '{0}': {1}",
@@ -20,9 +21,8 @@ pub fn index_media(paths: Vec<MediaPath>) {
     }
 }
 
-fn index_media_path(path: &String) -> Result<u32, Box<dyn Error>> {
+fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn Error>> {
     let mut glob_path = path.clone();
-    let pool = crate::data::db::get_pool();
 
     if !glob_path.ends_with("/") {
         glob_path = glob_path + "/";
@@ -36,15 +36,19 @@ fn index_media_path(path: &String) -> Result<u32, Box<dyn Error>> {
             let pathbuf = &entry.unwrap();
             let file_info = fetch_metadata(&pathbuf);
             if file_info.is_ok() {
-                MediaManager::upsert(
-                    &pool.get().unwrap(),
+                let res = MediaManager::upsert(
+                    conn,
                     &NewMedia {
                         path: &pathbuf.to_str().unwrap(),
                         name: &pathbuf.file_name().unwrap().to_str().unwrap(),
                     },
                 );
-                indexed_files += 1;
-                info!("Added media to db: {:?}", pathbuf);
+                if res.is_err() {
+                    error!("Failed to update database: {:?}", &res.err());
+                } else {
+                    indexed_files += 1;
+                    info!("Added media to db: {:?}", pathbuf);
+                }
             } else {
                 debug!(
                     "Error fetching metadata for {}: {}",
