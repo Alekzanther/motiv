@@ -4,6 +4,7 @@ use diesel::pg::PgConnection;
 use glob::glob;
 use log::{debug, error, info};
 use std::error::Error;
+use std::fs::Metadata;
 use std::path::Path;
 
 pub fn index_media(conn: &PgConnection, paths: Vec<MediaPath>) {
@@ -34,27 +35,32 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
     for entry in glob(&glob_path)? {
         if entry.is_ok() {
             let pathbuf = &entry.unwrap();
-            let file_info = fetch_metadata(&pathbuf);
-            if file_info.is_ok() {
-                let res = MediaManager::upsert(
-                    conn,
-                    &NewMedia {
-                        path: &pathbuf.to_str().unwrap(),
-                        name: &pathbuf.file_name().unwrap().to_str().unwrap(),
-                    },
-                );
-                if res.is_err() {
-                    error!("Failed to update database: {:?}", &res.err());
+            if valid_media(&pathbuf) {
+                let file_info = fetch_metadata(&pathbuf);
+                if file_info.is_ok() {
+                    let res = MediaManager::upsert(
+                        conn,
+                        &NewMedia {
+                            path: &pathbuf.to_str().unwrap(),
+                            name: &pathbuf.file_name().unwrap().to_str().unwrap(),
+                        },
+                    );
+
+                    if res.is_err() {
+                        error!("Failed to update database: {:?}", &res.err());
+                    } else {
+                        indexed_files += 1;
+                        info!("Added media to db: {:?}", pathbuf);
+                        //TODO: Extended info? exif
+                        //fetch_extended_info(file_path: &Path)
+                    }
                 } else {
-                    indexed_files += 1;
-                    info!("Added media to db: {:?}", pathbuf);
+                    debug!(
+                        "Error fetching metadata for {}: {}",
+                        pathbuf.display(),
+                        file_info.unwrap_err()
+                    );
                 }
-            } else {
-                debug!(
-                    "Error fetching metadata for {}: {}",
-                    pathbuf.display(),
-                    file_info.unwrap_err()
-                );
             }
         }
     }
@@ -62,7 +68,24 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
     Ok(indexed_files)
 }
 
-fn fetch_metadata(file_path: &Path) -> Result<(), Box<dyn Error>> {
+fn valid_media(file_path: &Path) -> bool {
+    let file_name = String::from(file_path.file_name().unwrap().to_str().unwrap());
+
+    for ending in vec![".jpg", ".jpeg", ".png", ".gif", ".bmp", ".raw"] {
+        if file_name.ends_with(ending) {
+            return true;
+        }
+    }
+    false
+}
+
+fn fetch_metadata(file_path: &Path) -> Result<Metadata, std::io::Error> {
+    let file = std::fs::File::open(file_path)?;
+    file.metadata()
+}
+
+#[allow(dead_code)]
+fn fetch_extended_info(file_path: &Path) -> Result<(), Box<dyn Error>> {
     let file = std::fs::File::open(file_path)?;
     let mut bufreader = std::io::BufReader::new(&file);
     let exifreader = exif::Reader::new();
