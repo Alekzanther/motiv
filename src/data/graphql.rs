@@ -1,5 +1,6 @@
 use super::context::GraphQLContext;
 use super::data::Todos;
+use crate::models::media::{Media, MediaManager};
 use crate::models::todo::{CreateTodoInput, Todo};
 use diesel::pg::PgConnection;
 use juniper::{FieldError, FieldResult, RootNode};
@@ -11,6 +12,18 @@ pub struct Query;
 // needed to execute actual Postgres queries.
 #[juniper::object(Context = GraphQLContext)]
 impl Query {
+    pub fn all_media(context: &GraphQLContext) -> FieldResult<Vec<Media>> {
+        MediaManager::all_media(context)
+    }
+
+    pub fn get_media_by_id(
+        context: &GraphQLContext,
+        media_id: i32,
+    ) -> FieldResult<Option<Media>> {
+        MediaManager::get_media_by_id(context, media_id)
+    }
+
+    // todo examples::
     // This annotation isn't really necessary, as Juniper would convert the
     // all_todos function name into CamelCase. But I like to keep it explicit.
     #[graphql(name = "allTodos")]

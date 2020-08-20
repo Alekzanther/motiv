@@ -1,9 +1,10 @@
+use crate::data::context::GraphQLContext;
 use crate::data::graphql::graphql_translate;
 use crate::schema::media;
 use crate::schema::media::dsl::*;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
-use juniper::{graphql_value, FieldError, FieldResult, GraphQLInputObject};
+use juniper::{FieldError, FieldResult};
 
 // The core data type undergirding the GraphQL interface
 #[derive(juniper::GraphQLObject, Queryable)]
@@ -46,10 +47,27 @@ pub struct NewMedia<'a> {
 pub struct MediaManager;
 
 impl MediaManager {
-    pub fn all_media(conn: &PgConnection) -> FieldResult<Vec<Media>> {
+    pub fn all_media(context: &GraphQLContext) -> FieldResult<Vec<Media>> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
         let result = media.load::<Media>(conn);
 
         graphql_translate(result)
+    }
+
+    pub fn get_media_by_id(
+        context: &GraphQLContext,
+        media_id: i32,
+    ) -> FieldResult<Option<Media>> {
+        let conn: &PgConnection = &context.pool.get().unwrap();
+        match media.find(media_id).get_result::<Media>(conn) {
+            Ok(res_media) => Ok(Some(res_media)),
+            Err(e) => match e {
+                // Without this translation, GraphQL will return an error rather
+                // than the more semantically sound JSON null if no TODO is found.
+                diesel::result::Error::NotFound => FieldResult::Ok(None),
+                _ => FieldResult::Err(FieldError::from(e)),
+            },
+        }
     }
 
     pub fn upsert(conn: &PgConnection, new_media: &NewMedia) -> FieldResult<Media> {
