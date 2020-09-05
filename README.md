@@ -8,16 +8,20 @@ A place for your family photos and videos... Some day!
 - Stores in postgres
 - Doesn't crash. 
 
-## Prerequisites
+## Development Prerequisites
  - yarn
  - node
  - rust
- - docker/postgres? 
-
+ - diesel_cli
+ - postgres client (required for compilation apparently)
+ - postgres server
+    - docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+ - DATABASE_URL environment variable set with postgres connection details 
+    - example: DATABASE_URL=postgres://postgres:mysecretpassword@localhost:5432/postgres
+ 
 ## Build / run (incomplete, missing docker/postgres/.env-file)
-1. Produce frontend artifacts, via:
- 1. "make build" in the source dir
- 1. go into the "frontend" folder and run yarn 
+1. check / change examples in motiv.toml
+1. "make build" in the source dir
 1. Cargo run to start the server
 1. Go to localhost:5000 in a web browser, there's a graphql-viewer at /graphql as well.
 

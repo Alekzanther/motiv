@@ -3,11 +3,13 @@ use crate::data::db::PostgresPool;
 use crate::data::graphql::create_schema;
 use crate::data::graphql::Schema;
 use actix_files::Files;
+use actix_utils::mpsc;
 use actix_web::{web, Error, HttpResponse};
 use juniper::http::playground::playground_source;
 use juniper::http::GraphQLRequest;
 use std::sync::Arc;
 
+use bytes::Bytes;
 // The configuration callback that enables us to add the /graphql route
 // to the actix-web server.
 pub fn web_endpoints(config: &mut web::ServiceConfig) {
@@ -16,11 +18,22 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
         .data(schema)
         .route("/graphql", web::post().to(graphql))
         .route("/graphql", web::get().to(graphql_playground))
+        .service(web::resource("/m/{id}").route(web::get().to(media_id)))
         .service(
             Files::new("/", "./frontend/build")
                 .index_file("index.html")
                 .show_files_listing(),
         );
+}
+
+/// fetch image body
+async fn media_id(id: web::Path<String>) -> HttpResponse {
+    let text = format!("Hello {}!", *id);
+
+    let (tx, rx_body) = mpsc::channel();
+    let _ = tx.send(Ok::<_, Error>(Bytes::from(text)));
+
+    HttpResponse::Ok().streaming(rx_body)
 }
 
 // The GraphQL Playground route.
