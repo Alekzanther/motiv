@@ -2,14 +2,19 @@ use crate::data::context::GraphQLContext;
 use crate::data::db::PostgresPool;
 use crate::data::graphql::create_schema;
 use crate::data::graphql::Schema;
+use crate::models::media::Media;
+use crate::schema::media;
+use crate::schema::media::dsl::*;
 use actix_files::Files;
 use actix_utils::mpsc;
 use actix_web::{web, Error, HttpResponse};
+use bytes::Bytes;
+use diesel::pg::PgConnection;
+use diesel::prelude::*;
 use juniper::http::playground::playground_source;
 use juniper::http::GraphQLRequest;
 use std::sync::Arc;
 
-use bytes::Bytes;
 // The configuration callback that enables us to add the /graphql route
 // to the actix-web server.
 pub fn web_endpoints(config: &mut web::ServiceConfig) {
@@ -27,13 +32,23 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
 }
 
 /// fetch image body
-async fn media_id(id: web::Path<String>) -> HttpResponse {
-    let text = format!("Hello {}!", *id);
+async fn media_id(
+    pool: web::Data<PostgresPool>,
+    media_id: web::Path<i32>,
+) -> HttpResponse {
+    let text = format!("Hello {}!", *media_id);
 
-    let (tx, rx_body) = mpsc::channel();
-    let _ = tx.send(Ok::<_, Error>(Bytes::from(text)));
-
-    HttpResponse::Ok().streaming(rx_body)
+    let conn: &PgConnection = &pool.get().unwrap();
+    match media.find(*media_id).get_result::<Media>(conn) {
+        Ok(res_media) => {
+            let (tx, rx_body) = mpsc::channel();
+            let _ = tx.send(Ok::<_, Error>(Bytes::from(hämtabytesfrånpath)));
+            HttpResponse::Ok().streaming(rx_body)
+        },
+        Err(e) => match e {
+            HttpResponse::.from_error(e)
+        },
+    }
 }
 
 // The GraphQL Playground route.
