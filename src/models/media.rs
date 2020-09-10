@@ -2,9 +2,11 @@ use crate::data::context::GraphQLContext;
 use crate::data::graphql::graphql_translate;
 use crate::schema::media;
 use crate::schema::media::dsl::*;
+use actix_files::NamedFile;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use juniper::{FieldError, FieldResult};
+use std::error::Error;
 
 // The core data type undergirding the GraphQL interface
 #[derive(juniper::GraphQLObject, Queryable)]
@@ -36,13 +38,6 @@ pub struct NewMedia<'a> {
     pub name: &'a str,
     pub path: &'a str,
 }
-
-// The GraphQL input object for creating Media
-//#[derive(GraphQLInputObject)]
-//pub struct CreateMediaInput {
-//    pub name: String,
-//    pub path: String,
-//}
 
 pub struct MediaManager;
 
@@ -84,5 +79,17 @@ impl MediaManager {
             .get_result(conn);
 
         graphql_translate(res)
+    }
+
+    pub fn get_media_file_by_id(
+        conn: &PgConnection,
+        media_id: i32,
+    ) -> Result<NamedFile, Box<dyn Error>> {
+        let entry = media.find(media_id).get_result::<Media>(conn);
+
+        match NamedFile::open(entry.unwrap().path) {
+            Ok(file) => Ok(file),
+            Err(e) => Err(Box::from(e)),
+        }
     }
 }

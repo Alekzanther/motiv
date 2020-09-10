@@ -2,12 +2,12 @@ use crate::data::context::GraphQLContext;
 use crate::data::db::PostgresPool;
 use crate::data::graphql::create_schema;
 use crate::data::graphql::Schema;
-use crate::models::media::Media;
-use crate::schema::media;
-use crate::schema::media::dsl::*;
+use crate::models::media::MediaManager;
 use actix_files::Files;
+use actix_files::NamedFile;
 use actix_utils::mpsc;
-use actix_web::{web, Error, HttpResponse};
+use actix_web::http::StatusCode;
+use actix_web::{web, Error, HttpResponse, ResponseError};
 use bytes::Bytes;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
@@ -35,20 +35,14 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
 async fn media_id(
     pool: web::Data<PostgresPool>,
     media_id: web::Path<i32>,
-) -> HttpResponse {
-    let text = format!("Hello {}!", *media_id);
-
-    let conn: &PgConnection = &pool.get().unwrap();
-    match media.find(*media_id).get_result::<Media>(conn) {
-        Ok(res_media) => {
-            let (tx, rx_body) = mpsc::channel();
-            let _ = tx.send(Ok::<_, Error>(Bytes::from(hämtabytesfrånpath)));
-            HttpResponse::Ok().streaming(rx_body)
-        },
-        Err(e) => match e {
-            HttpResponse::.from_error(e)
-        },
-    }
+) -> Result<NamedFile, Error> {
+    // HttpResponse {
+    let content = MediaManager::get_media_file_by_id(&pool.get().unwrap(), *media_id);
+    //    if content.is_ok() {
+    return Ok(content.unwrap());
+    //   } else {
+    //        return Err(Error::from(ResponseError::status_code()));
+    //    }
 }
 
 // The GraphQL Playground route.
