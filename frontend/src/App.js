@@ -1,22 +1,45 @@
 import React from "react";
-import logo from "./logo.svg";
-import { Button } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 import "./App.css";
+import {
+  DynamicFeed as DynamicFeedIcon,
+  Favorite as FavoriteIcon,
+  PhotoAlbum as PhotoAlbumIcon,
+  LocalOffer as TagIcon,
+} from "@material-ui/icons";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import theme from "./theme/default.js";
 
 function App() {
+  const [value, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            <Button color="secondary">l o c o</Button>
-          </p>
-          <p>M O T I V</p>
-        </header>
-      </div>
+      <Grid container alignItems="stretch" direction="row">
+        <Grid item sm={0} md={1}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            orientation="vertical"
+            indicatorColor="secondary"
+            textColor="secondary"
+            aria-label="icon label tabs">
+            <Tab icon={<DynamicFeedIcon />} label="FEED" />
+            <Tab icon={<PhotoAlbumIcon />} label="ALBUMS" />
+            <Tab icon={<TagIcon />} label="TAGS" />
+            <Tab icon={<FavoriteIcon />} label="FAVORITES" />
+          </Tabs>
+        </Grid>
+        <Grid item sm={0} md={1} />
+        <Grid item sm={12} md={9}>
+          <Paper elevation={10}>Wazup?</Paper>
+        </Grid>
+        <Grid item sm={0} md={1} />
+      </Grid>
     </ThemeProvider>
   );
 }
