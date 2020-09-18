@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import App from "./main/App";
 import * as serviceWorker from "./serviceWorker";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { BrowserRouter as Router } from "react-router-dom";
 import { gql } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -13,7 +14,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );
