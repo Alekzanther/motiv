@@ -9,6 +9,12 @@ import Albums from "../pages/Albums";
 import Tags from "../pages/Tags";
 import Drawer from "./Drawer";
 import { makeStyles } from "@material-ui/core/styles";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "/graphql",
+  cache: new InMemoryCache(),
+});
 
 const useStyles = makeStyles({
   container: {
@@ -22,16 +28,18 @@ const useStyles = makeStyles({
 export default function App() {
   const classes = useStyles();
   return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.container}>
-        <Drawer classes={classes.drawer} />
-        <Switch>
-          <Route exact from="/" render={(props) => <Feed {...props} />} />
-          <Route exact path="/albums" render={(props) => <Albums {...props} />} />
-          <Route exact path="/tags" render={(props) => <Tags {...props} />} />
-          <Route exact path="/favorites" render={(props) => <Favorites {...props} />} />
-        </Switch>
-      </div>
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <div className={classes.container}>
+          <Drawer classes={classes.drawer} />
+          <Switch>
+            <Route exact from="/" render={(props) => <Feed {...props} />} />
+            <Route exact path="/albums" render={(props) => <Albums {...props} />} />
+            <Route exact path="/tags" render={(props) => <Tags {...props} />} />
+            <Route exact path="/favorites" render={(props) => <Favorites {...props} />} />
+          </Switch>
+        </div>
+      </ThemeProvider>
+    </ApolloProvider>
   );
 }
