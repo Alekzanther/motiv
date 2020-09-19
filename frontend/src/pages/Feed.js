@@ -18,11 +18,11 @@ export default function Feed() {
   if (error) return <p>Error! :((( </p>;
 
   return (
-    <GridList cellHeight={500} cols={3}>
+    <GridList cellHeight={300} cols={3}>
       {data.allMedia.map(({ id, path }) => (
         <GridListTile key={id} cols={1}>
-          <LazyLoad height={500}>
-            <img src={"/m/" + id} height="100%" width="100%" alt={path} />
+          <LazyLoad height={300}>
+            <img src={"/m/" + id} width="100%" alt={path} />
           </LazyLoad>
         </GridListTile>
       ))}
