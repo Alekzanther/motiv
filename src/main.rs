@@ -56,6 +56,7 @@ async fn main() -> io::Result<()> {
             .data(pool.clone())
             .wrap(middleware::Logger::default())
             .configure(web_endpoints)
+            .default_service(actix_files::Files::new("/", "./frontend/build"))
     })
     .bind(bindstr)?
     .run()

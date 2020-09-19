@@ -7,7 +7,7 @@ use actix_files::Files;
 use actix_files::NamedFile;
 use actix_utils::mpsc;
 use actix_web::http::StatusCode;
-use actix_web::{web, Error, HttpResponse, ResponseError};
+use actix_web::{web, Error, HttpRequest, HttpResponse, ResponseError};
 use bytes::Bytes;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
@@ -24,25 +24,19 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
         .route("/graphql", web::post().to(graphql))
         .route("/graphql", web::get().to(graphql_playground))
         .service(web::resource("/m/{id}").route(web::get().to(media_id)))
-        .service(
-            Files::new("/", "./frontend/build")
-                .index_file("index.html")
-                .show_files_listing(),
-        );
+        .service(web::resource("/*").route(web::get().to(index)));
 }
 
+async fn index(req: HttpRequest) -> Result<NamedFile, Error> {
+    Ok(NamedFile::open("./frontend/build/index.html")?)
+}
 /// fetch image body
 async fn media_id(
     pool: web::Data<PostgresPool>,
     media_id: web::Path<i32>,
 ) -> Result<NamedFile, Error> {
-    // HttpResponse {
     let content = MediaManager::get_media_file_by_id(&pool.get().unwrap(), *media_id);
-    //    if content.is_ok() {
     return Ok(content.unwrap());
-    //   } else {
-    //        return Err(Error::from(ResponseError::status_code()));
-    //    }
 }
 
 // The GraphQL Playground route.
