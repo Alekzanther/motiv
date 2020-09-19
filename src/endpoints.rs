@@ -24,10 +24,14 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
         .route("/graphql", web::post().to(graphql))
         .route("/graphql", web::get().to(graphql_playground))
         .service(web::resource("/m/{id}").route(web::get().to(media_id)))
-        .service(web::resource("/*").route(web::get().to(index)));
+        .route("/albums", web::get().to(index))
+        .route("/favorites", web::get().to(index))
+        .route("/tags", web::get().to(index))
+        .route("/feed", web::get().to(index))
+        .route("/", web::get().to(index));
 }
 
-async fn index(req: HttpRequest) -> Result<NamedFile, Error> {
+async fn index() -> Result<NamedFile, Error> {
     Ok(NamedFile::open("./frontend/build/index.html")?)
 }
 /// fetch image body
