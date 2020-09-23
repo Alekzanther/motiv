@@ -8,6 +8,7 @@ extern crate dotenv;
 extern crate env_logger;
 extern crate exif;
 extern crate glob;
+extern crate image;
 extern crate juniper;
 extern crate log;
 extern crate motiv;
