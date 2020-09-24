@@ -8,6 +8,7 @@ pub struct Config {
     pub port: Option<u16>,
     pub name: Option<String>,
     pub media: Option<Vec<MediaPath>>,
+    pub cache_path: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
