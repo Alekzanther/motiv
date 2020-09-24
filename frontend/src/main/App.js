@@ -10,6 +10,7 @@ import Tags from "../pages/Tags";
 import Drawer from "./Drawer";
 import { makeStyles } from "@material-ui/core/styles";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const client = new ApolloClient({
   uri: "/graphql",
@@ -28,18 +29,20 @@ const useStyles = makeStyles({
 export default function App() {
   const classes = useStyles();
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <div className={classes.container}>
-          <Drawer classes={classes.drawer} />
-          <Switch>
-            <Route exact from="/" render={(props) => <Feed {...props} />} />
-            <Route exact path="/albums" render={(props) => <Albums {...props} />} />
-            <Route exact path="/tags" render={(props) => <Tags {...props} />} />
-            <Route exact path="/favorites" render={(props) => <Favorites {...props} />} />
-          </Switch>
-        </div>
-      </ThemeProvider>
-    </ApolloProvider>
+    <Router>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <div className={classes.container}>
+            <Drawer classes={classes.drawer} />
+            <Switch>
+              <Route exact from="/" render={(props) => <Feed {...props} />} />
+              <Route exact path="/albums" render={(props) => <Albums {...props} />} />
+              <Route exact path="/tags" render={(props) => <Tags {...props} />} />
+              <Route exact path="/favorites" render={(props) => <Favorites {...props} />} />
+            </Switch>
+          </div>
+        </ThemeProvider>
+      </ApolloProvider>
+    </Router>
   );
 }
