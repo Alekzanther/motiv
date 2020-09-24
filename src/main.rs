@@ -16,10 +16,10 @@ extern crate r2d2;
 extern crate serde;
 extern crate toml;
 
-use std::{env, io};
+use std::{env, io, thread};
 
 use actix_web::{middleware, App, HttpServer};
-
+use log::warn;
 use motiv::config;
 use motiv::data::db::get_pool;
 use motiv::endpoints::web_endpoints;
@@ -39,10 +39,14 @@ async fn main() -> io::Result<()> {
     let pool = get_pool();
 
     // Start indexing
+
     if let Some(media_paths) = cfg.media {
-        indexer::index_media(&pool.clone().get().unwrap(), media_paths);
+        let indexer_pool = pool.clone();
+        thread::spawn(move || {
+            indexer::index_media(&indexer_pool.get().unwrap(), media_paths);
+        });
     } else {
-        println!("No media paths configured in {}, not indexing", cfg_path);
+        warn!("No media paths configured in {}, not indexing", cfg_path);
     }
 
     //set bindstr from cfg (fallback 5000)
