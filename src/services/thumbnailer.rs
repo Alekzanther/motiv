@@ -2,7 +2,7 @@ use image::{imageops, GenericImageView, ImageResult};
 use imageops::{resize, FilterType};
 use log::info;
 
-const LARGE: u32 = 1920;
+const LARGE: u32 = 860;
 
 pub fn generate_thumbnails(
     original_file: &str,
