@@ -14,6 +14,7 @@ pub struct Media {
     pub id: i32,
     pub name: String,
     pub path: String,
+    pub processed: bool,
 }
 
 // Methods are automatically picked up by juniper
@@ -25,6 +26,9 @@ impl Media {
     pub fn path(&self) -> &str {
         self.path.as_str()
     }
+    pub fn processed(&self) -> &bool {
+        &self.processed
+    }
 }
 
 // Used to create new Media
@@ -33,6 +37,7 @@ impl Media {
 pub struct NewMedia<'a> {
     pub name: &'a str,
     pub path: &'a str,
+    pub processed: &'a bool,
 }
 
 pub struct MediaManager;
@@ -65,6 +70,7 @@ impl MediaManager {
         let new_media = NewMedia {
             path: &new_media.path,
             name: &new_media.name,
+            processed: &new_media.processed,
         };
 
         let res = diesel::insert_into(media::table)

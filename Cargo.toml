@@ -25,6 +25,7 @@ glob = "0.3.0"
 bytes = "0.5.6"
 actix-utils = "2.0.0"
 image = "0.23.9"
+background-jobs = "0.8.0"
 
 
 

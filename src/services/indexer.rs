@@ -45,6 +45,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
                         &NewMedia {
                             path: &path,
                             name: &pathbuf.file_name().unwrap().to_str().unwrap(),
+                            processed: &false,
                         },
                     );
 

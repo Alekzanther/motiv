@@ -2,6 +2,7 @@ extern crate actix_files;
 extern crate actix_rt;
 extern crate actix_utils;
 extern crate actix_web;
+extern crate background_jobs;
 extern crate bytes;
 extern crate diesel;
 extern crate dotenv;
