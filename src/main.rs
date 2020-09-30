@@ -2,6 +2,7 @@ extern crate actix_files;
 extern crate actix_rt;
 extern crate actix_utils;
 extern crate actix_web;
+extern crate blake2;
 extern crate bytes;
 extern crate diesel;
 extern crate dotenv;
@@ -39,7 +40,6 @@ async fn main() -> io::Result<()> {
     let pool = get_pool();
 
     // Start indexing
-
     if let Some(media_paths) = cfg.media {
         let indexer_pool = pool.clone();
         thread::spawn(move || {

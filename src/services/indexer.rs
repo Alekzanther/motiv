@@ -1,12 +1,14 @@
 use super::thumbnailer::generate_thumbnails;
 use crate::config::MediaPath;
 use crate::models::media::{MediaManager, NewMedia};
+use blake2::{Blake2b, Digest};
 use diesel::pg::PgConnection;
 use glob::glob;
 use log::{debug, error, info};
 use std::error::Error;
-use std::fs::Metadata;
+use std::fs::{File, Metadata};
 use std::path::Path;
+use std::{fs, io};
 
 pub fn index_media(conn: &PgConnection, paths: Vec<MediaPath>) {
     for mp in paths {
@@ -39,6 +41,8 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
             if valid_media(&pathbuf) {
                 let file_info = fetch_metadata(&pathbuf);
                 if file_info.is_ok() {
+                    let mut file = fs::File::open(&pathbuf)?;
+                    let hash = fetch_hash(&mut file);
                     let path = pathbuf.to_str().unwrap();
                     let res = MediaManager::upsert(
                         conn,
@@ -46,6 +50,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
                             path: &path,
                             name: &pathbuf.file_name().unwrap().to_str().unwrap(),
                             processed: &false,
+                            hash: hash.unwrap().as_str(),
                         },
                     );
 
@@ -96,14 +101,22 @@ fn valid_media(file_path: &Path) -> bool {
 }
 
 fn fetch_metadata(file_path: &Path) -> Result<Metadata, std::io::Error> {
-    let file = std::fs::File::open(file_path)?;
+    let file = fs::File::open(file_path)?;
     file.metadata()
+}
+
+fn fetch_hash(file: &mut File) -> Result<String, Box<dyn Error>> {
+    let mut hasher = Blake2b::new();
+    io::copy(file, &mut hasher)?;
+
+    let hash = hasher.finalize();
+    Ok(String::from(std::format!("{:x}", hash)))
 }
 
 #[allow(dead_code)]
 fn fetch_extended_info(file_path: &Path) -> Result<(), Box<dyn Error>> {
-    let file = std::fs::File::open(file_path)?;
-    let mut bufreader = std::io::BufReader::new(&file);
+    let file = fs::File::open(file_path)?;
+    let mut bufreader = io::BufReader::new(&file);
     let exifreader = exif::Reader::new();
     let exif = exifreader.read_from_container(&mut bufreader)?;
 

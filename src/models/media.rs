@@ -15,6 +15,7 @@ pub struct Media {
     pub name: String,
     pub path: String,
     pub processed: bool,
+    pub hash: String,
 }
 
 // Methods are automatically picked up by juniper
@@ -29,6 +30,9 @@ impl Media {
     pub fn processed(&self) -> &bool {
         &self.processed
     }
+    pub fn hash(&self) -> &str {
+        &self.hash.as_str()
+    }
 }
 
 // Used to create new Media
@@ -38,6 +42,7 @@ pub struct NewMedia<'a> {
     pub name: &'a str,
     pub path: &'a str,
     pub processed: &'a bool,
+    pub hash: &'a str,
 }
 
 pub struct MediaManager;
@@ -71,6 +76,7 @@ impl MediaManager {
             path: &new_media.path,
             name: &new_media.name,
             processed: &new_media.processed,
+            hash: &new_media.hash,
         };
 
         let res = diesel::insert_into(media::table)
@@ -93,5 +99,14 @@ impl MediaManager {
             Ok(file) => Ok(file),
             Err(e) => Err(Box::from(e)),
         }
+    }
+
+    pub fn get_media_by_path(conn: &PgConnection, find_path: &String) -> Option<Media> {
+        let entry = media.filter(path.eq(find_path)).limit(1).load(conn);
+
+        if entry.is_ok() && entry.unwrap().len() == 1 {
+            return Some(entry.unwrap()[0]);
+        }
+        None
     }
 }
