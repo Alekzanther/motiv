@@ -102,10 +102,10 @@ impl MediaManager {
     }
 
     pub fn get_media_by_path(conn: &PgConnection, find_path: &String) -> Option<Media> {
-        let entry = media.filter(path.eq(find_path)).limit(1).load(conn);
+        let entry = media.filter(path.eq(find_path)).limit(1).get_result(conn);
 
-        if entry.is_ok() && entry.unwrap().len() == 1 {
-            return Some(entry.unwrap()[0]);
+        if entry.is_ok() {
+            return Some(entry.unwrap());
         }
         None
     }
