@@ -42,38 +42,48 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
                 let file_info = fetch_metadata(&pathbuf);
                 if file_info.is_ok() {
                     let mut file = fs::File::open(&pathbuf)?;
-                    let hash = fetch_hash(&mut file);
+                    let hash = fetch_hash(&mut file)?;
                     let path = pathbuf.to_str().unwrap();
-                    let res = MediaManager::upsert(
-                        conn,
-                        &NewMedia {
-                            path: &path,
-                            name: &pathbuf.file_name().unwrap().to_str().unwrap(),
-                            processed: &false,
-                            hash: hash.unwrap().as_str(),
-                        },
-                    );
+                    //if already present in db... check hash
+                    let update_db =
+                        match MediaManager::get_media_by_path(conn, &path.to_string()) {
+                            Some(media) => media.hash != hash,
+                            None => true,
+                        };
 
-                    if res.is_err() {
-                        error!("Failed to update database: {:?}", &res.err());
-                    } else {
-                        indexed_files += 1;
-                        info!("Added media to db: {:?}", pathbuf);
-                        //TODO:  Move thumbnail generation into its own separate thread
-                        let thumbres = generate_thumbnails(
-                            &path,
-                            res.unwrap().id.to_string().as_str(),
-                            ".thumbs",
+                    //if changed (new hash) or new, add to db
+                    if update_db {
+                        let res = MediaManager::upsert(
+                            conn,
+                            &NewMedia {
+                                path: &path,
+                                name: &pathbuf.file_name().unwrap().to_str().unwrap(),
+                                processed: &false,
+                                hash: hash.as_str(),
+                            },
                         );
-                        if thumbres.is_err() {
-                            error!(
-                                "Couldn't generate thumb for {}: {:?}",
-                                path, thumbres
-                            );
-                        }
 
-                        //TODO: Extended info? exif
-                        //fetch_extended_info(file_path: &Path)
+                        if res.is_err() {
+                            error!("Failed to update database: {:?}", &res.err());
+                        } else {
+                            indexed_files += 1;
+                            info!("Added media to db: {:?}", pathbuf);
+                            //TODO:  Move thumbnail generation into its own separate thread
+                            //let thumbres = generate_thumbnails(
+                            //    &path,
+                            //    res.unwrap().id.to_string().as_str(),
+                            //    ".thumbs",
+                            //);
+                            //if thumbres.is_err() {
+                            //    error!(
+                            //        "Couldn't generate thumb for {}: {:?}",
+                            //        path, thumbres
+                            //    );
+                            //}
+
+                            //TODO: Extended info? exif
+                            //fetch_extended_info(file_path: &Path)
+                        }
                     }
                 } else {
                     debug!(
