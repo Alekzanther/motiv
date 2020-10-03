@@ -20,7 +20,11 @@ pub fn index_media(conn: &PgConnection, paths: Vec<MediaPath>) {
                 &index_result.unwrap_err()
             );
         } else {
-            info!("Found {} valid files in {}", index_result.unwrap(), mp.path);
+            info!(
+                "Found {} new media files in {}",
+                index_result.unwrap(),
+                mp.path
+            );
         }
     }
 }
