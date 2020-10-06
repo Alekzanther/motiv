@@ -6,7 +6,7 @@ use diesel::pg::PgConnection;
 use glob::glob;
 use log::{debug, error, info};
 use std::error::Error;
-use std::fs::{File, Metadata};
+use std::fs::File;
 use std::path::Path;
 use std::{fs, io};
 
@@ -49,19 +49,19 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
             continue;
         }
 
-        let file_info = fetch_metadata(&pathbuf);
-        if !file_info.is_ok() {
-            debug!(
-                "Error fetching metadata for {}: {}",
-                pathbuf.display(),
-                file_info.unwrap_err()
-            );
-            continue;
-        }
+        let metadata = std::fs::metadata(&pathbuf)?;
+        let modified = match metadata.modified() {
+            Ok(time) => time,
+            Err(e) => {
+                debug!("Error fetching metadata for {}: {}", pathbuf.display(), e);
+                continue;
+            }
+        };
 
         let mut file = fs::File::open(&pathbuf)?;
         let hash = fetch_hash(&mut file)?;
         let path = pathbuf.to_str().unwrap();
+
         //if already present in db... check hash
         let update_db = match MediaManager::get_media_by_path(conn, &path.to_string()) {
             Some(media) => media.hash != hash,
@@ -116,11 +116,6 @@ fn valid_media(file_path: &Path) -> bool {
         }
     }
     false
-}
-
-fn fetch_metadata(file_path: &Path) -> Result<Metadata, std::io::Error> {
-    let file = fs::File::open(file_path)?;
-    file.metadata()
 }
 
 fn fetch_hash(file: &mut File) -> Result<String, Box<dyn Error>> {
