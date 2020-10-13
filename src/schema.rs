@@ -5,6 +5,7 @@ table! {
         path -> Varchar,
         processed -> Bool,
         hash -> Varchar,
+        modified -> Int4,
     }
 }
 

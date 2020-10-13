@@ -1,10 +1,11 @@
-use super::thumbnailer::generate_thumbnails;
+//use super::thumbnailer::generate_thumbnails;
 use crate::config::MediaPath;
 use crate::models::media::{MediaManager, NewMedia};
 use blake2::{Blake2b, Digest};
 use diesel::pg::PgConnection;
 use glob::glob;
 use log::{debug, error, info};
+use std::convert::TryFrom;
 use std::error::Error;
 use std::fs::File;
 use std::path::Path;
@@ -57,6 +58,23 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
                 continue;
             }
         };
+        let modified = i32::try_from(
+            modified
+                .duration_since(std::time::SystemTime::UNIX_EPOCH)?
+                .as_secs(),
+        )
+        .unwrap();
+
+        //if already present in db... check hash
+        let trigger_checks =
+            match MediaManager::get_media_by_path(conn, &path.to_string()) {
+                Some(media) => media.modified != modified,
+                None => true,
+            };
+
+        if !trigger_checks {
+            continue;
+        };
 
         let mut file = fs::File::open(&pathbuf)?;
         let hash = fetch_hash(&mut file)?;
@@ -77,6 +95,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
                     name: &pathbuf.file_name().unwrap().to_str().unwrap(),
                     processed: &false,
                     hash: hash.as_str(),
+                    modified: &modified,
                 },
             );
 
