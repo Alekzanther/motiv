@@ -65,7 +65,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
         )
         .unwrap();
 
-        //if already present in db... check hash
+        //if already present in db... check timestamp
         let trigger_checks =
             match MediaManager::get_media_by_path(conn, &path.to_string()) {
                 Some(media) => media.modified != modified,
@@ -73,7 +73,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
             };
 
         if !trigger_checks {
-            continue;
+            continue; //not modified
         };
 
         let mut file = fs::File::open(&pathbuf)?;
