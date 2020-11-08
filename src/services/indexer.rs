@@ -65,6 +65,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
         )
         .unwrap();
 
+        let path = pathbuf.to_str().unwrap();
         //if already present in db... check timestamp
         let trigger_checks =
             match MediaManager::get_media_by_path(conn, &path.to_string()) {
