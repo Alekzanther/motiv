@@ -65,30 +65,28 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
         )
         .unwrap();
 
+        let mut hash: String = String::from("");
         let path = pathbuf.to_str().unwrap();
         //if already present in db... check timestamp
-        let trigger_checks =
+        let new_or_modified =
             match MediaManager::get_media_by_path(conn, &path.to_string()) {
-                Some(media) => media.modified != modified,
-                None => true,
+                Some(media) => {
+                    //has the file been modified?
+                    if media.modified != modified {
+                        hash = fetch_hash_from_path(&pathbuf)?;
+                        media.hash != hash
+                    } else {
+                        false
+                    }
+                }
+                None => {
+                    hash = fetch_hash_from_path(&pathbuf)?;
+                    true
+                }
             };
 
-        if !trigger_checks {
-            continue; //not modified
-        };
-
-        let mut file = fs::File::open(&pathbuf)?;
-        let hash = fetch_hash(&mut file)?;
-        let path = pathbuf.to_str().unwrap();
-
-        //if already present in db... check hash
-        let update_db = match MediaManager::get_media_by_path(conn, &path.to_string()) {
-            Some(media) => media.hash != hash,
-            None => true,
-        };
-
         //if changed (new hash) or new, add to db
-        if update_db {
+        if new_or_modified {
             let res = MediaManager::upsert(
                 conn,
                 &NewMedia {
@@ -136,6 +134,11 @@ fn valid_media(file_path: &Path) -> bool {
         }
     }
     false
+}
+
+fn fetch_hash_from_path(file_path: &Path) -> Result<String, Box<dyn Error>> {
+    let mut file = fs::File::open(&file_path)?;
+    fetch_hash(&mut file)
 }
 
 fn fetch_hash(file: &mut File) -> Result<String, Box<dyn Error>> {
