@@ -4,7 +4,7 @@ use crate::schema::media;
 use crate::schema::media::dsl::*;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
-use log::{debug, error, info};
+use log::info;
 
 //TODO: fix a proper job queue and background jobs system.
 pub fn process_unprocessed(conn: &PgConnection) {
@@ -15,11 +15,12 @@ pub fn process_unprocessed(conn: &PgConnection) {
             unprocessed_media.id.to_string().as_str(),
             ".thumbs",
         ) {
-            Ok(result) => {}
-            Err(e) => {}
+            Ok(_result) => {}
+            Err(_e) => {}
         };
     }
 }
+
 fn get_unprocessed_media(conn: &PgConnection) -> Option<Media> {
     let entry = media.filter(processed.eq(false)).limit(1).get_result(conn);
 

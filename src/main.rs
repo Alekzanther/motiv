@@ -25,6 +25,7 @@ use motiv::config;
 use motiv::data::db::get_pool;
 use motiv::endpoints::web_endpoints;
 use motiv::services::indexer;
+use motiv::services::worker;
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
@@ -48,6 +49,12 @@ async fn main() -> io::Result<()> {
     } else {
         warn!("No media paths configured in {}, not indexing", cfg_path);
     }
+
+    let worker_db_pool = pool.clone();
+    thread::spawn(move || loop {
+        worker::process_unprocessed(&worker_db_pool.get().unwrap());
+        thread::sleep(std::time::Duration::from_secs(5));
+    });
 
     //set bindstr from cfg (fallback 5000)
     let bindstr = "0.0.0.0:".to_string() + &(cfg.port.unwrap_or(5000)).to_string();
