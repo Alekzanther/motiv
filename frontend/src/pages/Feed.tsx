@@ -19,10 +19,10 @@ export default function Feed() {
 
   return (
     <GridList cellHeight={300} cols={3}>
-      {data.allMedia.map(({ id, path }) => (
-        <GridListTile key={id} cols={1}>
+      {data.allMedia.map((data: { id: number; path: string }) => (
+        <GridListTile key={data.id} cols={1}>
           <LazyLoad height={300}>
-            <img src={"/m/" + id} width="100%" alt={path} />
+            <img src={"/m/" + data.id} width="100%" alt={data.path} />
           </LazyLoad>
         </GridListTile>
       ))}
