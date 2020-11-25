@@ -1,6 +1,6 @@
 use image::{imageops, GenericImageView, ImageResult};
 use imageops::{resize, FilterType};
-use log::info;
+use log::{error, info};
 
 const LARGE: u32 = 860;
 
@@ -26,8 +26,13 @@ pub fn generate_thumbnails(
         info!("width {}, height {}", nwidth, nheight);
         let nimage = resize(&img, nwidth, nheight, FilterType::CatmullRom);
         let destination = destination_folder.to_string() + "/l/" + index_id + ".jpg";
-        if nimage.save(destination).is_ok() {
-            thumb_count += 1;
+        match nimage.save(destination) {
+            Ok(_) => {
+                thumb_count += 1;
+            }
+            Err(error) => {
+                error!("Error {:?}", error);
+            }
         }
     }
 
