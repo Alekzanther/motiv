@@ -17,11 +17,16 @@ const useStyles = makeStyles({
   },
 });
 
-const Drawer = (props) => {
+interface DrawerProperties {
+  history: any;
+  location: any;
+}
+
+const Drawer = (props: DrawerProperties) => {
   const { history, location } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState(location.pathname ?? "/");
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
     setValue(newValue);
     history.push(newValue);
   };

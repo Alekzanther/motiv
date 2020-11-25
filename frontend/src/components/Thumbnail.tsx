@@ -1,6 +1,11 @@
 import React from "react";
 import "./Thumbnail.css";
-const Thumbnail = (props) => {
+interface ThumbnailProps {
+  alt: string;
+  thumb: string;
+  src: string;
+}
+const Thumbnail = (props: ThumbnailProps) => {
   const [isLoaded, setIsLoaded] = React.useState(false);
   return (
     <React.Fragment>
