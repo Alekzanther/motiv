@@ -21,9 +21,6 @@ const useStyles = makeStyles({
   container: {
     display: "flex",
   },
-  drawer: {
-    width: "160px",
-  },
 });
 
 export default function App() {
@@ -33,7 +30,7 @@ export default function App() {
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <div className={classes.container}>
-            <Drawer className={classes.drawer} />
+            <Drawer />
             <Switch>
               <Route exact from="/" render={(props: any) => <Feed {...props} />} />
               <Route exact path="/albums" render={(props: any) => <Albums {...props} />} />
