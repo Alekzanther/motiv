@@ -1,0 +1,48 @@
+import React from "react";
+import { ThemeProvider } from "@material-ui/core/styles";
+import "./App.css";
+import theme from "../theme/default.js";
+import { Route, Switch } from "react-router-dom";
+import Feed from "../pages/Feed";
+import Favorites from "../pages/Favorites";
+import Albums from "../pages/Albums";
+import Tags from "../pages/Tags";
+import Drawer from "./Drawer";
+import { makeStyles } from "@material-ui/core/styles";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { BrowserRouter as Router } from "react-router-dom";
+
+const client = new ApolloClient({
+  uri: "/graphql",
+  cache: new InMemoryCache(),
+});
+
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+  },
+  drawer: {
+    width: "160px",
+  },
+});
+
+export default function App() {
+  const classes = useStyles();
+  return (
+    <Router>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <div className={classes.container}>
+            <Drawer className={classes.drawer} />
+            <Switch>
+              <Route exact from="/" render={(props: any) => <Feed {...props} />} />
+              <Route exact path="/albums" render={(props: any) => <Albums {...props} />} />
+              <Route exact path="/tags" render={(props: any) => <Tags {...props} />} />
+              <Route exact path="/favorites" render={(props: any) => <Favorites {...props} />} />
+            </Switch>
+          </div>
+        </ThemeProvider>
+      </ApolloProvider>
+    </Router>
+  );
+}
