@@ -1,6 +1,7 @@
-use image::{imageops, GenericImageView, ImageResult};
+use image::{imageops, GenericImageView};
 use imageops::{resize, FilterType};
 use log::{error, info};
+use std::error::Error;
 
 const LARGE: u32 = 860;
 
@@ -8,7 +9,7 @@ pub fn generate_thumbnails(
     original_file: &str,
     index_id: &str,
     destination_folder: &str,
-) -> ImageResult<i32> {
+) -> Result<i32, Box<dyn Error>> {
     let img = image::open(original_file)?;
     let (width, height) = img.dimensions();
     let aspect: f32 = (width as f32 / height as f32) as f32;

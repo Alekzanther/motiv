@@ -1,10 +1,9 @@
 use super::thumbnailer::generate_thumbnails;
 use crate::models::media::Media;
-use crate::schema::media;
 use crate::schema::media::dsl::*;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
-use log::info;
+use log::{error, info};
 
 //TODO: fix a proper job queue and background jobs system.
 pub fn process_unprocessed(conn: &PgConnection) {
@@ -15,7 +14,15 @@ pub fn process_unprocessed(conn: &PgConnection) {
             unprocessed_media.id.to_string().as_str(),
             ".thumbs",
         ) {
-            Ok(_result) => {}
+            Ok(_result) => {
+                match diesel::update(media.find(unprocessed_media.id))
+                    .set(processed.eq(true))
+                    .execute(conn)
+                {
+                    Ok(_) => info!("Successfully updated db"),
+                    Err(_) => error!("Failed to update processed status of media"),
+                }
+            }
             Err(_e) => {}
         };
     }
