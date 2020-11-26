@@ -98,12 +98,22 @@ impl MediaManager {
     pub fn get_media_file_by_id(
         conn: &PgConnection,
         media_id: i32,
+        size: i32,
     ) -> Result<NamedFile, Box<dyn Error>> {
-        let entry = media.find(media_id).get_result::<Media>(conn);
+        if size < 0 {
+            let entry = media.find(media_id).get_result::<Media>(conn);
 
-        match NamedFile::open(entry.unwrap().path) {
-            Ok(file) => Ok(file),
-            Err(e) => Err(Box::from(e)),
+            match NamedFile::open(entry.unwrap().path) {
+                Ok(file) => Ok(file),
+                Err(e) => Err(Box::from(e)),
+            }
+        } else {
+            let filename =
+                ".thumbs/l/".to_string() + media_id.to_string().as_str() + ".jpg";
+            match NamedFile::open(filename) {
+                Ok(file) => Ok(file),
+                Err(e) => Err(Box::from(e)),
+            }
         }
     }
 
