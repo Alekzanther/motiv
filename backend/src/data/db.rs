@@ -6,7 +6,7 @@ use r2d2::Pool;
 // The Postgres-specific connection pool managing all database connections.
 pub type PostgresPool = Pool<ConnectionManager<PgConnection>>;
 
-pub fn get_pool(config: &Config) -> PostgresPool {
+pub fn get_pool(config: std::sync::Arc<Config>) -> PostgresPool {
     let url = &config.database.url.clone();
     let mgr = ConnectionManager::<PgConnection>::new(url);
     r2d2::Pool::builder()

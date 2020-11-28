@@ -3,15 +3,13 @@ use image::{imageops, GenericImageView};
 use imageops::{resize, FilterType};
 use log::error;
 use std::error::Error;
+use std::sync::Arc;
 
 pub fn generate_thumbnails(
+    config: Arc<Config>,
     original_file: &str,
     index_id: &str,
 ) -> Result<i32, Box<dyn Error>> {
-    //TODO: The config stuff here should be passed down from some "global config state"
-    let cfg_path = "./motiv.toml";
-    let config = crate::config::read_config(cfg_path.to_string()).unwrap();
-
     let destination_path = &config
         .cache_path
         .as_ref()
