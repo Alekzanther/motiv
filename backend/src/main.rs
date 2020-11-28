@@ -38,7 +38,7 @@ async fn main() -> io::Result<()> {
     };
 
     // Instantiate a new connection pool
-    let pool = get_pool();
+    let pool = get_pool(&cfg);
 
     // Start indexing
     if let Some(media_paths) = cfg.media {
