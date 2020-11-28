@@ -5,3 +5,6 @@ cache_path = "./thumbs"
 [[media]]
 #TODO: fix some proper "default" which can be used to run tests in the CLooUuud
 path = "/home/alexander/cloud/Backgrounds"
+
+[database]
+url = "postgres://postgres:mysecretpassword@localhost:5432/postgres"
