@@ -1,6 +1,6 @@
 port = 5000
 name = "My Motiv Library"
-cache_path = "./thumbs"
+cache_path = ".thumbs"
 
 [[media]]
 #TODO: fix some proper "default" which can be used to run tests in the CLooUuud

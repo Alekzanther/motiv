@@ -16,16 +16,21 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
             unprocessed_media.path.as_str(),
             unprocessed_media.id.to_string().as_str(),
         ) {
-            Ok(_result) => {
+            Ok(result) => {
                 match diesel::update(media.find(unprocessed_media.id))
                     .set(processed.eq(true))
                     .execute(conn)
                 {
-                    Ok(_) => info!("Successfully updated db"),
+                    Ok(_) => info!(
+                        "Successfully generated {} thunbnails and updated db",
+                        result
+                    ),
                     Err(_) => error!("Failed to update processed status of media"),
                 }
             }
-            Err(_e) => {}
+            Err(e) => {
+                error!("Thumbnail generation failed: {:?}", e);
+            }
         };
     }
 }

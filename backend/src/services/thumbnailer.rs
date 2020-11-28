@@ -1,7 +1,6 @@
 use crate::config::*;
 use image::{imageops, GenericImageView};
 use imageops::{resize, FilterType};
-use log::error;
 use std::error::Error;
 use std::sync::Arc;
 
@@ -44,6 +43,7 @@ pub fn generate_thumbnails(
         let mut destination = destination_path.clone();
         destination.push_str("/l/");
         destination.push_str(index_id);
+        destination.push_str(".jpg"); //TODO: change to webp
 
         match generate_specific_size(
             original_file,
@@ -56,7 +56,7 @@ pub fn generate_thumbnails(
                 thumb_count += 1;
             }
             Err(e) => {
-                error!("Error generating thumb {:?}", e);
+                return Err(Box::from(e));
             }
         }
     }
