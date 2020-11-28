@@ -7,7 +7,7 @@ use r2d2::Pool;
 pub type PostgresPool = Pool<ConnectionManager<PgConnection>>;
 
 pub fn get_pool(config: &Config) -> PostgresPool {
-    let url = config.database.url.clone();
+    let url = &config.database.url.clone();
     let mgr = ConnectionManager::<PgConnection>::new(url);
     r2d2::Pool::builder()
         .build(mgr)

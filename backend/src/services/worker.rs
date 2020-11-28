@@ -1,4 +1,5 @@
 use super::thumbnailer::generate_thumbnails;
+use crate::config;
 use crate::models::media::Media;
 use crate::schema::media::dsl::*;
 use diesel::pg::PgConnection;
@@ -12,7 +13,6 @@ pub fn process_unprocessed(conn: &PgConnection) {
         match generate_thumbnails(
             unprocessed_media.path.as_str(),
             unprocessed_media.id.to_string().as_str(),
-            ".thumbs",
         ) {
             Ok(_result) => {
                 match diesel::update(media.find(unprocessed_media.id))
