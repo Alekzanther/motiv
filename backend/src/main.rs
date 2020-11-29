@@ -11,6 +11,7 @@ extern crate exif;
 extern crate glob;
 extern crate image;
 extern crate juniper;
+extern crate libwebp_sys;
 extern crate log;
 extern crate motiv;
 extern crate r2d2;

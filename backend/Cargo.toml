@@ -10,6 +10,7 @@ actix-web = "2.0.0"
 diesel = { version = "1.4.5", features = ["postgres", "r2d2"] }
 dotenv = "0.15.0"
 log = "0.4.11"
+libwebp-sys = "0.3"
 env_logger = "0.7.1"
 juniper = "0.14.2"
 r2d2 = "0.8.9"
