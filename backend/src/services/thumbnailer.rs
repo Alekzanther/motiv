@@ -27,13 +27,11 @@ pub fn generate_thumbnails(
     let mut thumb_count = 0;
     let large_thumb = config
         .thumbnails
-        .as_ref()
         .unwrap()
         .large_pixels
         .unwrap_or(THUMB_FALLBACK_LARGE);
     let large_thumb_q = config
         .thumbnails
-        .as_ref()
         .unwrap()
         .large_quality
         .unwrap_or(THUMB_FALLBACK_LARGE_Q);
