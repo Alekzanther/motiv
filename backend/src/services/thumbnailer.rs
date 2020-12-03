@@ -17,6 +17,7 @@ pub fn generate_thumbnails(
         .unwrap_or(&".thumbs".to_string())
         .clone();
     let img = image::open(original_file)?;
+    let img_bytes = img.to_rgba8();
     let (width, height) = img.dimensions();
     let aspect: f32 = (width as f32 / height as f32) as f32;
     let largest = {
@@ -46,7 +47,7 @@ pub fn generate_thumbnails(
         destination.push_str(".webp"); //TODO: change to webp
 
         match generate_specific_size(
-            original_file,
+            &img_bytes,
             nwidth,
             nheight,
             large_thumb_q,
@@ -65,13 +66,12 @@ pub fn generate_thumbnails(
 }
 
 fn generate_specific_size(
-    image_file: &str, //TODO: send in already read image buffer instead of reading file for each size...
+    img_buffer: &image::ImageBuffer<image::Rgba<u8>, Vec<u8>>,
     width: u32,
     height: u32,
     quality: u8,
     destination: &String,
 ) -> Result<(), Box<dyn Error>> {
-    let img = image::open(image_file)?;
     let mut filter_type = FilterType::Triangle;
     if quality == 0 {
         filter_type = FilterType::Nearest;
@@ -83,7 +83,7 @@ fn generate_specific_size(
         filter_type = FilterType::Lanczos3;
     }
 
-    let nimage = resize(&img, width, height, filter_type);
+    let nimage = resize(img_buffer, width, height, filter_type);
     let webp_image = encode_webp(nimage.as_ref(), width, height, 70);
     if webp_image.is_ok() {
         let webp_image = webp_image.unwrap();
