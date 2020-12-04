@@ -5,41 +5,37 @@ use crate::schema::media::dsl::*;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use log::{error, info};
+use rayon::prelude::*;
 use std::sync::Arc;
 
-//TODO: fix a proper job queue and background jobs system.
+//TODO: fix proper error handling/reporting
 pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
-    while let Some(unprocessed_media) = get_unprocessed_media(conn) {
-        info!("Found unprocessed media {}", unprocessed_media.path);
-        match generate_thumbnails(
-            config.clone(),
-            unprocessed_media.path.as_str(),
-            unprocessed_media.id.to_string().as_str(),
-        ) {
-            Ok(result) => {
-                match diesel::update(media.find(unprocessed_media.id))
-                    .set(processed.eq(true))
-                    .execute(conn)
-                {
-                    Ok(_) => info!(
-                        "Successfully generated {} thunbnails and updated db",
-                        result
-                    ),
-                    Err(_) => error!("Failed to update processed status of media"),
-                }
-            }
-            Err(e) => {
-                error!("Thumbnail generation failed: {:?}", e);
-            }
-        };
+    let mut unprocessed = get_unprocessed_media(conn);
+    while unprocessed.len() > 0 {
+        let generation_failures: Vec<_> = unprocessed
+            .par_iter()
+            .map(|unprocessed_media| {
+                info!("Processing {}", unprocessed_media.id);
+                generate_thumbnails(
+                    config.clone(),
+                    unprocessed_media.path.as_str(),
+                    unprocessed_media.id.to_string().as_str(),
+                )
+                .map_err(|e| unprocessed_media.path.to_string())
+            })
+            .filter_map(|x| x.err())
+            .collect();
+
+        generation_failures.iter().for_each(|x| println!("{}", x));
+
+        unprocessed = get_unprocessed_media(conn);
     }
 }
 
-fn get_unprocessed_media(conn: &PgConnection) -> Option<Media> {
-    let entry = media.filter(processed.eq(false)).limit(1).get_result(conn);
-
-    if entry.is_ok() {
-        return Some(entry.unwrap());
-    }
-    None
+fn get_unprocessed_media(conn: &PgConnection) -> Vec<Media> {
+    media
+        .filter(processed.eq(false))
+        .limit(100)
+        .load(conn)
+        .expect("Error loading thumbnails!")
 }

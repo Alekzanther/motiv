@@ -15,6 +15,7 @@ extern crate libwebp_sys;
 extern crate log;
 extern crate motiv;
 extern crate r2d2;
+extern crate rayon;
 extern crate serde;
 extern crate toml;
 
@@ -54,14 +55,21 @@ async fn main() -> io::Result<()> {
 
     let worker_db_pool = pool.clone();
     let worker_cfg = cfg.clone();
+
     thread::spawn(move || loop {
-        worker::process_unprocessed(worker_cfg.clone(), &worker_db_pool.get().unwrap());
+        let max_workers = worker_cfg.worker_threads.unwrap_or(4);
+        let worker_pool = rayon::ThreadPoolBuilder::new()
+            .num_threads(max_workers)
+            .build()
+            .unwrap();
+        worker_pool.install(|| {
+            worker::process_unprocessed(worker_cfg.clone(), &worker_db_pool.get().unwrap())
+        });
         thread::sleep(std::time::Duration::from_secs(5));
     });
 
     //set bindstr from cfg (fallback 5000)
-    let bindstr =
-        "0.0.0.0:".to_string() + &(cfg.port.clone().unwrap_or(5000)).to_string();
+    let bindstr = "0.0.0.0:".to_string() + &(cfg.port.clone().unwrap_or(5000)).to_string();
     println!("Starting up on {}", bindstr);
 
     // Start up the server, passing in (a) the connection pool

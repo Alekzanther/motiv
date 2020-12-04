@@ -46,13 +46,7 @@ pub fn generate_thumbnails(
         destination.push_str(index_id);
         destination.push_str(".webp"); //TODO: change to webp
 
-        match generate_specific_size(
-            &img_bytes,
-            nwidth,
-            nheight,
-            large_thumb_q,
-            &destination,
-        ) {
+        match generate_specific_size(&img_bytes, nwidth, nheight, large_thumb_q, &destination) {
             Ok(_) => {
                 thumb_count += 1;
             }

@@ -1336,6 +1336,7 @@ dependencies = [
  "libwebp-sys",
  "log",
  "r2d2",
+ "rayon",
  "serde",
  "serde_json",
  "toml",

@@ -21,6 +21,7 @@ pub struct Config {
     pub cache_path: Option<String>,
     pub thumbnails: Option<Thumbnails>,
     pub database: PostgresCredentials,
+    pub worker_threads: Option<usize>,
 }
 
 #[derive(Copy, Clone, Debug, Deserialize)]
@@ -76,5 +77,6 @@ fn add_defaults(cfg: Config) -> Config {
             large_quality: Some(THUMB_FALLBACK_LARGE_Q),
         })),
         database: cfg.database,
+        worker_threads: Some(cfg.worker_threads.unwrap_or(4)),
     }
 }
