@@ -12,25 +12,35 @@ use std::sync::Arc;
 pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
     let mut unprocessed = get_unprocessed_media(conn);
     while unprocessed.len() > 0 {
-        let generation_failures: Vec<_> = unprocessed
+        let processed_media: Vec<_> = unprocessed
             .par_iter()
             .map(|unprocessed_media| {
                 info!("Processing {}", unprocessed_media.id);
-                generate_thumbnails(
+                match generate_thumbnails(
                     config.clone(),
                     unprocessed_media.path.as_str(),
                     unprocessed_media.id.to_string().as_str(),
-                )
-                .map_err(|_e| unprocessed_media.path.to_string())
+                ) {
+                    Ok(_thumbs_count) => Ok(unprocessed_media),
+                    Err(_e) => Err(()),
+                }
             })
-            .filter_map(|x| x.err())
+            .filter_map(|x| x.ok())
             .collect();
 
-        if generation_failures.len() > 0 {
-            error!("Failed generating {} thumbs", generation_failures.len());
-            generation_failures.iter().for_each(|x| error!("{:?}", x));
+        if processed_media.len() > 0 {
+            match update_processed_media(conn, &processed_media) {
+                Ok(result) => info!("Processed and updated {}", result),
+                Err(e) => error!("Error updating db with processed thumbs: {:?}", e),
+            }
         }
 
+        if processed_media.len() != unprocessed.len() {
+            let failed = unprocessed.len() - processed_media.len();
+            error!("Couldn't process {} of {} media", failed, unprocessed.len());
+        }
+
+        //Get next batch to process...
         unprocessed = get_unprocessed_media(conn);
     }
 }
@@ -38,7 +48,17 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
 fn get_unprocessed_media(conn: &PgConnection) -> Vec<Media> {
     media
         .filter(processed.eq(false))
-        .limit(100)
+        .limit(16)
         .load(conn)
         .expect("Error loading thumbnails!")
+}
+
+fn update_processed_media(
+    conn: &PgConnection,
+    processed_media: &Vec<&Media>,
+) -> Result<usize, diesel::result::Error> {
+    let media_ids: Vec<i32> = processed_media.iter().map(|m| m.id).collect();
+    diesel::update(media.filter(id.eq_any(media_ids)))
+        .set(processed.eq(true))
+        .execute(conn)
 }
