@@ -40,14 +40,76 @@ pub fn generate_thumbnails(
         .large_quality
         .unwrap_or(THUMB_FALLBACK_LARGE_Q);
 
+    let medium_thumb = config
+        .thumbnails
+        .unwrap()
+        .medium_pixels
+        .unwrap_or(THUMB_FALLBACK_LARGE);
+    let medium_thumb_q = config
+        .thumbnails
+        .unwrap()
+        .medium_quality
+        .unwrap_or(THUMB_FALLBACK_LARGE_Q);
+
+    let small_thumb = config
+        .thumbnails
+        .unwrap()
+        .small_pixels
+        .unwrap_or(THUMB_FALLBACK_LARGE);
+    let small_thumb_q = config
+        .thumbnails
+        .unwrap()
+        .small_quality
+        .unwrap_or(THUMB_FALLBACK_LARGE_Q);
+
     if largest >= large_thumb {
         let (nwidth, nheight) = get_new_dimensions(aspect, large_thumb);
-        let mut destination = destination_path.clone();
-        destination.push_str("/l/");
-        destination.push_str(index_id);
-        destination.push_str(".webp"); //TODO: change to webp
-
-        match generate_specific_size(&img_bytes, nwidth, nheight, large_thumb_q, &destination) {
+        let destination = format!("{}/{}_l.webp", destination_path, index_id);
+        match generate_specific_size(
+            &img_bytes,
+            nwidth,
+            nheight,
+            large_thumb_q,
+            &destination,
+        ) {
+            Ok(_) => {
+                thumb_count += 1;
+            }
+            Err(e) => {
+                error!("Couldn't generate thumb: {:?}", e);
+                return Err(Box::from(e));
+            }
+        }
+    }
+    if largest >= medium_thumb {
+        let (nwidth, nheight) = get_new_dimensions(aspect, medium_thumb);
+        let destination = format!("{}/{}_m.webp", destination_path, index_id);
+        match generate_specific_size(
+            &img_bytes,
+            nwidth,
+            nheight,
+            medium_thumb_q,
+            &destination,
+        ) {
+            Ok(_) => {
+                thumb_count += 1;
+            }
+            Err(e) => {
+                error!("Couldn't generate thumb: {:?}", e);
+                return Err(Box::from(e));
+            }
+        }
+    }
+    if largest >= small_thumb {
+        let (nwidth, nheight) = get_new_dimensions(aspect, small_thumb);
+        let destination = format!("{}/{}_s.webp", destination_path, index_id);
+        match generate_specific_size(
+            &img_bytes,
+            nwidth,
+            nheight,
+            small_thumb_q,
+            &destination,
+        ) {
             Ok(_) => {
                 thumb_count += 1;
             }
