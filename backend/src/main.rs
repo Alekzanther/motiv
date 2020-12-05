@@ -43,33 +43,36 @@ async fn main() -> io::Result<()> {
     // Instantiate a new connection pool
     let pool = get_pool(cfg.clone());
 
-    // Start indexing
-    if let Some(media_paths) = cfg.media.clone() {
-        let indexer_pool = pool.clone();
-        thread::spawn(move || {
-            indexer::index_media(&indexer_pool.get().unwrap(), media_paths);
-        });
-    } else {
-        warn!("No media paths configured in {}, not indexing", cfg_path);
-    }
-
     let worker_db_pool = pool.clone();
     let worker_cfg = cfg.clone();
 
     thread::spawn(move || loop {
+        //index media within path
+        //TODO: Do this once/ondemand/seldom and register a filesystem watcher instead...
+        if let Some(media_paths) = worker_cfg.media.clone() {
+            indexer::index_media(&worker_db_pool.get().unwrap(), media_paths);
+        } else {
+            warn!("No media paths configured in {}, not indexing", cfg_path);
+        }
+
+        //process media
         let max_workers = worker_cfg.worker_threads.unwrap_or(4);
         let worker_pool = rayon::ThreadPoolBuilder::new()
             .num_threads(max_workers)
             .build()
             .unwrap();
         worker_pool.install(|| {
-            worker::process_unprocessed(worker_cfg.clone(), &worker_db_pool.get().unwrap())
+            worker::process_unprocessed(
+                worker_cfg.clone(),
+                &worker_db_pool.get().unwrap(),
+            )
         });
         thread::sleep(std::time::Duration::from_secs(5));
     });
 
     //set bindstr from cfg (fallback 5000)
-    let bindstr = "0.0.0.0:".to_string() + &(cfg.port.clone().unwrap_or(5000)).to_string();
+    let bindstr =
+        "0.0.0.0:".to_string() + &(cfg.port.clone().unwrap_or(5000)).to_string();
     println!("Starting up on {}", bindstr);
 
     // Start up the server, passing in (a) the connection pool
