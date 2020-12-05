@@ -21,12 +21,15 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
                     unprocessed_media.path.as_str(),
                     unprocessed_media.id.to_string().as_str(),
                 )
-                .map_err(|e| unprocessed_media.path.to_string())
+                .map_err(|_e| unprocessed_media.path.to_string())
             })
             .filter_map(|x| x.err())
             .collect();
 
-        generation_failures.iter().for_each(|x| println!("{}", x));
+        if generation_failures.len() > 0 {
+            error!("Failed generating {} thumbs", generation_failures.len());
+            generation_failures.iter().for_each(|x| error!("{:?}", x));
+        }
 
         unprocessed = get_unprocessed_media(conn);
     }

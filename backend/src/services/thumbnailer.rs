@@ -1,6 +1,7 @@
 use crate::config::*;
 use image::{imageops, GenericImageView};
 use imageops::{resize, FilterType};
+use log::error;
 use std::error::Error;
 use std::fs::File;
 use std::io::Write;
@@ -51,6 +52,7 @@ pub fn generate_thumbnails(
                 thumb_count += 1;
             }
             Err(e) => {
+                error!("Couldn't generate thumb: {:?}", e);
                 return Err(Box::from(e));
             }
         }
@@ -82,7 +84,8 @@ fn generate_specific_size(
     if webp_image.is_ok() {
         let webp_image = webp_image.unwrap();
         let mut file = File::create(destination)?;
-        file.write_all(webp_image.as_ref())?;
+        file.write_all(webp_image.as_ref())
+            .expect(&std::format!("Couldn't write thumb {} files", destination));
     }
     //To test/compare with jpg, uncomment this:
     //let mut string_test = destination.clone();
