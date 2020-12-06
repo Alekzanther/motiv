@@ -8,21 +8,36 @@ const FEED_QUERY = gql`
     allMedia {
       id
       path
+      processed
     }
   }
 `;
+
+interface Media {
+  id: string;
+  path: string;
+  processed: boolean;
+}
 
 export default function Feed() {
   const { loading, error, data } = useQuery(FEED_QUERY);
   if (loading) return <p>Loading... </p>;
   if (error) return <p>Error! :((( </p>;
 
+  const imageSourceCalculator = (media: Media): string => {
+    if (media.processed) {
+      return "/m/" + media.id + "/1";
+    } else {
+      return "/m/" + media.id;
+    }
+  };
+
   return (
     <GridList cellHeight={300} cols={3}>
-      {data.allMedia.map((data: { id: number; path: string }) => (
+      {data.allMedia.map((data: Media) => (
         <GridListTile key={data.id} cols={1}>
           <LazyLoad height={300}>
-            <img src={"/m/" + data.id} width="100%" alt={data.path} />
+            <img src={imageSourceCalculator(data)} width="100%" alt={data.path} />
           </LazyLoad>
         </GridListTile>
       ))}
