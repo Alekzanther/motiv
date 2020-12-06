@@ -1,3 +1,4 @@
+use crate::config::Config;
 use crate::data::context::GraphQLContext;
 use crate::data::graphql::graphql_translate;
 use crate::schema::media;
@@ -7,6 +8,7 @@ use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use juniper::{FieldError, FieldResult};
 use std::error::Error;
+use std::sync::Arc;
 
 // The core data type undergirding the GraphQL interface
 #[derive(juniper::GraphQLObject, Queryable)]
@@ -50,7 +52,9 @@ pub struct NewMedia<'a> {
     pub modified: &'a i32,
 }
 
-pub struct MediaManager;
+pub struct MediaManager {
+    pub config: Arc<Config>,
+}
 
 impl MediaManager {
     pub fn all_media(context: &GraphQLContext) -> FieldResult<Vec<Media>> {
@@ -96,6 +100,7 @@ impl MediaManager {
     }
 
     pub fn get_media_file_by_id(
+        config: &Arc<Config>,
         conn: &PgConnection,
         media_id: i32,
         size: i32,
@@ -108,8 +113,15 @@ impl MediaManager {
                 Err(e) => Err(Box::from(e)),
             }
         } else {
-            let filename =
-                ".thumbs/l/".to_string() + media_id.to_string().as_str() + ".jpg";
+            let cache_path = config.cache_path.clone().unwrap_or(".thumbs".to_string());
+            let mut file_ending = "l.webp";
+            if size == 0 {
+                file_ending = "s.webp";
+            } else if size == 1 {
+                file_ending = "m.webp";
+            }
+
+            let filename = format!("{}/{}_{}", cache_path, media_id, file_ending);
             match NamedFile::open(filename) {
                 Ok(file) => Ok(file),
                 Err(e) => Err(Box::from(e)),

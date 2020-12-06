@@ -1,3 +1,4 @@
+use crate::config::Config;
 use crate::data::context::GraphQLContext;
 use crate::data::db::PostgresPool;
 use crate::data::graphql::create_schema;
@@ -36,20 +37,26 @@ async fn index() -> Result<NamedFile, Error> {
 
 /// fetch image body
 async fn get_original_media_by_id(
+    config: web::Data<Arc<Config>>,
     pool: web::Data<PostgresPool>,
     media_id: web::Path<i32>,
 ) -> Result<NamedFile, Error> {
     let content =
-        MediaManager::get_media_file_by_id(&pool.get().unwrap(), *media_id, -1);
+        MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), *media_id, -1);
     return Ok(content.unwrap());
 }
 
 async fn get_processed_media_by_id(
+    config: web::Data<Arc<Config>>,
     pool: web::Data<PostgresPool>,
     params: web::Path<(i32, i32)>,
 ) -> Result<NamedFile, Error> {
-    let content =
-        MediaManager::get_media_file_by_id(&pool.get().unwrap(), params.0, params.1);
+    let content = MediaManager::get_media_file_by_id(
+        &config,
+        &pool.get().unwrap(),
+        params.0,
+        params.1,
+    );
     info!("Requested media with size {}", params.1);
     return Ok(content.unwrap());
 }

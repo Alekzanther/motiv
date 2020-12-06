@@ -80,6 +80,7 @@ async fn main() -> io::Result<()> {
     // function that adds the /graphql logic.
     HttpServer::new(move || {
         App::new()
+            .data(cfg.clone())
             .data(pool.clone())
             .wrap(middleware::Logger::default())
             .configure(web_endpoints)
