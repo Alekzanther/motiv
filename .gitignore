@@ -1,4 +1,5 @@
 /backend/target
+/backend/test
 **/*.rs.bk
 .env
 **/node_modules
