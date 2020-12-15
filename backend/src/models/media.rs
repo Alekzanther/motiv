@@ -10,6 +10,12 @@ use juniper::{FieldError, FieldResult};
 use std::error::Error;
 use std::sync::Arc;
 
+pub enum MediaType {
+    Unknown = 0,
+    Image,
+    Video,
+}
+
 // The core data type undergirding the GraphQL interface
 #[derive(juniper::GraphQLObject, Queryable)]
 pub struct Media {
@@ -19,6 +25,8 @@ pub struct Media {
     pub processed: bool,
     pub hash: String,
     pub modified: i32,
+    pub timestamp: i32,
+    pub media_type: i32,
 }
 
 // Methods are automatically picked up by juniper
@@ -50,6 +58,8 @@ pub struct NewMedia<'a> {
     pub processed: &'a bool,
     pub hash: &'a str,
     pub modified: &'a i32,
+    pub timestamp: &'a i32,
+    pub media_type: &'a i32,
 }
 
 pub struct MediaManager {
@@ -64,10 +74,7 @@ impl MediaManager {
         graphql_translate(result)
     }
 
-    pub fn get_media_by_id(
-        context: &GraphQLContext,
-        media_id: i32,
-    ) -> FieldResult<Option<Media>> {
+    pub fn get_media_by_id(context: &GraphQLContext, media_id: i32) -> FieldResult<Option<Media>> {
         let conn: &PgConnection = &context.pool.get().unwrap();
         match media.find(media_id).get_result::<Media>(conn) {
             Ok(res_media) => Ok(Some(res_media)),
@@ -87,6 +94,8 @@ impl MediaManager {
             processed: &new_media.processed,
             hash: &new_media.hash,
             modified: &new_media.modified,
+            timestamp: &new_media.timestamp,
+            media_type: &new_media.media_type,
         };
 
         let res = diesel::insert_into(media::table)

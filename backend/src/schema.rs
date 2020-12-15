@@ -6,6 +6,8 @@ table! {
         processed -> Bool,
         hash -> Varchar,
         modified -> Int4,
+        timestamp -> Int4,
+        media_type -> Int4,
     }
 }
 

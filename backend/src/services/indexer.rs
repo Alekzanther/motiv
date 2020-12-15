@@ -1,6 +1,6 @@
 //use super::thumbnailer::generate_thumbnails;
 use crate::config::MediaPath;
-use crate::models::media::{MediaManager, NewMedia};
+use crate::models::media::{MediaManager, MediaType, NewMedia};
 use blake2::{Blake2b, Digest};
 use diesel::pg::PgConnection;
 use glob::glob;
@@ -68,22 +68,21 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
         let mut hash: String = String::from("");
         let path = pathbuf.to_str().unwrap();
         //if already present in db... check timestamp
-        let new_or_modified =
-            match MediaManager::get_media_by_path(conn, &path.to_string()) {
-                Some(media) => {
-                    //has the file been modified?
-                    if media.modified != modified {
-                        hash = fetch_hash_from_path(&pathbuf)?;
-                        media.hash != hash
-                    } else {
-                        false
-                    }
-                }
-                None => {
+        let new_or_modified = match MediaManager::get_media_by_path(conn, &path.to_string()) {
+            Some(media) => {
+                //has the file been modified?
+                if media.modified != modified {
                     hash = fetch_hash_from_path(&pathbuf)?;
-                    true
+                    media.hash != hash
+                } else {
+                    false
                 }
-            };
+            }
+            None => {
+                hash = fetch_hash_from_path(&pathbuf)?;
+                true
+            }
+        };
 
         //if changed (new hash) or new, add to db
         if new_or_modified {
@@ -95,6 +94,8 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
                     processed: &false,
                     hash: hash.as_str(),
                     modified: &modified,
+                    timestamp: &modified,
+                    media_type: &(MediaType::Image as i32),
                 },
             );
 

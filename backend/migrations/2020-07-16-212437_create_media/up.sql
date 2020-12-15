@@ -4,5 +4,7 @@ CREATE TABLE media (
   path VARCHAR UNIQUE NOT NULL,
   processed BOOLEAN NOT NULL DEFAULT 'f',
   hash VARCHAR NOT NULL,
-  modified INTEGER NOT NULL
+  modified INTEGER NOT NULL,
+  timestamp INTEGER NOT NULL,
+  media_type INTEGER NOT NULL DEFAULT 0
 )
