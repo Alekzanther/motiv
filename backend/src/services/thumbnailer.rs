@@ -1,7 +1,7 @@
 use crate::config::*;
 use image::{imageops, GenericImageView};
 use imageops::{resize, FilterType};
-use log::error;
+use log::{error, info};
 use std::error::Error;
 use std::fs::File;
 use std::io::Write;
@@ -17,6 +17,11 @@ pub fn generate_thumbnails(
         .as_ref()
         .unwrap_or(&".thumbs".to_string())
         .clone();
+
+    if processed_media_files_exist(index_id, destination_path.as_str()) {
+        return Ok(0);
+    }
+
     let img = image::open(original_file)?;
     let img_bytes = img.to_rgba8();
     let (width, height) = img.dimensions();
@@ -63,63 +68,54 @@ pub fn generate_thumbnails(
         .unwrap_or(THUMB_FALLBACK_LARGE_Q);
 
     if largest >= large_thumb {
-        let (nwidth, nheight) = get_new_dimensions(aspect, large_thumb);
         let destination = format!("{}/{}_l.webp", destination_path, index_id);
-        match generate_specific_size(
-            &img_bytes,
-            nwidth,
-            nheight,
-            large_thumb_q,
-            &destination,
-        ) {
-            Ok(_) => {
-                thumb_count += 1;
-            }
-            Err(e) => {
-                error!("Couldn't generate thumb: {:?}", e);
-                return Err(Box::from(e));
+        if !std::path::Path::new(destination.as_str()).exists() {
+            let (nwidth, nheight) = get_new_dimensions(aspect, large_thumb);
+
+            match generate_specific_size(&img_bytes, nwidth, nheight, large_thumb_q, &destination) {
+                Ok(_) => {
+                    thumb_count += 1;
+                }
+                Err(e) => {
+                    error!("Couldn't generate thumb: {:?}", e);
+                    return Err(Box::from(e));
+                }
             }
         }
     }
     if largest >= medium_thumb {
-        let (nwidth, nheight) = get_new_dimensions(aspect, medium_thumb);
         let destination = format!("{}/{}_m.webp", destination_path, index_id);
-        match generate_specific_size(
-            &img_bytes,
-            nwidth,
-            nheight,
-            medium_thumb_q,
-            &destination,
-        ) {
-            Ok(_) => {
-                thumb_count += 1;
-            }
-            Err(e) => {
-                error!("Couldn't generate thumb: {:?}", e);
-                return Err(Box::from(e));
+        if !(std::path::Path::new(destination.as_str()).exists()) {
+            let (nwidth, nheight) = get_new_dimensions(aspect, medium_thumb);
+            match generate_specific_size(&img_bytes, nwidth, nheight, medium_thumb_q, &destination)
+            {
+                Ok(_) => {
+                    thumb_count += 1;
+                }
+                Err(e) => {
+                    error!("Couldn't generate thumb: {:?}", e);
+                    return Err(Box::from(e));
+                }
             }
         }
     }
     if largest >= small_thumb {
-        let (nwidth, nheight) = get_new_dimensions(aspect, small_thumb);
         let destination = format!("{}/{}_s.webp", destination_path, index_id);
-        match generate_specific_size(
-            &img_bytes,
-            nwidth,
-            nheight,
-            small_thumb_q,
-            &destination,
-        ) {
-            Ok(_) => {
-                thumb_count += 1;
-            }
-            Err(e) => {
-                error!("Couldn't generate thumb: {:?}", e);
-                return Err(Box::from(e));
+        if !std::path::Path::new(destination.as_str()).exists() {
+            let (nwidth, nheight) = get_new_dimensions(aspect, small_thumb);
+            match generate_specific_size(&img_bytes, nwidth, nheight, small_thumb_q, &destination) {
+                Ok(_) => {
+                    thumb_count += 1;
+                }
+                Err(e) => {
+                    error!("Couldn't generate thumb: {:?}", e);
+                    return Err(Box::from(e));
+                }
             }
         }
     }
 
+    info!("Processed {} thumbs for id {}", thumb_count, index_id);
     Ok(thumb_count)
 }
 
@@ -184,4 +180,12 @@ pub fn encode_webp(
         );
         Ok(Vec::from_raw_parts(out_buf, len as usize, len as usize))
     }
+}
+
+fn processed_media_files_exist(index_id: &str, destination_path: &str) -> bool {
+    std::path::Path::new(format!("{}/{}_m.webp", destination_path, index_id).as_str()).exists()
+        && std::path::Path::new(format!("{}/{}_s.webp", destination_path, index_id).as_str())
+            .exists()
+        && std::path::Path::new(format!("{}/{}_l.webp", destination_path, index_id).as_str())
+            .exists()
 }
