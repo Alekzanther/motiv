@@ -62,17 +62,13 @@ async fn main() -> io::Result<()> {
             .build()
             .unwrap();
         worker_pool.install(|| {
-            worker::process_unprocessed(
-                worker_cfg.clone(),
-                &worker_db_pool.get().unwrap(),
-            )
+            worker::process_unprocessed(worker_cfg.clone(), &worker_db_pool.get().unwrap())
         });
         thread::sleep(std::time::Duration::from_secs(5));
     });
 
     //set bindstr from cfg (fallback 5000)
-    let bindstr =
-        "0.0.0.0:".to_string() + &(cfg.port.clone().unwrap_or(5000)).to_string();
+    let bindstr = "0.0.0.0:".to_string() + &(cfg.port.clone().unwrap_or(5000)).to_string();
     println!("Starting up on {}", bindstr);
 
     // Start up the server, passing in (a) the connection pool
@@ -84,7 +80,7 @@ async fn main() -> io::Result<()> {
             .data(pool.clone())
             .wrap(middleware::Logger::default())
             .configure(web_endpoints)
-            .default_service(actix_files::Files::new("/", "./frontend/build"))
+            .default_service(actix_files::Files::new("/", cfg.webapp_path.clone()))
     })
     .bind(bindstr)?
     .run()

@@ -22,6 +22,7 @@ pub struct Config {
     pub thumbnails: Option<Thumbnails>,
     pub database: PostgresCredentials,
     pub worker_threads: Option<usize>,
+    pub webapp_path: String,
 }
 
 #[derive(Copy, Clone, Debug, Deserialize)]
@@ -78,5 +79,6 @@ fn add_defaults(cfg: Config) -> Config {
         })),
         database: cfg.database,
         worker_threads: Some(cfg.worker_threads.unwrap_or(4)),
+        webapp_path: cfg.webapp_path,
     }
 }

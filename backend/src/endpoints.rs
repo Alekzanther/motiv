@@ -20,10 +20,7 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
         .route("/graphql", web::post().to(graphql))
         .route("/graphql", web::get().to(graphql_playground))
         .service(web::resource("/m/{id}").route(web::get().to(get_original_media_by_id)))
-        .service(
-            web::resource("/m/{id}/{size}")
-                .route(web::get().to(get_processed_media_by_id)),
-        )
+        .service(web::resource("/m/{id}/{size}").route(web::get().to(get_processed_media_by_id)))
         .route("/albums", web::get().to(index))
         .route("/favorites", web::get().to(index))
         .route("/tags", web::get().to(index))
@@ -31,8 +28,11 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
         .route("/", web::get().to(index));
 }
 
-async fn index() -> Result<NamedFile, Error> {
-    Ok(NamedFile::open("./frontend/build/index.html")?)
+async fn index(config: web::Data<Arc<Config>>) -> Result<NamedFile, Error> {
+    Ok(NamedFile::open(std::format!(
+        "{}/index.html",
+        config.webapp_path
+    ))?)
 }
 
 /// fetch image body
@@ -41,8 +41,7 @@ async fn get_original_media_by_id(
     pool: web::Data<PostgresPool>,
     media_id: web::Path<i32>,
 ) -> Result<NamedFile, Error> {
-    let content =
-        MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), *media_id, -1);
+    let content = MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), *media_id, -1);
     return Ok(content.unwrap());
 }
 
@@ -51,12 +50,8 @@ async fn get_processed_media_by_id(
     pool: web::Data<PostgresPool>,
     params: web::Path<(i32, i32)>,
 ) -> Result<NamedFile, Error> {
-    let content = MediaManager::get_media_file_by_id(
-        &config,
-        &pool.get().unwrap(),
-        params.0,
-        params.1,
-    );
+    let content =
+        MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), params.0, params.1);
     info!("Requested media with size {}", params.1);
     return Ok(content.unwrap());
 }
