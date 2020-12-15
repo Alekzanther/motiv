@@ -1,6 +1,6 @@
 use super::thumbnailer::generate_thumbnails;
 use crate::config::Config;
-use crate::models::media::Media;
+use crate::models::media::{Media, MediaType};
 use crate::schema::media::dsl::*;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
@@ -47,10 +47,14 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
 
 fn get_unprocessed_media(conn: &PgConnection) -> Vec<Media> {
     media
-        .filter(processed.eq(false))
+        .filter(
+            processed
+                .eq(false)
+                .and(media_type.eq(MediaType::Image as i32)),
+        )
         .limit(16)
         .load(conn)
-        .expect("Error loading thumbnails!")
+        .expect("Error getting unprocessed media")
 }
 
 fn update_processed_media(
