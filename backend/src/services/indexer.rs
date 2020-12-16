@@ -45,7 +45,8 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
         }
 
         let pathbuf = &entry.unwrap();
-        if !valid_media(&pathbuf) {
+        let media_type = get_media_type(&pathbuf);
+        if let MediaType::Unknown = media_type {
             continue;
         }
 
@@ -95,7 +96,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
                     hash: hash.as_str(),
                     modified: &modified,
                     timestamp: &modified,
-                    media_type: &(MediaType::Image as i32),
+                    media_type: &(media_type as i32),
                 },
             );
 
@@ -114,15 +115,22 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
     Ok(indexed_files)
 }
 
-fn valid_media(file_path: &Path) -> bool {
+fn get_media_type(file_path: &Path) -> MediaType {
     let file_name = String::from(file_path.file_name().unwrap().to_str().unwrap());
 
     for ending in vec![".jpg", ".jpeg", ".png", ".gif", ".bmp", ".raw"] {
         if file_name.ends_with(ending) {
-            return true;
+            return MediaType::Image;
         }
     }
-    false
+
+    for ending in vec![".mts", ".mp4", ".avi", ".mkv"] {
+        if file_name.ends_with(ending) {
+            return MediaType::Video;
+        }
+    }
+
+    MediaType::Unknown
 }
 
 fn fetch_hash_from_path(file_path: &Path) -> Result<String, Box<dyn Error>> {
