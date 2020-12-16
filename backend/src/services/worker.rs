@@ -1,4 +1,4 @@
-use super::thumbnailer::generate_thumbnails;
+use super::thumbnailer::cache_image;
 use crate::config::Config;
 use crate::models::media::{Media, MediaType};
 use crate::schema::media::dsl::*;
@@ -16,7 +16,7 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
             .par_iter()
             .map(|unprocessed_media| {
                 info!("Processing {}", unprocessed_media.id);
-                match generate_thumbnails(
+                match cache_image(
                     config.clone(),
                     unprocessed_media.path.as_str(),
                     unprocessed_media.id.to_string().as_str(),

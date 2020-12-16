@@ -3,12 +3,12 @@ use std::fs;
 use std::io;
 use toml;
 
-pub const THUMB_FALLBACK_LARGE: u32 = 1920;
-pub const THUMB_FALLBACK_LARGE_Q: u8 = 1;
-pub const THUMB_FALLBACK_MEDIUM: u32 = 512;
-pub const THUMB_FALLBACK_MEDIUM_Q: u8 = 1;
-pub const THUMB_FALLBACK_SMALL: u32 = 64;
-pub const THUMB_FALLBACK_SMALL_Q: u8 = 1;
+pub const IMAGE_CACHE_FALLBACK_LARGE: u32 = 1920;
+pub const IMAGE_CACHE_FALLBACK_LARGE_Q: u8 = 1;
+pub const IMAGE_CACHE_FALLBACK_MEDIUM: u32 = 512;
+pub const IMAGE_CACHE_FALLBACK_MEDIUM_Q: u8 = 1;
+pub const IMAGE_CACHE_FALLBACK_SMALL: u32 = 64;
+pub const IMAGE_CACHE_FALLBACK_SMALL_Q: u8 = 1;
 
 //TODO: Instead of option everywhere, separate "parsed" configs (with option) from actually used
 //config (with defaults for missing pieces)
@@ -19,14 +19,14 @@ pub struct Config {
     pub name: Option<String>,
     pub media: Option<Vec<MediaPath>>,
     pub cache_path: Option<String>,
-    pub thumbnails: Option<Thumbnails>,
+    pub cache_image_settings: Option<CacheSettings>,
     pub database: PostgresCredentials,
     pub worker_threads: Option<usize>,
     pub webapp_path: String,
 }
 
 #[derive(Copy, Clone, Debug, Deserialize)]
-pub struct Thumbnails {
+pub struct CacheSettings {
     pub small_pixels: Option<u32>,
     pub medium_pixels: Option<u32>,
     pub large_pixels: Option<u32>,
@@ -69,13 +69,13 @@ fn add_defaults(cfg: Config) -> Config {
             name: Some("My local media".to_string()),
         }])),
         cache_path: Some(cfg.cache_path.unwrap_or(".thumbs".to_string())),
-        thumbnails: Some(cfg.thumbnails.unwrap_or(Thumbnails {
-            small_pixels: Some(THUMB_FALLBACK_SMALL),
-            medium_pixels: Some(THUMB_FALLBACK_MEDIUM),
-            large_pixels: Some(THUMB_FALLBACK_LARGE),
-            small_quality: Some(THUMB_FALLBACK_SMALL_Q),
-            medium_quality: Some(THUMB_FALLBACK_MEDIUM_Q),
-            large_quality: Some(THUMB_FALLBACK_LARGE_Q),
+        cache_image_settings: Some(cfg.cache_image_settings.unwrap_or(CacheSettings {
+            small_pixels: Some(IMAGE_CACHE_FALLBACK_SMALL),
+            medium_pixels: Some(IMAGE_CACHE_FALLBACK_MEDIUM),
+            large_pixels: Some(IMAGE_CACHE_FALLBACK_LARGE),
+            small_quality: Some(IMAGE_CACHE_FALLBACK_SMALL_Q),
+            medium_quality: Some(IMAGE_CACHE_FALLBACK_MEDIUM_Q),
+            large_quality: Some(IMAGE_CACHE_FALLBACK_LARGE_Q),
         })),
         database: cfg.database,
         worker_threads: Some(cfg.worker_threads.unwrap_or(4)),

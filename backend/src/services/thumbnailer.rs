@@ -7,7 +7,7 @@ use std::fs::File;
 use std::io::Write;
 use std::sync::Arc;
 
-pub fn generate_thumbnails(
+pub fn cache_image(
     config: Arc<Config>,
     original_file: &str,
     index_id: &str,
@@ -15,7 +15,7 @@ pub fn generate_thumbnails(
     let destination_path = &config
         .cache_path
         .as_ref()
-        .unwrap_or(&".thumbs".to_string())
+        .unwrap_or(&".cache".to_string())
         .clone();
 
     if processed_media_files_exist(index_id, destination_path.as_str()) {
@@ -35,37 +35,37 @@ pub fn generate_thumbnails(
     };
     let mut thumb_count = 0;
     let large_thumb = config
-        .thumbnails
+        .cache_image_settings
         .unwrap()
         .large_pixels
-        .unwrap_or(THUMB_FALLBACK_LARGE);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE);
     let large_thumb_q = config
-        .thumbnails
+        .cache_image_settings
         .unwrap()
         .large_quality
-        .unwrap_or(THUMB_FALLBACK_LARGE_Q);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE_Q);
 
     let medium_thumb = config
-        .thumbnails
+        .cache_image_settings
         .unwrap()
         .medium_pixels
-        .unwrap_or(THUMB_FALLBACK_LARGE);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE);
     let medium_thumb_q = config
-        .thumbnails
+        .cache_image_settings
         .unwrap()
         .medium_quality
-        .unwrap_or(THUMB_FALLBACK_LARGE_Q);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE_Q);
 
     let small_thumb = config
-        .thumbnails
+        .cache_image_settings
         .unwrap()
         .small_pixels
-        .unwrap_or(THUMB_FALLBACK_LARGE);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE);
     let small_thumb_q = config
-        .thumbnails
+        .cache_image_settings
         .unwrap()
         .small_quality
-        .unwrap_or(THUMB_FALLBACK_LARGE_Q);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE_Q);
 
     if largest >= large_thumb {
         let destination = format!("{}/{}_l.webp", destination_path, index_id);
