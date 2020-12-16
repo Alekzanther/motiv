@@ -70,6 +70,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
         let new_or_modified = match MediaManager::get_media_by_path(conn, &path.to_string()) {
             Some(media) => {
                 //has the file been modified?
+                //TODO: remove eventual cache files if the hash has changed
                 if media.modified != modified {
                     hash = fetch_hash_from_path(&pathbuf)?;
                     media.hash != hash
