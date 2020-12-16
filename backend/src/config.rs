@@ -3,7 +3,7 @@ use std::fs;
 use std::io;
 use toml;
 
-pub const THUMB_FALLBACK_LARGE: u32 = 1024;
+pub const THUMB_FALLBACK_LARGE: u32 = 1920;
 pub const THUMB_FALLBACK_LARGE_Q: u8 = 1;
 pub const THUMB_FALLBACK_MEDIUM: u32 = 512;
 pub const THUMB_FALLBACK_MEDIUM_Q: u8 = 1;
