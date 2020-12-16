@@ -20,11 +20,12 @@ pub fn index_media(conn: &PgConnection, paths: Vec<MediaPath>) {
                 &index_result.unwrap_err()
             );
         } else {
-            info!(
-                "Found {} new media files in {}",
-                index_result.unwrap(),
-                mp.path
-            );
+            let results = index_result.unwrap_or(0);
+            if results > 0 {
+                info!("Found {} new media files in {}", results, mp.path);
+            } else {
+                debug!("Found {} new media files in {}", results, mp.path);
+            }
         }
     }
 }
@@ -37,7 +38,7 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
     }
     glob_path += "**/*.*";
 
-    info!("Searching through {}", glob_path);
+    debug!("Searching through {}", glob_path);
     let mut indexed_files = 0u32;
     for entry in glob(&glob_path)? {
         if !entry.is_ok() {
