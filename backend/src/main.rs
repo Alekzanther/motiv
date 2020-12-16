@@ -71,9 +71,8 @@ async fn main() -> io::Result<()> {
     let bindstr = "0.0.0.0:".to_string() + &(cfg.port.clone().unwrap_or(5000)).to_string();
     println!("Starting up on {}", bindstr);
 
-    // Start up the server, passing in (a) the connection pool
-    // to make it available to all endpoints and (b) the configuration
-    // function that adds the /graphql logic.
+    // Start up the server, passing in the config, db connection,
+    // and set up for graphql and web serving
     HttpServer::new(move || {
         App::new()
             .data(cfg.clone())
