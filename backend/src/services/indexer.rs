@@ -1,4 +1,3 @@
-//use super::thumbnailer::generate_thumbnails;
 use crate::config::MediaPath;
 use crate::models::media::{MediaManager, MediaType, NewMedia};
 use blake2::{Blake2b, Digest};
@@ -104,18 +103,6 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
             } else {
                 indexed_files += 1;
                 info!("Added media to db: {:?}", pathbuf);
-                //TODO:  Move thumbnail generation into its own separate thread
-                //let thumbres = generate_thumbnails(
-                //    &path,
-                //    res.unwrap().id.to_string().as_str(),
-                //    ".thumbs",
-                //);
-                //if thumbres.is_err() {
-                //    error!(
-                //        "Couldn't generate thumb for {}: {:?}",
-                //        path, thumbres
-                //    );
-                //}
 
                 //TODO: Extended info? exif
                 //fetch_extended_info(file_path: &Path)

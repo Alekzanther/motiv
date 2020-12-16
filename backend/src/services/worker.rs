@@ -1,4 +1,4 @@
-use super::thumbnailer::cache_image;
+use super::image_cacher::cache_image;
 use crate::config::Config;
 use crate::models::media::{Media, MediaType};
 use crate::schema::media::dsl::*;
@@ -8,7 +8,6 @@ use log::{error, info};
 use rayon::prelude::*;
 use std::sync::Arc;
 
-//TODO: fix proper error handling/reporting
 pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
     let mut unprocessed = get_unprocessed_media(conn);
     while unprocessed.len() > 0 {
