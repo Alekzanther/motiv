@@ -1,30 +1,14 @@
 import React from "react";
-import "./Thumbnail.css";
-interface ThumbnailProps {
-  alt: string;
-  thumb: string;
-  src: string;
-}
-const Thumbnail = (props: ThumbnailProps) => {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-  return (
-    <React.Fragment>
-      <img
-        className="image thumb"
-        alt={props.alt}
-        src={props.thumb}
-        style={{ visibility: isLoaded ? "hidden" : "visible" }}
-      />
-      <img
-        onLoad={() => {
-          setIsLoaded(true);
-        }}
-        className="image full"
-        style={{ opacity: isLoaded ? 1 : 0 }}
-        alt={props.alt}
-        src={props.src}
-      />
-    </React.Fragment>
-  );
+import { AllMedia_allMedia as Media } from "../queries/types/AllMedia";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
+const Thumbnail: React.FC<Media> = (props) => {
+  if (props.processed) {
+    return (
+      <LazyLoadImage alt={"/m/" + props.id + "/0"} effect="blur" src={"/m/" + props.id + "/1"} />
+    );
+  } else {
+    return <img src={"/m/" + props.id} width="100%" alt={props.id.toString()} />;
+  }
 };
 export default Thumbnail;
