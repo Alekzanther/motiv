@@ -3,7 +3,6 @@ import { useQuery } from "@apollo/client";
 import { GridList, GridListTile } from "@material-ui/core";
 import allMediaQuery from "../queries/allMediaQuery";
 import { AllMedia } from "../queries/types/AllMedia";
-import LazyLoad from "react-lazyload";
 import Thumbnail from "../components/Thumbnail";
 
 export default function Feed() {
@@ -16,9 +15,7 @@ export default function Feed() {
       {data &&
         data.allMedia.map((media) => (
           <GridListTile key={media.id} cols={1}>
-            <LazyLoad height={300}>
-              <Thumbnail {...media} />
-            </LazyLoad>
+            <Thumbnail {...media} />
           </GridListTile>
         ))}
     </GridList>
