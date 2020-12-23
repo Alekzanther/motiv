@@ -1,10 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 
 env:
   CARGO_TERM_COLOR: always
@@ -14,18 +10,20 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
     steps:
     - uses: actions/checkout@v2
-    - uses: borales/actions-yarn@v2.0.0
+    - name: Build and test frontend
+      uses: actions/setup-node@v1
       with:
-        cmd: --cwd frontend install
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: --cwd frontend build
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: --cwd frontend test
-    - name: Build
+        node-version: ${{ matrix.node-version }}
+    - run: --cwd frontend install
+    - run: --cwd frontend build
+    - run: --cwd frontend test
+    - name: Build rust backend
       run: cargo build --manifest-path backend/Cargo.toml --verbose
     - name: Run tests
       run: cargo test --manifest-path backend/Cargo.toml --verbose
