@@ -2,11 +2,11 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { GridList, GridListTile } from "@material-ui/core";
 import allMediaQuery from "../queries/allMediaQuery";
-import { AllMedia } from "../queries/types/AllMedia";
+import { AllMediaQuery } from "../queries/types/graphql";
 import Thumbnail from "../components/Thumbnail";
 
 export default function Feed() {
-  const { loading, error, data } = useQuery<AllMedia>(allMediaQuery);
+  const { loading, error, data } = useQuery<AllMediaQuery>(allMediaQuery);
   if (loading) return <p>Loading... </p>;
   if (error) return <p>Error! :((( </p>;
 
