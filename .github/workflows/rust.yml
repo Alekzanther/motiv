@@ -21,6 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn --cwd frontend install
+    - run: yarn --cwd frontend codegen
     - run: yarn --cwd frontend build
     - run: yarn --cwd frontend test
     - name: Build rust backend
