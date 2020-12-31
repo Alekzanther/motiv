@@ -1,10 +1,10 @@
 import React from "react";
-import { Media } from "../queries/types/graphql";
+import { MediaDisplayPropsFragment } from "../queries/types/graphql";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import LazyLoad from "react-lazyload";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-const Thumbnail: React.FC<Pick<Media, "id" | "path" | "processed">> = (props) => {
+const Thumbnail: React.FC<MediaDisplayPropsFragment> = (props) => {
   if (props.processed) {
     return (
       <LazyLoadImage

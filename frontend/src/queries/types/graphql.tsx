@@ -79,6 +79,11 @@ export type CreateTodoInput = {
   done?: Maybe<Scalars['Boolean']>;
 };
 
+export type MediaDisplayPropsFragment = (
+  { __typename?: 'Media' }
+  & Pick<Media, 'id' | 'processed'>
+);
+
 export type AllMediaQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -86,20 +91,23 @@ export type AllMediaQuery = (
   { __typename?: 'Query' }
   & { allMedia: Array<(
     { __typename?: 'Media' }
-    & Pick<Media, 'id' | 'path' | 'processed'>
+    & MediaDisplayPropsFragment
   )> }
 );
 
-
+export const MediaDisplayPropsFragmentDoc = gql`
+    fragment MediaDisplayProps on Media {
+  id
+  processed
+}
+    `;
 export const AllMediaDocument = gql`
     query AllMedia {
   allMedia {
-    id
-    path
-    processed
+    ...MediaDisplayProps
   }
 }
-    `;
+    ${MediaDisplayPropsFragmentDoc}`;
 
 /**
  * __useAllMediaQuery__
