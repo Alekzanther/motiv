@@ -1,5 +1,6 @@
 CARGO = cargo
 YARN = yarn
+DOCKER = docker
 
 build:
 	$(YARN) --cwd frontend install
@@ -17,6 +18,12 @@ open:
 
 release:
 	$(CARGO) build --release --manifest-path backend/Cargo.toml
+
+docker: 
+	$(YARN) --cwd frontend install
+	$(YARN) --cwd frontend build
+	$(DOCKER) build -f docker/Dockerfile -t motiv .  
+
 
 run:
 	$(CARGO) run --manifest-path backend/Cargo.toml
