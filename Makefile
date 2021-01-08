@@ -19,7 +19,7 @@ open:
 release:
 	$(CARGO) build --release --manifest-path backend/Cargo.toml
 
-docker: 
+docker-image: 
 	$(YARN) --cwd frontend install
 	$(YARN) --cwd frontend build
 	$(DOCKER) build -f docker/Dockerfile -t motiv .  
