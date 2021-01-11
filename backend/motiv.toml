@@ -1,6 +1,6 @@
 port = 5000
 name = "My Motiv Library"
-cache_path = ".cache"
+cache_path = "../.cache"
 worker_threads = 6
 webapp_path = "../frontend/build"
 
