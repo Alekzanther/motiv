@@ -37,7 +37,7 @@ async fn main() -> io::Result<()> {
     let cfg = config::read_config(cfg_path.to_string());
     let cfg = match cfg {
         Ok(result) => Arc::new(result),
-        Err(e) => return Err(e),
+        Err(e) => panic!(format!("Couldn't read config at {}: {:?}", cfg_path, e)),
     };
 
     // Instantiate a new connection pool
