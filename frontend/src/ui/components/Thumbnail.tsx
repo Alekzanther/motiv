@@ -1,5 +1,5 @@
 import React from "react";
-import { MediaDisplayPropsFragment } from "../queries/types/graphql";
+import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import LazyLoad from "react-lazyload";
 import "react-lazy-load-image-component/src/effects/blur.css";
