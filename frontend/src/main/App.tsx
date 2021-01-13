@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
-import "./App.css";
-import theme from "../theme/default.js";
+//import "./App.css";
+import MotivTheme from "../theme/default";
 import { Route, Switch } from "react-router-dom";
 import Feed from "../ui/containers/Feed";
 import Favorites from "../ui/containers/Favorites";
@@ -20,11 +20,13 @@ const client = new ApolloClient({
 const useStyles = makeStyles({
   container: {
     display: "flex",
+    background: "#222",
   },
 });
 
 export default function App() {
   const classes = useStyles();
+  const theme = MotivTheme;
   return (
     <Router>
       <ApolloProvider client={client}>
