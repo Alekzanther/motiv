@@ -3,8 +3,9 @@ use diesel::pg::PgConnection;
 use diesel::r2d2::ConnectionManager;
 use r2d2::Pool;
 
-// The Postgres-specific connection pool managing all database connections.
 pub type PostgresPool = Pool<ConnectionManager<PgConnection>>;
+
+//pub fn run_migrations(config: std::sync::Arc<Config>) {}
 
 pub fn get_pool(config: std::sync::Arc<Config>) -> PostgresPool {
     let url = &config.database.url.clone();

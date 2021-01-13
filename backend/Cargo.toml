@@ -8,6 +8,7 @@ edition = "2018"
 actix-rt = "1.1.1"
 actix-web = "2.0.0"
 diesel = { version = "1.4.5", features = ["postgres", "r2d2"] }
+diesel_migrations = "1.4.0"
 dotenv = "0.15.0"
 log = "0.4.11"
 libwebp-sys = "0.3"
