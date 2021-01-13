@@ -10,7 +10,9 @@ const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: 
   const { data, title } = props;
   return (
     <Grid>
-      <Typography variant="h2">{title}</Typography>
+      <Typography color="textPrimary" variant="h2">
+        {title}
+      </Typography>
       <GridList cellHeight={300} cols={3}>
         {data &&
           data.map((media) => (

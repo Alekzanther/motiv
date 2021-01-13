@@ -16,17 +16,17 @@ const client = new ApolloClient({
   uri: "/graphql",
   cache: new InMemoryCache(),
 });
+const theme = MotivTheme;
 
 const useStyles = makeStyles({
   container: {
     display: "flex",
-    background: "#222",
+    background: theme.palette.background.default,
   },
 });
 
 export default function App() {
   const classes = useStyles();
-  const theme = MotivTheme;
   return (
     <Router>
       <ApolloProvider client={client}>
