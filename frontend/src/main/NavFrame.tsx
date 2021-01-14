@@ -6,15 +6,13 @@ import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import {
   DynamicFeed as DynamicFeedIcon,
   Favorite as FavoriteIcon,
   PhotoAlbum as AlbumIcon,
   LocalOffer as TagIcon,
+  Settings as SettingsIcon,
 } from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -25,6 +23,7 @@ import Feed from "../ui/containers/Feed";
 import Favorites from "../ui/containers/Favorites";
 import Albums from "../ui/containers/Albums";
 import Tags from "../ui/containers/Tags";
+import NavigationListItem from "../ui/components/NavigationListItem";
 
 const drawerWidth = 240;
 
@@ -71,15 +70,12 @@ interface NavFrameProperties {
 const NavFrame = function (props: NavFrameProperties) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const { history, location } = props;
   const classes = useStyles();
-  const [currentPath, setCurrentPath] = React.useState(location.pathname ?? "/");
+
   const [currentPage, setCurrentPage] = React.useState("Timeline");
 
-  const navigationClick = (link: string, pageTitle: string = "Motiv") => {
-    setCurrentPath(link);
+  const updatePageTitle = (pageTitle: string = "Motiv") => {
     setCurrentPage(pageTitle);
-    history.push(link);
   };
 
   const handleDrawerToggle = () => {
@@ -91,43 +87,39 @@ const NavFrame = function (props: NavFrameProperties) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem
-          button
-          key="timeline"
-          selected={currentPath && currentPath === "/"}
-          onClick={() => navigationClick("/", "Timeline")}>
-          <ListItemIcon>
-            <DynamicFeedIcon />
-          </ListItemIcon>
-          <ListItemText primary="Timeline" />
-        </ListItem>
-        <ListItem button key="albums" onClick={() => navigationClick("/albums", "Albums")}>
-          <ListItemIcon>
-            <AlbumIcon />
-          </ListItemIcon>
-          <ListItemText primary="Albums" />
-        </ListItem>
-        <ListItem button key="tags" onClick={() => navigationClick("/tags", "Tags")}>
-          <ListItemIcon>
-            <TagIcon />
-          </ListItemIcon>
-          <ListItemText primary="Tags" />
-        </ListItem>
-        <ListItem button key="favorites" onClick={() => navigationClick("/favorites", "Favorites")}>
-          <ListItemIcon>
-            <FavoriteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Favorites" />
-        </ListItem>
+        <NavigationListItem
+          link="/"
+          title="Timeline"
+          icon={<DynamicFeedIcon />}
+          updatePageTitle={updatePageTitle}
+        />
+        <NavigationListItem
+          link="/albums"
+          title="Albums"
+          icon={<AlbumIcon />}
+          updatePageTitle={updatePageTitle}
+        />
+        <NavigationListItem
+          link="/tags"
+          title="Tags"
+          icon={<TagIcon />}
+          updatePageTitle={updatePageTitle}
+        />
+        <NavigationListItem
+          link="/favorites"
+          title="Favorites"
+          icon={<FavoriteIcon />}
+          updatePageTitle={updatePageTitle}
+        />
       </List>
       <Divider />
       <List>
-        <ListItem button key="settings" onClick={() => navigationClick("/settings", "Settings")}>
-          <ListItemIcon>
-            <FavoriteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Settings" />
-        </ListItem>
+        <NavigationListItem
+          link="/settings"
+          title="Settings"
+          icon={<SettingsIcon />}
+          updatePageTitle={updatePageTitle}
+        />
       </List>
     </div>
   );
