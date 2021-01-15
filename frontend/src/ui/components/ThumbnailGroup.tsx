@@ -15,7 +15,7 @@ const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: 
 
   const update_dimensions = () => {
     if (targetRef && targetRef.current) {
-      let availableWidth = targetRef?.current?.offsetWidth;
+      let availableWidth = targetRef.current.offsetWidth;
       setGroupSize({
         columns: Math.floor(availableWidth / thumbsize),
         size: thumbsize,
