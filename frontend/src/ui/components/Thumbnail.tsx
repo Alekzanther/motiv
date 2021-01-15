@@ -3,22 +3,33 @@ import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import LazyLoad from "react-lazyload";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { makeStyles } from "@material-ui/core/styles";
 
-const Thumbnail: React.FC<MediaDisplayPropsFragment> = (props) => {
-  if (props.processed) {
+const useStyles = makeStyles((theme) => ({
+  thumbnail: {
+    objectFit: "cover",
+  },
+}));
+
+const Thumbnail: React.FC<{ media: MediaDisplayPropsFragment; size: number }> = (props) => {
+  const { media, size } = props;
+  const classes = useStyles();
+  if (media.processed) {
     return (
       <LazyLoadImage
-        placeholderSrc={"/m/" + props.id + "/0"}
-        alt={"/m/" + props.id.toString() + "/0"}
+        className={classes.thumbnail}
+        placeholderSrc={"/m/" + media.id + "/0"}
+        alt={"/m/" + media.id.toString() + "/0"}
         effect="blur"
-        height={300}
-        src={"/m/" + props.id.toString() + "/1"}
+        src={"/m/" + media.id.toString() + "/1"}
+        height={size}
+        width={size}
       />
     );
   } else {
     return (
-      <LazyLoad height={300}>
-        <img src={"/m/" + props.id} width="100%" alt={props.id.toString()} />
+      <LazyLoad>
+        <img src={"/m/" + media.id} width="100%" alt={media.id.toString()} />
       </LazyLoad>
     );
   }

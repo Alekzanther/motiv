@@ -8,16 +8,17 @@ const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: 
   props
 ) => {
   const { data, title } = props;
+
   return (
     <Grid>
       <Typography color="textPrimary" variant="h2">
         {title}
       </Typography>
-      <GridList cellHeight={300} cols={3}>
+      <GridList cellHeight={300}>
         {data &&
           data.map((media) => (
             <GridListTile key={media.id}>
-              <Thumbnail {...media} />
+              <Thumbnail media={media} size={300} />
             </GridListTile>
           ))}
       </GridList>
