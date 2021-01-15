@@ -9,16 +9,23 @@ const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: 
 ) => {
   const targetRef = useRef<HTMLDivElement>(null);
   const { data, title } = props;
-  const thumbsize = 256;
-  const spacing = 15;
-  const [groupSize, setGroupSize] = useState({ columns: 0, size: 0 });
+  const targetThumbSize = 256;
+  const targetSpacing = 15;
+  const [groupSize, setGroupSize] = useState({ columns: 0, size: 0, spacing: 0 });
 
   const update_dimensions = () => {
     if (targetRef && targetRef.current) {
       let availableWidth = targetRef.current.offsetWidth;
+      let columns = Math.floor(availableWidth / targetThumbSize);
+
+      let spacing = columns > 1 ? targetSpacing : 5;
+
+      let size = availableWidth / columns - spacing;
+
       setGroupSize({
-        columns: Math.floor(availableWidth / thumbsize),
-        size: thumbsize,
+        columns,
+        size,
+        spacing,
       });
     }
   };
@@ -41,7 +48,7 @@ const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: 
         <Typography color="textPrimary" variant="h2">
           {title}
         </Typography>
-        <GridList cellHeight={groupSize.size} spacing={spacing} cols={groupSize.columns}>
+        <GridList cellHeight={groupSize.size} spacing={groupSize.spacing} cols={groupSize.columns}>
           {data &&
             data.map((media) => (
               <GridListTile key={media.id}>
