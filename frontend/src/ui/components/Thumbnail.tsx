@@ -11,6 +11,7 @@ const Thumbnail: React.FC<MediaDisplayPropsFragment> = (props) => {
         placeholderSrc={"/m/" + props.id + "/0"}
         alt={"/m/" + props.id.toString() + "/0"}
         effect="blur"
+        height={300}
         src={"/m/" + props.id.toString() + "/1"}
       />
     );
