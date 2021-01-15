@@ -16,7 +16,7 @@ const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: 
       <GridList cellHeight={300} cols={3}>
         {data &&
           data.map((media) => (
-            <GridListTile key={media.id} cols={1}>
+            <GridListTile key={media.id}>
               <Thumbnail {...media} />
             </GridListTile>
           ))}
