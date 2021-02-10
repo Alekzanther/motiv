@@ -95,7 +95,7 @@ export type CreateTodoInput = {
 
 export type MediaDisplayPropsFragment = (
   { __typename?: 'Media' }
-  & Pick<Media, 'id' | 'processed'>
+  & Pick<Media, 'id' | 'processed' | 'timestamp'>
 );
 
 export type AllMediaQueryVariables = Exact<{
@@ -115,6 +115,7 @@ export const MediaDisplayPropsFragmentDoc = gql`
     fragment MediaDisplayProps on Media {
   id
   processed
+  timestamp
 }
     `;
 export const AllMediaDocument = gql`
