@@ -1,11 +1,11 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
-import allMediaQuery from "../../queries/allMediaQuery";
-import { AllMediaQuery } from "../../queries/types/graphql";
+import { useAllMediaQuery, SortOrder } from "../../queries/types/graphql";
 import ThumbnailGroup from "../components/ThumbnailGroup";
 
 export default function Feed() {
-  const { loading, error, data } = useQuery<AllMediaQuery>(allMediaQuery);
+  const { loading, error, data } = useAllMediaQuery({
+    variables: { orderBy: { timestamp: SortOrder.Asc } },
+  });
   if (loading) return <p>Loading... </p>;
   if (error || !data) return <p>Error! :((( </p>;
 
