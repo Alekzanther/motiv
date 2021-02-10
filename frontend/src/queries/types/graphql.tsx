@@ -42,6 +42,10 @@ export type MutationMarkTodoAsNotDoneArgs = {
   id: Scalars['Int'];
 };
 
+export type MediaOrderBy = {
+  timestamp: SortOrder;
+};
+
 export type Query = {
   __typename?: 'Query';
   allMedia: Array<Media>;
@@ -50,6 +54,11 @@ export type Query = {
   doneTodos: Array<Todo>;
   notDoneTodos: Array<Todo>;
   getTodoById?: Maybe<Todo>;
+};
+
+
+export type QueryAllMediaArgs = {
+  orderBy?: Maybe<MediaOrderBy>;
 };
 
 
@@ -73,6 +82,11 @@ export type Media = {
   timestamp: Scalars['Int'];
   mediaType: Scalars['Int'];
 };
+
+export enum SortOrder {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 export type CreateTodoInput = {
   task: Scalars['String'];
