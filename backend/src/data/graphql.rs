@@ -1,6 +1,6 @@
 use super::context::GraphQLContext;
 use super::data::Todos;
-use crate::models::media::{Media, MediaManager};
+use crate::models::media::{Media, MediaManager, MediaOrderBy};
 use crate::models::todo::{CreateTodoInput, Todo};
 use diesel::pg::PgConnection;
 use juniper::{FieldError, FieldResult, RootNode};
@@ -12,8 +12,11 @@ pub struct Query;
 // needed to execute actual Postgres queries.
 #[juniper::object(Context = GraphQLContext)]
 impl Query {
-    pub fn all_media(context: &GraphQLContext) -> FieldResult<Vec<Media>> {
-        MediaManager::all_media(context)
+    pub fn all_media(
+        context: &GraphQLContext,
+        order_by: Option<MediaOrderBy>,
+    ) -> FieldResult<Vec<Media>> {
+        MediaManager::all_media(context, order_by)
     }
 
     pub fn get_media_by_id(

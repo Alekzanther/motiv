@@ -7,6 +7,7 @@ use actix_files::NamedFile;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use juniper::{FieldError, FieldResult};
+use juniper::{GraphQLEnum, GraphQLInputObject, GraphQLObject};
 use std::error::Error;
 use std::sync::Arc;
 
@@ -16,8 +17,19 @@ pub enum MediaType {
     Video,
 }
 
+#[derive(GraphQLEnum)]
+pub enum SortOrder {
+    Asc,
+    Desc,
+}
+
+#[derive(GraphQLInputObject)]
+pub struct MediaOrderBy {
+    pub timestamp: SortOrder,
+}
+
 // The core data type undergirding the GraphQL interface
-#[derive(juniper::GraphQLObject, Queryable)]
+#[derive(GraphQLObject, Queryable)]
 pub struct Media {
     pub id: i32,
     pub name: String,
@@ -67,14 +79,33 @@ pub struct MediaManager {
 }
 
 impl MediaManager {
-    pub fn all_media(context: &GraphQLContext) -> FieldResult<Vec<Media>> {
+    pub fn all_media(
+        context: &GraphQLContext,
+        order_by: Option<MediaOrderBy>,
+    ) -> FieldResult<Vec<Media>> {
         let conn: &PgConnection = &context.pool.get().unwrap();
-        let result = media.load::<Media>(conn);
 
+        let result = {
+            if order_by.is_some() {
+                match order_by.unwrap().timestamp {
+                    SortOrder::Asc => {
+                        media.order_by(timestamp.asc()).load::<Media>(conn)
+                    }
+                    SortOrder::Desc => {
+                        media.order_by(timestamp.desc()).load::<Media>(conn)
+                    }
+                }
+            } else {
+                media.load::<Media>(conn)
+            }
+        };
         graphql_translate(result)
     }
 
-    pub fn get_media_by_id(context: &GraphQLContext, media_id: i32) -> FieldResult<Option<Media>> {
+    pub fn get_media_by_id(
+        context: &GraphQLContext,
+        media_id: i32,
+    ) -> FieldResult<Option<Media>> {
         let conn: &PgConnection = &context.pool.get().unwrap();
         match media.find(media_id).get_result::<Media>(conn) {
             Ok(res_media) => Ok(Some(res_media)),

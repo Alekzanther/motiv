@@ -18,6 +18,7 @@ extern crate r2d2;
 extern crate rayon;
 extern crate serde;
 extern crate toml;
+
 //#[macro_use]
 //extern crate diesel_migrations;
 
