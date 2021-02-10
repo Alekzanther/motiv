@@ -5,8 +5,8 @@ export default gql`
     id
     processed
   }
-  query AllMedia {
-    allMedia {
+  query AllMedia($orderBy: MediaOrderBy) {
+    allMedia(orderBy: $orderBy) {
       ...MediaDisplayProps
     }
   }

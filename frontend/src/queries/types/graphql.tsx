@@ -98,7 +98,9 @@ export type MediaDisplayPropsFragment = (
   & Pick<Media, 'id' | 'processed'>
 );
 
-export type AllMediaQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllMediaQueryVariables = Exact<{
+  orderBy?: Maybe<MediaOrderBy>;
+}>;
 
 
 export type AllMediaQuery = (
@@ -116,8 +118,8 @@ export const MediaDisplayPropsFragmentDoc = gql`
 }
     `;
 export const AllMediaDocument = gql`
-    query AllMedia {
-  allMedia {
+    query AllMedia($orderBy: MediaOrderBy) {
+  allMedia(orderBy: $orderBy) {
     ...MediaDisplayProps
   }
 }
@@ -135,6 +137,7 @@ export const AllMediaDocument = gql`
  * @example
  * const { data, loading, error } = useAllMediaQuery({
  *   variables: {
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
