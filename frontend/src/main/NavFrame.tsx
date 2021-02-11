@@ -59,6 +59,10 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing(3),
     },
+    drawerDivider: {
+      width: "25%",
+      marginLeft: "72px",
+    },
   })
 );
 
@@ -85,7 +89,6 @@ const NavFrame = function (props: NavFrameProperties) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-      <Divider />
       <List>
         <NavigationListItem
           link="/"
@@ -112,7 +115,7 @@ const NavFrame = function (props: NavFrameProperties) {
           updatePageTitle={updatePageTitle}
         />
       </List>
-      <Divider />
+      <Divider className={classes.drawerDivider} />
       <List>
         <NavigationListItem
           link="/settings"
