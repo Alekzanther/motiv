@@ -38,6 +38,11 @@ const motivDarkTheme: Theme = createMuiTheme({
         borderRadius: "0px 20px 20px 0px",
       },
     },
+    MuiGrid: {
+      root: {
+        marginBottom: "25px",
+      },
+    },
   },
 });
 

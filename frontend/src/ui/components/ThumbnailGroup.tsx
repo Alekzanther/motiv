@@ -45,7 +45,7 @@ const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: 
   return (
     <div ref={targetRef}>
       <Grid>
-        <Typography color="textPrimary" variant="h2">
+        <Typography color="textPrimary" variant="h4">
           {title}
         </Typography>
         <GridList cellHeight={groupSize.size} spacing={groupSize.spacing} cols={groupSize.columns}>
