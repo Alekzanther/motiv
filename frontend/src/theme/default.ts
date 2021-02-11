@@ -16,7 +16,6 @@ const motivDarkTheme: Theme = createMuiTheme({
     secondary: {
       main: blue[500],
     },
-    text: {},
     background: {
       paper: backgroundColor,
       default: backgroundColor,

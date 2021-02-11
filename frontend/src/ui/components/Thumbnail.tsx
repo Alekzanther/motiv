@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   thumbnail: {
     objectFit: "cover",
-    borderRadius: "3px",
+    borderRadius: "5px",
   },
 }));
 
