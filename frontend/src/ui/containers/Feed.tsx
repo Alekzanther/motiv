@@ -16,7 +16,6 @@ export default function Feed() {
   useEffect(() => {
     if (data) {
       setDates(groupByMonth(data.allMedia));
-      //setDates(groupByDate(data.allMedia));
     }
   }, [data]);
 
@@ -35,24 +34,6 @@ export default function Feed() {
         date.getUTCFullYear();
       result[monthString] = result[monthString] || [];
       result[monthString].push(currentMedia);
-      return result;
-    },
-    {});
-  };
-  const groupByDate = (mediaList: Array<MediaDisplayPropsFragment>) => {
-    return mediaList.reduce(function (
-      result: Record<string, Array<MediaDisplayPropsFragment>>,
-      currentMedia: MediaDisplayPropsFragment
-    ) {
-      const date = new Date(currentMedia.timestamp * 1000);
-      const utcDate = date.toDateString();
-      //        date.getUTCFullYear().toString() +
-      //        "-" +
-      //        (date.getUTCMonth() + 1).toString() +
-      //        "-" +
-      //        date.getUTCDate().toString();
-      result[utcDate] = result[utcDate] || [];
-      result[utcDate].push(currentMedia);
       return result;
     },
     {});
