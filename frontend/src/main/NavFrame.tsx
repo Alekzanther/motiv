@@ -26,7 +26,7 @@ import Albums from "../ui/containers/Albums";
 import Tags from "../ui/containers/Tags";
 import NavigationListItem from "../ui/components/NavigationListItem";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,10 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     appBar: {
-      //      [theme.breakpoints.up("sm")]: {
-      //        width: `calc(100% - ${drawerWidth}px)`,
-      //        marginLeft: drawerWidth,
-      //     },
       zIndex: theme.zIndex.drawer + 1,
     },
     menuButton: {
