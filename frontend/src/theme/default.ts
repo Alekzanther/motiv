@@ -21,6 +21,9 @@ const motivDarkTheme: Theme = createMuiTheme({
       default: backgroundColor,
     },
   },
+  //  typography: {
+  //    fontFamily: "Ubuntu",
+  // },
   overrides: {
     MuiAppBar: {
       colorPrimary: {
