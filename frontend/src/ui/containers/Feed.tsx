@@ -8,7 +8,7 @@ import ThumbnailGroup from "../components/ThumbnailGroup";
 
 export default function Feed() {
   const { loading, error, data } = useAllMediaQuery({
-    variables: { orderBy: { timestamp: SortOrder.Asc } },
+    variables: { orderBy: { timestamp: SortOrder.Desc } },
   });
 
   const [dates, setDates] = useState<Record<string, MediaDisplayPropsFragment[]>>();
