@@ -33,6 +33,11 @@ const motivDarkTheme: Theme = createMuiTheme({
         borderRight: "0px",
       },
     },
+    MuiListItem: {
+      root: {
+        borderRadius: "0px 20px 20px 0px",
+      },
+    },
   },
 });
 
