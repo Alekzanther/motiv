@@ -28,6 +28,11 @@ const motivDarkTheme: Theme = createMuiTheme({
         backgroundColor: backgroundColor,
       },
     },
+    MuiDrawer: {
+      paperAnchorDockedLeft: {
+        borderRight: "0px",
+      },
+    },
   },
 });
 
