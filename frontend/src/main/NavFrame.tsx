@@ -7,6 +7,7 @@ import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import MenuIcon from "@material-ui/icons/Menu";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   DynamicFeed as DynamicFeedIcon,
   Favorite as FavoriteIcon,
@@ -16,7 +17,7 @@ import {
 } from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { Route, Switch } from "react-router-dom";
 import Feed from "../ui/containers/Feed";
@@ -39,10 +40,11 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     appBar: {
-      [theme.breakpoints.up("sm")]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-      },
+      //      [theme.breakpoints.up("sm")]: {
+      //        width: `calc(100% - ${drawerWidth}px)`,
+      //        marginLeft: drawerWidth,
+      //     },
+      zIndex: theme.zIndex.drawer + 1,
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -72,6 +74,8 @@ interface NavFrameProperties {
 }
 
 const NavFrame = function (props: NavFrameProperties) {
+  const theme = useTheme();
+  const drawerVisible = useMediaQuery(theme.breakpoints.up("sm"));
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const classes = useStyles();
@@ -141,7 +145,7 @@ const NavFrame = function (props: NavFrameProperties) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {currentPage}
+            {drawerVisible ? "Motiv" : currentPage}
           </Typography>
         </Toolbar>
       </AppBar>
