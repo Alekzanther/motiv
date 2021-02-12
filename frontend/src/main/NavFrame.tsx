@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import MenuIcon from "@material-ui/icons/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import {
   DynamicFeed as DynamicFeedIcon,
   Favorite as FavoriteIcon,
@@ -72,9 +73,19 @@ interface NavFrameProperties {
 const NavFrame = function (props: NavFrameProperties) {
   const theme = useTheme();
   const drawerVisible = useMediaQuery(theme.breakpoints.up("sm"));
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
+  const [appBarElevation, setAppBarElevation] = useState(0);
 
   const classes = useStyles();
+
+  useEffect(() => {
+    if (scrolled) {
+      setAppBarElevation(5);
+    } else {
+      setAppBarElevation(0);
+    }
+  }, [scrolled]);
 
   const [currentPage, setCurrentPage] = React.useState("Timeline");
 
@@ -130,7 +141,7 @@ const NavFrame = function (props: NavFrameProperties) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" elevation={appBarElevation} className={classes.appBar}>
         <Toolbar>
           <IconButton
             color="inherit"
