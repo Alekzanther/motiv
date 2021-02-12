@@ -24,7 +24,7 @@ const Thumbnail: React.FC<{ media: MediaDisplayPropsFragment; size: number }> = 
         effect="blur"
         src={"/m/" + media.id.toString() + "/1"}
         height={size}
-        width={size}
+        width="100%"
       />
     );
   } else {
