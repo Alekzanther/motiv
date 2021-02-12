@@ -41,7 +41,8 @@ export default function Feed() {
 
   return (
     <>
-      {dates && Object.keys(dates).map((key) => <ThumbnailGroup title={key} data={dates[key]} />)}
+      {dates &&
+        Object.keys(dates).map((key) => <ThumbnailGroup key={key} title={key} data={dates[key]} />)}
     </>
   );
 }
