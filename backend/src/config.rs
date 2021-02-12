@@ -1,7 +1,6 @@
 use serde::Deserialize;
 use std::fs;
 use std::io;
-use toml;
 
 pub const IMAGE_CACHE_FALLBACK_LARGE: u32 = 1920;
 pub const IMAGE_CACHE_FALLBACK_LARGE_Q: u8 = 1;
