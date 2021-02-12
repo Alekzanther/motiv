@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
       top: "34%",
       position: "relative",
       transform: "translateY(-50%)",
-      left: "72px",
+      left: "16px",
     },
     menuBrandSpace: {
       height: "72px",
