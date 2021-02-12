@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import { Typography, Grid, GridList, GridListTile } from "@material-ui/core";
-import Thumbnail from "./Thumbnail";
+import Thumbnail from "../components/Thumbnail";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const ThumbnailGroup: React.FC<{ data: Array<MediaDisplayPropsFragment>; title: string }> = (

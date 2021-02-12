@@ -23,10 +23,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { Route, Switch } from "react-router-dom";
-import Feed from "../ui/containers/Feed";
-import Favorites from "../ui/containers/Favorites";
-import Albums from "../ui/containers/Albums";
-import Tags from "../ui/containers/Tags";
+import Feed from "../ui/pages/Feed";
+import Favorites from "../ui/pages/Favorites";
+import Albums from "../ui/pages/Albums";
+import Tags from "../ui/pages/Tags";
 import NavigationListItem from "../ui/components/NavigationListItem";
 
 const drawerWidth = 220;

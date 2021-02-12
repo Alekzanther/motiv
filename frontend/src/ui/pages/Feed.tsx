@@ -4,7 +4,7 @@ import {
   SortOrder,
   MediaDisplayPropsFragment,
 } from "../../queries/types/graphql";
-import ThumbnailGroup from "../components/ThumbnailGroup";
+import ThumbnailGroupList from "../containers/ThumbnailGroupList";
 
 export default function Feed() {
   const { loading, error, data } = useAllMediaQuery({
@@ -39,10 +39,5 @@ export default function Feed() {
     {});
   };
 
-  return (
-    <>
-      {dates &&
-        Object.keys(dates).map((key) => <ThumbnailGroup key={key} title={key} data={dates[key]} />)}
-    </>
-  );
+  return <>{dates && <ThumbnailGroupList {...dates} />}</>;
 }
