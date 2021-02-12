@@ -30,7 +30,12 @@ const Thumbnail: React.FC<{ media: MediaDisplayPropsFragment; size: number }> = 
   } else {
     return (
       <LazyLoad>
-        <img src={"/m/" + media.id} width="100%" alt={media.id.toString()} />
+        <img
+          className={classes.thumbnail}
+          src={"/m/" + media.id}
+          width="100%"
+          alt={media.id.toString()}
+        />
       </LazyLoad>
     );
   }
