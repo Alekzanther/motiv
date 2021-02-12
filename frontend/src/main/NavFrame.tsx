@@ -56,6 +56,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
+    menuBrandText: {
+      top: "34%",
+      position: "relative",
+      transform: "translateY(-50%)",
+      left: "72px",
+    },
+    menuBrandSpace: {
+      height: "72px",
+    },
     drawerPaper: {
       width: drawerWidth,
     },
@@ -104,8 +113,12 @@ const NavFrame = function (props: NavFrameProperties) {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
       <List>
+        <div className={classes.menuBrandSpace}>
+          <Typography className={classes.menuBrandText} variant="h6" noWrap>
+            Motiv
+          </Typography>
+        </div>
         <NavigationListItem
           link="/"
           title="Timeline"
