@@ -15,6 +15,8 @@ import {
   PhotoAlbum as AlbumIcon,
   LocalOffer as TagIcon,
   Settings as SettingsIcon,
+  AccountCircle as AccountCircleIcon,
+  CloudUpload as UploadIcon,
 } from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -33,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
+    },
+    grow: {
+      flexGrow: 1,
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
@@ -154,10 +159,23 @@ const NavFrame = function (props: NavFrameProperties) {
           <Typography variant="h6" noWrap>
             {drawerVisible ? "Motiv" : currentPage}
           </Typography>
+          <div className={classes.grow} />
+          <div>
+            <IconButton aria-label="upload" color="inherit">
+              <UploadIcon />
+            </IconButton>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-haspopup="true"
+              color="inherit">
+              <AccountCircleIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
 
-      <nav className={classes.drawer} aria-label="mailbox folders">
+      <nav className={classes.drawer} aria-label="Media categories">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
