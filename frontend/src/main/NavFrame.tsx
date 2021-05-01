@@ -219,7 +219,7 @@ const NavFrame = function (props: NavFrameProperties) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          <Route exact from="/" render={(props: any) => <Feed {...props} />} />
+          <Route exact path="/" render={(props: any) => <Feed {...props} />} />
           <Route exact path="/albums" render={(props: any) => <Albums {...props} />} />
           <Route exact path="/tags" render={(props: any) => <Tags {...props} />} />
           <Route exact path="/favorites" render={(props: any) => <Favorites {...props} />} />
