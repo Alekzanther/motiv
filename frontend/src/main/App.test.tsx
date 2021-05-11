@@ -1,8 +1,7 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import App from "./App";
+import { render } from '@testing-library/react';
+import App from './App';
 
-test("Check basic main links", () => {
+test('Check basic main links', () => {
   const { getAllByText } = render(<App />);
   const timelineLink = getAllByText(/Timeline/i);
 

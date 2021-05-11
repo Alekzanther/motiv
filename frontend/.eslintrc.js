@@ -3,4 +3,5 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json",
   },
+  rules: { qoutes: "off", "@typescript-eslint/quotes": ["warn", "double"] },
 };
