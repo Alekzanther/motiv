@@ -14,7 +14,9 @@ interface NavigationListItemProps {
 const NavigationListItem: React.FC<NavigationListItemProps> = (props) => {
   const location = useLocation();
   const history = useHistory();
-  const { link, title, icon, updatePageTitle } = props;
+  const {
+    link, title, icon, updatePageTitle,
+  } = props;
 
   const navigationClick = (link: string, pageTitle: string = "Motiv") => {
     history.push(link);
@@ -26,7 +28,8 @@ const NavigationListItem: React.FC<NavigationListItemProps> = (props) => {
       button
       key={link}
       selected={location?.pathname === link}
-      onClick={() => navigationClick(link, title)}>
+      onClick={() => navigationClick(link, title)}
+    >
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={title} />
     </ListItem>

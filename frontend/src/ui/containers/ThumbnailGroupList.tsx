@@ -3,7 +3,7 @@ import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import ThumbnailGroup from "./ThumbnailGroup";
 
 export default function ThumbnailGroupList(
-  groupedMedia: Record<string, MediaDisplayPropsFragment[]>
+  groupedMedia: Record<string, MediaDisplayPropsFragment[]>,
 ) {
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -14,12 +14,12 @@ export default function ThumbnailGroupList(
 
   const update_dimensions = () => {
     if (targetRef && targetRef.current) {
-      let availableWidth = targetRef.current.offsetWidth;
-      let columns = Math.floor(availableWidth / targetThumbSize);
+      const availableWidth = targetRef.current.offsetWidth;
+      const columns = Math.floor(availableWidth / targetThumbSize);
 
-      let spacing = columns > 1 ? targetSpacing : 5;
+      const spacing = columns > 1 ? targetSpacing : 5;
 
-      let size = availableWidth / columns - spacing;
+      const size = availableWidth / columns - spacing;
 
       setGroupSize({
         columns,
@@ -42,8 +42,8 @@ export default function ThumbnailGroupList(
   }, []);
   return (
     <div ref={targetRef}>
-      {groupedMedia &&
-        Object.keys(groupedMedia).map((key) => (
+      {groupedMedia
+        && Object.keys(groupedMedia).map((key) => (
           <ThumbnailGroup key={key} title={key} data={groupedMedia[key]} groupSize={groupSize} />
         ))}
     </div>

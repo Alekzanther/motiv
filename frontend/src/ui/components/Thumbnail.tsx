@@ -19,25 +19,24 @@ const Thumbnail: React.FC<{ media: MediaDisplayPropsFragment; size: number }> = 
     return (
       <LazyLoadImage
         className={classes.thumbnail}
-        placeholderSrc={"/m/" + media.id + "/0"}
-        alt={"/m/" + media.id.toString() + "/0"}
+        placeholderSrc={`/m/${media.id}/0`}
+        alt={`/m/${media.id.toString()}/0`}
         effect="blur"
-        src={"/m/" + media.id.toString() + "/1"}
+        src={`/m/${media.id.toString()}/1`}
         height={size}
         width="100%"
       />
     );
-  } else {
-    return (
-      <LazyLoad>
-        <img
-          className={classes.thumbnail}
-          src={"/m/" + media.id}
-          width="100%"
-          alt={media.id.toString()}
-        />
-      </LazyLoad>
-    );
   }
+  return (
+    <LazyLoad>
+      <img
+        className={classes.thumbnail}
+        src={`/m/${media.id}`}
+        width="100%"
+        alt={media.id.toString()}
+      />
+    </LazyLoad>
+  );
 };
 export default Thumbnail;

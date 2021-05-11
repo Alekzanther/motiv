@@ -20,9 +20,11 @@ import {
 } from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, Theme, useTheme, createStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
-import { Route, Switch } from "react-router-dom";
+import {
+  makeStyles, Theme, useTheme, createStyles,
+} from "@material-ui/core/styles";
+import { withRouter, Route, Switch } from "react-router-dom";
+
 import Feed from "../ui/pages/Feed";
 import Favorites from "../ui/pages/Favorites";
 import Albums from "../ui/pages/Albums";
@@ -31,60 +33,53 @@ import NavigationListItem from "../ui/components/NavigationListItem";
 
 const drawerWidth = 220;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    drawer: {
-      [theme.breakpoints.up("sm")]: {
-        width: drawerWidth,
-        flexShrink: 0,
-      },
-    },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up("sm")]: {
-        display: "none",
-      },
-    },
-    // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
-    menuBrandText: {
-      top: "34%",
-      position: "relative",
-      transform: "translateY(-50%)",
-      left: "16px",
-    },
-    menuBrandSpace: {
-      height: "72px",
-    },
-    drawerPaper: {
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    display: "flex",
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  drawer: {
+    [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
+      flexShrink: 0,
     },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
     },
-    drawerDivider: {
-      width: "25%",
-      marginLeft: "72px",
-    },
-  })
-);
+  },
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
+  menuBrandText: {
+    top: "34%",
+    position: "relative",
+    transform: "translateY(-50%)",
+    left: "16px",
+  },
+  menuBrandSpace: {
+    height: "72px",
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+  drawerDivider: {
+    width: "25%",
+    marginLeft: "72px",
+  },
+}));
 
-interface NavFrameProperties {
-  history: any;
-  location: any;
-}
-
-const NavFrame = function (props: NavFrameProperties) {
+const NavFrame = () => {
   const theme = useTheme();
   const drawerVisible = useMediaQuery(theme.breakpoints.up("sm"));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -166,7 +161,8 @@ const NavFrame = function (props: NavFrameProperties) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            className={classes.menuButton}>
+            className={classes.menuButton}
+          >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
@@ -181,7 +177,8 @@ const NavFrame = function (props: NavFrameProperties) {
               edge="end"
               aria-label="account of current user"
               aria-haspopup="true"
-              color="inherit">
+              color="inherit"
+            >
               <AccountCircleIcon />
             </IconButton>
           </div>
@@ -200,7 +197,8 @@ const NavFrame = function (props: NavFrameProperties) {
             }}
             ModalProps={{
               keepMounted: true, // Better open performance on mobile.
-            }}>
+            }}
+          >
             {drawer}
           </Drawer>
         </Hidden>
@@ -210,7 +208,8 @@ const NavFrame = function (props: NavFrameProperties) {
               paper: classes.drawerPaper,
             }}
             variant="permanent"
-            open>
+            open
+          >
             {drawer}
           </Drawer>
         </Hidden>
@@ -219,10 +218,10 @@ const NavFrame = function (props: NavFrameProperties) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          <Route exact path="/" render={(props: any) => <Feed {...props} />} />
-          <Route exact path="/albums" render={(props: any) => <Albums {...props} />} />
-          <Route exact path="/tags" render={(props: any) => <Tags {...props} />} />
-          <Route exact path="/favorites" render={(props: any) => <Favorites {...props} />} />
+          <Route exact path="/" render={() => <Feed />} />
+          <Route exact path="/albums" render={() => <Albums />} />
+          <Route exact path="/tags" render={() => <Tags />} />
+          <Route exact path="/favorites" render={() => <Favorites />} />
         </Switch>
       </main>
     </div>
