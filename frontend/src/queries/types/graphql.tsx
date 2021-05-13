@@ -1,5 +1,6 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
+
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -14,32 +15,29 @@ export type Scalars = {
 };
 
 export type Todo = {
-  __typename?: 'Todo';
-  id: Scalars['Int'];
-  task: Scalars['String'];
-  done: Scalars['Boolean'];
+  __typename?: "Todo";
+  id: Scalars["Int"];
+  task: Scalars["String"];
+  done: Scalars["Boolean"];
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
+  __typename?: "Mutation";
   createTodo: Todo;
   markTodoAsDone: Todo;
   markTodoAsNotDone: Todo;
 };
 
-
 export type MutationCreateTodoArgs = {
   input: CreateTodoInput;
 };
 
-
 export type MutationMarkTodoAsDoneArgs = {
-  id: Scalars['Int'];
+  id: Scalars["Int"];
 };
 
-
 export type MutationMarkTodoAsNotDoneArgs = {
-  id: Scalars['Int'];
+  id: Scalars["Int"];
 };
 
 export type MediaOrderBy = {
@@ -47,7 +45,7 @@ export type MediaOrderBy = {
 };
 
 export type Query = {
-  __typename?: 'Query';
+  __typename?: "Query";
   allMedia: Array<Media>;
   getMediaById?: Maybe<Media>;
   allTodos: Array<Todo>;
@@ -56,57 +54,53 @@ export type Query = {
   getTodoById?: Maybe<Todo>;
 };
 
-
 export type QueryAllMediaArgs = {
   orderBy?: Maybe<MediaOrderBy>;
 };
 
-
 export type QueryGetMediaByIdArgs = {
-  mediaId: Scalars['Int'];
+  mediaId: Scalars["Int"];
 };
 
-
 export type QueryGetTodoByIdArgs = {
-  id: Scalars['Int'];
+  id: Scalars["Int"];
 };
 
 export type Media = {
-  __typename?: 'Media';
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  path: Scalars['String'];
-  processed: Scalars['Boolean'];
-  hash: Scalars['String'];
-  modified: Scalars['Int'];
-  timestamp: Scalars['Int'];
-  mediaType: Scalars['Int'];
+  __typename?: "Media";
+  id: Scalars["Int"];
+  name: Scalars["String"];
+  path: Scalars["String"];
+  processed: Scalars["Boolean"];
+  hash: Scalars["String"];
+  modified: Scalars["Int"];
+  timestamp: Scalars["Int"];
+  mediaType: Scalars["Int"];
 };
 
 export enum SortOrder {
-  Asc = 'ASC',
-  Desc = 'DESC'
+  Asc = "ASC",
+  Desc = "DESC",
 }
 
 export type CreateTodoInput = {
-  task: Scalars['String'];
-  done?: Maybe<Scalars['Boolean']>;
+  task: Scalars["String"];
+  done?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MediaDisplayPropsFragment = (
-  { __typename?: 'Media' }
-  & Pick<Media, 'id' | 'processed' | 'timestamp'>
+  { __typename?: "Media" }
+  & Pick<Media, "id" | "processed" | "timestamp">
 );
 
 export type AllMediaQueryVariables = Exact<{
   orderBy?: Maybe<MediaOrderBy>;
 }>;
 
-
 export type AllMediaQuery = (
-  { __typename?: 'Query' }
+  { __typename?: "Query" }
   & { allMedia: Array<(
-    { __typename?: 'Media' }
+    { __typename?: "Media" }
     & MediaDisplayPropsFragment
   )> }
 );
@@ -143,11 +137,11 @@ export const AllMediaDocument = gql`
  * });
  */
 export function useAllMediaQuery(baseOptions?: Apollo.QueryHookOptions<AllMediaQuery, AllMediaQueryVariables>) {
-        return Apollo.useQuery<AllMediaQuery, AllMediaQueryVariables>(AllMediaDocument, baseOptions);
-      }
+  return Apollo.useQuery<AllMediaQuery, AllMediaQueryVariables>(AllMediaDocument, baseOptions);
+}
 export function useAllMediaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllMediaQuery, AllMediaQueryVariables>) {
-          return Apollo.useLazyQuery<AllMediaQuery, AllMediaQueryVariables>(AllMediaDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<AllMediaQuery, AllMediaQueryVariables>(AllMediaDocument, baseOptions);
+}
 export type AllMediaQueryHookResult = ReturnType<typeof useAllMediaQuery>;
 export type AllMediaLazyQueryHookResult = ReturnType<typeof useAllMediaLazyQuery>;
 export type AllMediaQueryResult = Apollo.QueryResult<AllMediaQuery, AllMediaQueryVariables>;

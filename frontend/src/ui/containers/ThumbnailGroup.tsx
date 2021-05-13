@@ -1,14 +1,15 @@
-import React from "react";
+import {
+  Typography, Grid, GridList, GridListTile,
+} from "@material-ui/core";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
-import { Typography, Grid, GridList, GridListTile } from "@material-ui/core";
 import Thumbnail from "../components/Thumbnail";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-const ThumbnailGroup: React.FC<{
+const ThumbnailGroup = (props: {
   data: Array<MediaDisplayPropsFragment>;
   title: string;
   groupSize: { columns: number; size: number; spacing: number };
-}> = (props) => {
+}) => {
   const { data, title, groupSize } = props;
 
   return (
@@ -17,8 +18,8 @@ const ThumbnailGroup: React.FC<{
         {title}
       </Typography>
       <GridList cellHeight={groupSize.size} spacing={groupSize.spacing} cols={groupSize.columns}>
-        {data &&
-          data.map((media) => (
+        {data
+          && data.map((media) => (
             <GridListTile key={media.id}>
               <Thumbnail media={media} size={groupSize.size} />
             </GridListTile>

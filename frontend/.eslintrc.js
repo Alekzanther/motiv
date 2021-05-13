@@ -1,7 +1,14 @@
 module.exports = {
+  ignorePatterns: ["**/queries/types/graphql.tsx", "serviceWorker.tsx"],
   extends: ["airbnb-typescript"],
   parserOptions: {
     project: "./tsconfig.json",
   },
-  rules: { qoutes: "off", "@typescript-eslint/quotes": ["warn", "double"] },
+  rules: {
+    qoutes: "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/quotes": ["warn", "double"],
+    "comma-dangle": ["error", "always-multiline"],
+    "no-param-reassign": "off",
+  },
 };
