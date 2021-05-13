@@ -1,18 +1,17 @@
-import React from "react";
-import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import LazyLoad from "react-lazyload";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { makeStyles } from "@material-ui/core/styles";
+import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   thumbnail: {
     objectFit: "cover",
     borderRadius: "5px",
   },
-}));
+});
 
-const Thumbnail: React.FC<{ media: MediaDisplayPropsFragment; size: number }> = (props) => {
+const Thumbnail = (props: { media: MediaDisplayPropsFragment; size: number }) => {
   const { media, size } = props;
   const classes = useStyles();
   if (media.processed) {
