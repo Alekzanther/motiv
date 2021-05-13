@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import ThumbnailGroup from "./ThumbnailGroup";
 
@@ -12,7 +12,7 @@ export default function ThumbnailGroupList(
 
   const [groupSize, setGroupSize] = useState({ columns: 0, size: 0, spacing: 0 });
 
-  const update_dimensions = () => {
+  const updateDimensions = () => {
     if (targetRef && targetRef.current) {
       const availableWidth = targetRef.current.offsetWidth;
       const columns = Math.floor(availableWidth / targetThumbSize);
@@ -30,15 +30,15 @@ export default function ThumbnailGroupList(
   };
 
   const RESET_TIMEOUT = 100;
-  let movement_timer: number;
+  let movementTimer: number;
 
   window.addEventListener("resize", () => {
-    clearInterval(movement_timer);
-    movement_timer = window.setTimeout(update_dimensions, RESET_TIMEOUT);
+    clearInterval(movementTimer);
+    movementTimer = window.setTimeout(updateDimensions, RESET_TIMEOUT);
   });
 
   useEffect(() => {
-    update_dimensions();
+    updateDimensions();
   }, []);
   return (
     <div ref={targetRef}>
