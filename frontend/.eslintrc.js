@@ -9,5 +9,6 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/quotes": ["warn", "double"],
     "comma-dangle": ["error", "always-multiline"],
+    "no-param-reassign": "off",
   },
 };

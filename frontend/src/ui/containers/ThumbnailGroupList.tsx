@@ -2,9 +2,10 @@ import { useRef, useEffect, useState } from "react";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import ThumbnailGroup from "./ThumbnailGroup";
 
-export default function ThumbnailGroupList(
-  groupedMedia: Record<string, MediaDisplayPropsFragment[]>,
-) {
+const ThumbnailGroupList = (props: {
+  groupedMedia: Record<string, MediaDisplayPropsFragment[]>;
+}) => {
+  const { groupedMedia } = props;
   const targetRef = useRef<HTMLDivElement>(null);
 
   const targetThumbSize = 256;
@@ -48,4 +49,5 @@ export default function ThumbnailGroupList(
         ))}
     </div>
   );
-}
+};
+export default ThumbnailGroupList;

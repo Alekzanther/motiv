@@ -27,7 +27,7 @@ const motivDarkTheme: Theme = createMuiTheme({
   overrides: {
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: backgroundColor,
+        backgroundColor,
       },
     },
     MuiDrawer: {

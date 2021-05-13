@@ -15,13 +15,14 @@ const Feed = () => {
 
   const groupByMonth = (mediaList: Array<MediaDisplayPropsFragment>) => mediaList.reduce(
     (
-      result: Record<string, Array<MediaDisplayPropsFragment>>,
+      result: Record<string, MediaDisplayPropsFragment[]>,
       currentMedia: MediaDisplayPropsFragment,
     ) => {
       const date = new Date(currentMedia.timestamp * 1000);
       const monthString = `${Intl.DateTimeFormat(undefined, { month: "long" }).format(
         date,
       )} ${date.getUTCFullYear()}`;
+
       result[monthString] = result[monthString] || [];
       result[monthString].push(currentMedia);
       return result;
@@ -38,6 +39,6 @@ const Feed = () => {
   if (loading) return <p>Loading... </p>;
   if (error || !data) return <p>Error! :((( </p>;
 
-  return <>{dates && <ThumbnailGroupList {...dates} />}</>;
+  return <>{dates && <ThumbnailGroupList groupedMedia={dates} />}</>;
 };
 export default Feed;
