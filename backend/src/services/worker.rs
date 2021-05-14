@@ -10,7 +10,7 @@ use std::sync::Arc;
 
 pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
     let mut unprocessed = get_unprocessed_media(conn);
-    while unprocessed.len() > 0 {
+    while !unprocessed.is_empty() {
         let processed_media: Vec<_> = unprocessed
             .par_iter()
             .map(|unprocessed_media| {
@@ -27,7 +27,7 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
             .filter_map(|x| x.ok())
             .collect();
 
-        if processed_media.len() > 0 {
+        if !processed_media.is_empty() {
             match update_processed_media(conn, &processed_media) {
                 Ok(result) => info!("Processed and updated {}", result),
                 Err(e) => error!("Error updating db with processed thumbs: {:?}", e),
@@ -58,7 +58,7 @@ fn get_unprocessed_media(conn: &PgConnection) -> Vec<Media> {
 
 fn update_processed_media(
     conn: &PgConnection,
-    processed_media: &Vec<&Media>,
+    processed_media: &[&Media],
 ) -> Result<usize, diesel::result::Error> {
     let media_ids: Vec<i32> = processed_media.iter().map(|m| m.id).collect();
     diesel::update(media.filter(id.eq_any(media_ids)))

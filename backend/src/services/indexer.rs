@@ -30,18 +30,18 @@ pub fn index_media(conn: &PgConnection, paths: Vec<MediaPath>) {
     }
 }
 
-fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn Error>> {
-    let mut glob_path = path.clone();
+fn index_media_path(conn: &PgConnection, path: &str) -> Result<u32, Box<dyn Error>> {
+    let mut glob_path = path.to_owned();
 
-    if !glob_path.ends_with("/") {
-        glob_path = glob_path + "/";
+    if !glob_path.ends_with('/') {
+        glob_path += "/";
     }
     glob_path += "**/*.*";
 
     debug!("Searching through {}", glob_path);
     let mut indexed_files = 0u32;
     for entry in glob(&glob_path)? {
-        if !entry.is_ok() {
+        if entry.is_err() {
             continue;
         }
 
@@ -69,22 +69,23 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
         let mut hash: String = String::from("");
         let path = pathbuf.to_str().unwrap();
         //if already present in db... check timestamp
-        let new_or_modified = match MediaManager::get_media_by_path(conn, &path.to_string()) {
-            Some(media) => {
-                //has the file been modified?
-                //TODO: remove eventual cache files if the hash has changed
-                if media.modified != modified {
-                    hash = fetch_hash_from_path(&pathbuf)?;
-                    media.hash != hash
-                } else {
-                    false
+        let new_or_modified =
+            match MediaManager::get_media_by_path(conn, &path.to_string()) {
+                Some(media) => {
+                    //has the file been modified?
+                    //TODO: remove eventual cache files if the hash has changed
+                    if media.modified != modified {
+                        hash = fetch_hash_from_path(&pathbuf)?;
+                        media.hash != hash
+                    } else {
+                        false
+                    }
                 }
-            }
-            None => {
-                hash = fetch_hash_from_path(&pathbuf)?;
-                true
-            }
-        };
+                None => {
+                    hash = fetch_hash_from_path(&pathbuf)?;
+                    true
+                }
+            };
 
         //if changed (new hash) or new, add to db
         if new_or_modified {
@@ -119,13 +120,13 @@ fn index_media_path(conn: &PgConnection, path: &String) -> Result<u32, Box<dyn E
 fn get_media_type(file_path: &Path) -> MediaType {
     let file_name = String::from(file_path.file_name().unwrap().to_str().unwrap());
 
-    for ending in vec![".jpg", ".jpeg", ".png", ".gif", ".bmp", ".raw"] {
+    for ending in &[".jpg", ".jpeg", ".png", ".gif", ".bmp", ".raw"] {
         if file_name.ends_with(ending) {
             return MediaType::Image;
         }
     }
 
-    for ending in vec![".mts", ".mp4", ".avi", ".mkv"] {
+    for ending in &[".mts", ".mp4", ".avi", ".mkv"] {
         if file_name.ends_with(ending) {
             return MediaType::Video;
         }
@@ -144,7 +145,7 @@ fn fetch_hash(file: &mut File) -> Result<String, Box<dyn Error>> {
     io::copy(file, &mut hasher)?;
 
     let hash = hasher.finalize();
-    Ok(String::from(std::format!("{:x}", hash)))
+    Ok(std::format!("{:x}", hash))
 }
 
 #[allow(dead_code)]

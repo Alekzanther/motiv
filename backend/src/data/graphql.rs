@@ -1,5 +1,5 @@
 use super::context::GraphQLContext;
-use super::data::Todos;
+use super::todo::Todos;
 use crate::models::media::{Media, MediaManager, MediaOrderBy};
 use crate::models::todo::{CreateTodoInput, Todo};
 use diesel::pg::PgConnection;

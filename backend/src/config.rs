@@ -62,12 +62,14 @@ pub fn read_config(config_filename: String) -> Result<Config, io::Error> {
 fn add_defaults(cfg: Config) -> Config {
     Config {
         port: Some(cfg.port.unwrap_or(5000)),
-        name: Some(cfg.name.unwrap_or("Motiv".to_string())),
-        media: Some(cfg.media.unwrap_or(vec![MediaPath {
-            path: "./media/".to_string(),
-            name: Some("My local media".to_string()),
-        }])),
-        cache_path: Some(cfg.cache_path.unwrap_or(".thumbs".to_string())),
+        name: Some(cfg.name.unwrap_or_else(|| "Motiv".to_string())),
+        media: Some(cfg.media.unwrap_or_else(|| {
+            vec![MediaPath {
+                path: "./media/".to_string(),
+                name: Some("My local media".to_string()),
+            }]
+        })),
+        cache_path: Some(cfg.cache_path.unwrap_or_else(|| ".thumbs".to_string())),
         cache_image_settings: Some(cfg.cache_image_settings.unwrap_or(CacheSettings {
             small_pixels: Some(IMAGE_CACHE_FALLBACK_SMALL),
             medium_pixels: Some(IMAGE_CACHE_FALLBACK_MEDIUM),

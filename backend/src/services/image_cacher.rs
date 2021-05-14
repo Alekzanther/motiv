@@ -6,6 +6,7 @@ use std::error::Error;
 use std::fs::File;
 use std::io::Write;
 use std::sync::Arc;
+use thiserror::Error as ThisError;
 
 pub fn cache_image(
     config: Arc<Config>,
@@ -72,13 +73,19 @@ pub fn cache_image(
         if !std::path::Path::new(destination.as_str()).exists() {
             let (nwidth, nheight) = get_new_dimensions(aspect, large_thumb);
 
-            match generate_specific_size(&img_bytes, nwidth, nheight, large_thumb_q, &destination) {
+            match generate_specific_size(
+                &img_bytes,
+                nwidth,
+                nheight,
+                large_thumb_q,
+                &destination,
+            ) {
                 Ok(_) => {
                     thumb_count += 1;
                 }
                 Err(e) => {
                     error!("Couldn't generate thumb: {:?}", e);
-                    return Err(Box::from(e));
+                    return Err(e);
                 }
             }
         }
@@ -87,14 +94,19 @@ pub fn cache_image(
         let destination = format!("{}/{}_m.webp", destination_path, index_id);
         if !(std::path::Path::new(destination.as_str()).exists()) {
             let (nwidth, nheight) = get_new_dimensions(aspect, medium_thumb);
-            match generate_specific_size(&img_bytes, nwidth, nheight, medium_thumb_q, &destination)
-            {
+            match generate_specific_size(
+                &img_bytes,
+                nwidth,
+                nheight,
+                medium_thumb_q,
+                &destination,
+            ) {
                 Ok(_) => {
                     thumb_count += 1;
                 }
                 Err(e) => {
                     error!("Couldn't generate thumb: {:?}", e);
-                    return Err(Box::from(e));
+                    return Err(e);
                 }
             }
         }
@@ -103,13 +115,19 @@ pub fn cache_image(
         let destination = format!("{}/{}_s.webp", destination_path, index_id);
         if !std::path::Path::new(destination.as_str()).exists() {
             let (nwidth, nheight) = get_new_dimensions(aspect, small_thumb);
-            match generate_specific_size(&img_bytes, nwidth, nheight, small_thumb_q, &destination) {
+            match generate_specific_size(
+                &img_bytes,
+                nwidth,
+                nheight,
+                small_thumb_q,
+                &destination,
+            ) {
                 Ok(_) => {
                     thumb_count += 1;
                 }
                 Err(e) => {
                     error!("Couldn't generate thumb: {:?}", e);
-                    return Err(Box::from(e));
+                    return Err(e);
                 }
             }
         }
@@ -124,7 +142,7 @@ fn generate_specific_size(
     width: u32,
     height: u32,
     quality: u8,
-    destination: &String,
+    destination: &str,
 ) -> Result<(), Box<dyn Error>> {
     let mut filter_type = FilterType::Triangle;
     if quality == 0 {
@@ -139,11 +157,12 @@ fn generate_specific_size(
 
     let nimage = resize(img_buffer, width, height, filter_type);
     let webp_image = encode_webp(nimage.as_ref(), width, height, 70);
-    if webp_image.is_ok() {
-        let webp_image = webp_image.unwrap();
+    if let Ok(webp_image) = webp_image {
         let mut file = File::create(destination)?;
         file.write_all(webp_image.as_ref())
-            .expect(&std::format!("Couldn't write thumb {} files", destination));
+            .unwrap_or_else(|destination| {
+                error!("Couldn't write thumb {} files", destination)
+            });
     }
     //To test/compare with jpg, uncomment this:
     //let mut string_test = destination.clone();
@@ -161,12 +180,18 @@ fn get_new_dimensions(aspect_ratio: f32, max_size: u32) -> (u32, u32) {
     }
 }
 
+#[derive(ThisError, Debug)]
+pub enum WebPEncodeError {
+    #[error("Unknown error encoding WebP")]
+    Unknown,
+}
+
 pub fn encode_webp(
     input_image: &[u8],
     width: u32,
     height: u32,
     quality: i32,
-) -> Result<Vec<u8>, ()> {
+) -> Result<Vec<u8>, WebPEncodeError> {
     unsafe {
         let mut out_buf = Box::into_raw(Box::new(0u8)) as *mut _;
         let stride = width as i32 * 4;
@@ -183,9 +208,14 @@ pub fn encode_webp(
 }
 
 fn processed_media_files_exist(index_id: &str, destination_path: &str) -> bool {
-    std::path::Path::new(format!("{}/{}_m.webp", destination_path, index_id).as_str()).exists()
-        && std::path::Path::new(format!("{}/{}_s.webp", destination_path, index_id).as_str())
-            .exists()
-        && std::path::Path::new(format!("{}/{}_l.webp", destination_path, index_id).as_str())
-            .exists()
+    std::path::Path::new(format!("{}/{}_m.webp", destination_path, index_id).as_str())
+        .exists()
+        && std::path::Path::new(
+            format!("{}/{}_s.webp", destination_path, index_id).as_str(),
+        )
+        .exists()
+        && std::path::Path::new(
+            format!("{}/{}_l.webp", destination_path, index_id).as_str(),
+        )
+        .exists()
 }

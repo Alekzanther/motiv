@@ -20,7 +20,10 @@ pub fn web_endpoints(config: &mut web::ServiceConfig) {
         .route("/graphql", web::post().to(graphql))
         .route("/graphql", web::get().to(graphql_playground))
         .service(web::resource("/m/{id}").route(web::get().to(get_original_media_by_id)))
-        .service(web::resource("/m/{id}/{size}").route(web::get().to(get_processed_media_by_id)))
+        .service(
+            web::resource("/m/{id}/{size}")
+                .route(web::get().to(get_processed_media_by_id)),
+        )
         .route("/albums", web::get().to(index))
         .route("/favorites", web::get().to(index))
         .route("/tags", web::get().to(index))
@@ -41,7 +44,8 @@ async fn get_original_media_by_id(
     pool: web::Data<PostgresPool>,
     media_id: web::Path<i32>,
 ) -> Result<NamedFile, Error> {
-    let content = MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), *media_id, -1);
+    let content =
+        MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), *media_id, -1);
     return Ok(content.unwrap());
 }
 
@@ -50,8 +54,12 @@ async fn get_processed_media_by_id(
     pool: web::Data<PostgresPool>,
     params: web::Path<(i32, i32)>,
 ) -> Result<NamedFile, Error> {
-    let content =
-        MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), params.0, params.1);
+    let content = MediaManager::get_media_file_by_id(
+        &config,
+        &pool.get().unwrap(),
+        params.0,
+        params.1,
+    );
     info!("Requested media with size {}", params.1);
     return Ok(content.unwrap());
 }
@@ -80,7 +88,7 @@ async fn graphql(
     // Handle the incoming request and return a string result (or error)
     let res = web::block(move || {
         let res = data.execute(&schema, &ctx);
-        Ok::<_, serde_json::error::Error>(serde_json::to_string(&res)?)
+        Ok::<_, serde_json::error::Error>(serde_json::to_string(&res))
     })
     .await
     .map_err(Error::from)?;
@@ -88,5 +96,5 @@ async fn graphql(
     // Return the string as a JSON payload
     Ok(HttpResponse::Ok()
         .content_type("application/json")
-        .body(res))
+        .body(res?))
 }

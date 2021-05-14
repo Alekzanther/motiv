@@ -86,8 +86,8 @@ impl MediaManager {
         let conn: &PgConnection = &context.pool.get().unwrap();
 
         let result = {
-            if order_by.is_some() {
-                match order_by.unwrap().timestamp {
+            if let Some(order_by) = order_by {
+                match order_by.timestamp {
                     SortOrder::Asc => {
                         media.order_by(timestamp.asc()).load::<Media>(conn)
                     }
@@ -153,7 +153,10 @@ impl MediaManager {
                 Err(e) => Err(Box::from(e)),
             }
         } else {
-            let cache_path = config.cache_path.clone().unwrap_or(".thumbs".to_string());
+            let cache_path = config
+                .cache_path
+                .clone()
+                .unwrap_or_else(|| ".thumbs".to_string());
             let mut file_ending = "l.webp";
             if size == 0 {
                 file_ending = "s.webp";
@@ -169,12 +172,12 @@ impl MediaManager {
         }
     }
 
-    pub fn get_media_by_path(conn: &PgConnection, find_path: &String) -> Option<Media> {
-        let entry = media.filter(path.eq(find_path)).limit(1).get_result(conn);
+    pub fn get_media_by_path(conn: &PgConnection, find_path: &str) -> Option<Media> {
+        let entry_result = media.filter(path.eq(find_path)).limit(1).get_result(conn);
 
-        if entry.is_ok() {
-            return Some(entry.unwrap());
+        match entry_result {
+            Ok(entry) => Some(entry),
+            Err(..) => None,
         }
-        None
     }
 }
