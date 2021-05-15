@@ -10,5 +10,6 @@ module.exports = {
     "@typescript-eslint/quotes": ["warn", "double"],
     "comma-dangle": ["error", "always-multiline"],
     "no-param-reassign": "off",
+    "jsx-a11y/media-has-caption": "off",
   },
 };
