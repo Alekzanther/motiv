@@ -1,41 +1,13 @@
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import LazyLoad from "react-lazyload";
-import "react-lazy-load-image-component/src/effects/blur.css";
-import { makeStyles } from "@material-ui/core/styles";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
-
-const useStyles = makeStyles({
-  thumbnail: {
-    objectFit: "cover",
-    borderRadius: "5px",
-  },
-});
+import ThumbnailImage from "./ThumbnailImage";
+import ThumbnailVideo from "./ThumbnailVideo";
+import MediaTypes from "../../types/mediaType";
 
 const Thumbnail = (props: { media: MediaDisplayPropsFragment; size: number }) => {
   const { media, size } = props;
-  const classes = useStyles();
-  if (media.processed) {
-    return (
-      <LazyLoadImage
-        className={classes.thumbnail}
-        placeholderSrc={`/m/${media.id}/0`}
-        alt={`/m/${media.id.toString()}/0`}
-        effect="blur"
-        src={`/m/${media.id.toString()}/1`}
-        height={size}
-        width="100%"
-      />
-    );
+  if (media.mediaType === MediaTypes.image) {
+    return <ThumbnailImage media={media} size={size} />;
   }
-  return (
-    <LazyLoad>
-      <img
-        className={classes.thumbnail}
-        src={`/m/${media.id}`}
-        width="100%"
-        alt={media.id.toString()}
-      />
-    </LazyLoad>
-  );
+  return <ThumbnailVideo media={media} size={size} />;
 };
 export default Thumbnail;

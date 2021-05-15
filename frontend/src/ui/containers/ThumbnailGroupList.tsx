@@ -39,8 +39,9 @@ const ThumbnailGroupList = (props: {
   });
 
   useEffect(() => {
-    updateDimensions();
+    updateDimensions(); // update grid sizes
   }, []);
+
   return (
     <div ref={targetRef}>
       {groupedMedia
