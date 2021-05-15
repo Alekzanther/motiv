@@ -5,6 +5,7 @@ export default gql`
     id
     processed
     timestamp
+    mediaType
   }
   query AllMedia($orderBy: MediaOrderBy) {
     allMedia(orderBy: $orderBy) {
