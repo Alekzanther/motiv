@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     height: "72px",
   },
   drawerPaper: {
+    overflowX: "hidden",
     width: drawerWidth,
   },
   content: {
