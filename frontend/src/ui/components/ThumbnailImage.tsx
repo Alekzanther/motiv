@@ -3,13 +3,19 @@ import LazyLoad from "react-lazyload";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
-
-const useStyles = makeStyles({
+// fix performance of animation: https://tobiasahlin.com/blog/how-to-animate-box-shadow/
+const useStyles = makeStyles(() => ({
   thumbnail: {
     objectFit: "cover",
     borderRadius: "5px",
+    boxShadow: "0 0 0 0 transparent",
+    transition: "box-shadow 0.3s ease-in-out",
+    "&&:focus, &&:hover": {
+      boxShadow: "0 0 20px rgba(0,0,0,0.4)",
+      cursor: "pointer",
+    },
   },
-});
+}));
 
 const ThumbnailImage = (props: { media: MediaDisplayPropsFragment; size: number }) => {
   const { media, size } = props;
