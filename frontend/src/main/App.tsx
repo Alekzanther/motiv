@@ -1,4 +1,3 @@
-import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 // import "./App.css";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
