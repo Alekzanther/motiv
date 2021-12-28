@@ -6,11 +6,11 @@ webapp_path = "../frontend/build"
 
 [[media]]
 #TODO: fix some proper "default" which can be used to run tests in the CLooUuud
-path = "/home/alexander/cloud/Backgrounds"
+path = "/home/alexander/Cloud/Backgrounds"
 
-[[media]]
+#[[media]]
 #TODO: fix some proper "default" which can be used to run tests in the CLooUuud
-path = "./test/video"
+#path = "./test/video"
 
 [database]
 url = "postgres://postgres:mysecretpassword@localhost:5432/postgres"
