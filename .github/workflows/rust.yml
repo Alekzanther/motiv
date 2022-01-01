@@ -16,14 +16,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build frontend
+    - name: Build and test frontend
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
         working-directory: frontend
     - run:  yarn install
     - run:  yarn build
-    - name: Run frontend tests
     - run:  yarn test
     - name: Build backend
       run: cargo build --manifest-path backend/Cargo.toml --verbose
