@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import lozad from "lozad";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 
