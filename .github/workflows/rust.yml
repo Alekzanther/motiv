@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        working-directory: frontend
+    - working-directory: frontend
     - run:  yarn install
     - run:  yarn build
     - run:  yarn test
