@@ -1,3 +1,5 @@
+[![CI](https://github.com/Alekzanther/motiv/actions/workflows/rust.yml/badge.svg)](https://github.com/Alekzanther/motiv/actions/workflows/rust.yml)
+
 # MOTIV
 
 A place for your family photos and videos... Some day!
