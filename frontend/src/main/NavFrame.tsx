@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
@@ -21,9 +21,9 @@ import {
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Theme, useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
-import createStyles from '@mui/styles/createStyles';
-import { withRouter, Route, Switch } from "react-router-dom";
+import makeStyles from "@mui/styles/makeStyles";
+import createStyles from "@mui/styles/createStyles";
+import { Route, Routes } from "react-router-dom";
 
 import Feed from "../ui/pages/Feed";
 import Favorites from "../ui/pages/Favorites";
@@ -97,7 +97,7 @@ const NavFrame = () => {
     }
   }, [scrolled]);
 
-  const [currentPage, setCurrentPage] = React.useState("Timeline");
+  const [currentPage, setCurrentPage] = useState("Timeline");
 
   const updatePageTitle = (pageTitle: string = "Motiv") => {
     setCurrentPage(pageTitle);
@@ -218,15 +218,15 @@ const NavFrame = () => {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Switch>
-          <Route exact path="/" render={() => <Feed />} />
-          <Route exact path="/albums" render={() => <Albums />} />
-          <Route exact path="/tags" render={() => <Tags />} />
-          <Route exact path="/favorites" render={() => <Favorites />} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Feed />} />
+          <Route path="/albums" element={<Albums />} />
+          <Route path="/tags" element={<Tags />} />
+          <Route path="/favorites" element={<Favorites />} />
+        </Routes>
       </main>
     </div>
   );
 };
 
-export default withRouter(NavFrame);
+export default NavFrame;
