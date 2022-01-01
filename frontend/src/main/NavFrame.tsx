@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import MenuIcon from "@material-ui/icons/Menu";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import { useState, useEffect } from "react";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import Hidden from "@mui/material/Hidden";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import MenuIcon from "@mui/icons-material/Menu";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
 import {
   DynamicFeed as DynamicFeedIcon,
   Favorite as FavoriteIcon,
@@ -17,13 +17,13 @@ import {
   Settings as SettingsIcon,
   AccountCircle as AccountCircleIcon,
   CloudUpload as UploadIcon,
-} from "@material-ui/icons";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import {
-  makeStyles, Theme, useTheme, createStyles,
-} from "@material-ui/core/styles";
-import { withRouter, Route, Switch } from "react-router-dom";
+} from "@mui/icons-material";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { Theme, useTheme } from "@mui/material/styles";
+import makeStyles from "@mui/styles/makeStyles";
+import createStyles from "@mui/styles/createStyles";
+import { Route, Routes } from "react-router-dom";
 
 import Feed from "../ui/pages/Feed";
 import Favorites from "../ui/pages/Favorites";
@@ -97,7 +97,7 @@ const NavFrame = () => {
     }
   }, [scrolled]);
 
-  const [currentPage, setCurrentPage] = React.useState("Timeline");
+  const [currentPage, setCurrentPage] = useState("Timeline");
 
   const updatePageTitle = (pageTitle: string = "Motiv") => {
     setCurrentPage(pageTitle);
@@ -163,7 +163,7 @@ const NavFrame = () => {
             edge="start"
             onClick={handleDrawerToggle}
             className={classes.menuButton}
-          >
+            size="large">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
@@ -171,7 +171,7 @@ const NavFrame = () => {
           </Typography>
           <div className={classes.grow} />
           <div>
-            <IconButton aria-label="upload" color="inherit">
+            <IconButton aria-label="upload" color="inherit" size="large">
               <UploadIcon />
             </IconButton>
             <IconButton
@@ -179,7 +179,7 @@ const NavFrame = () => {
               aria-label="account of current user"
               aria-haspopup="true"
               color="inherit"
-            >
+              size="large">
               <AccountCircleIcon />
             </IconButton>
           </div>
@@ -203,7 +203,7 @@ const NavFrame = () => {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden smDown implementation="css">
           <Drawer
             classes={{
               paper: classes.drawerPaper,
@@ -218,15 +218,15 @@ const NavFrame = () => {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Switch>
-          <Route exact path="/" render={() => <Feed />} />
-          <Route exact path="/albums" render={() => <Albums />} />
-          <Route exact path="/tags" render={() => <Tags />} />
-          <Route exact path="/favorites" render={() => <Favorites />} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Feed />} />
+          <Route path="/albums" element={<Albums />} />
+          <Route path="/tags" element={<Tags />} />
+          <Route path="/favorites" element={<Favorites />} />
+        </Routes>
       </main>
     </div>
   );
 };
 
-export default withRouter(NavFrame);
+export default NavFrame;

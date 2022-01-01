@@ -1,7 +1,7 @@
 import {
-  Typography, Grid, GridList, GridListTile,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+  Typography, Grid, ImageList, ImageListItem,
+} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import Thumbnail from "../components/Thumbnail";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -27,19 +27,19 @@ const ThumbnailGroup = (props: {
       <Typography color="textPrimary" variant="h4">
         {title}
       </Typography>
-      <GridList
+      <ImageList
         className={classes.gridList}
-        cellHeight={groupSize.size}
-        spacing={groupSize.spacing}
+        rowHeight={groupSize.size}
+        gap={groupSize.spacing}
         cols={groupSize.columns}
       >
         {data
           && data.map((media) => (
-            <GridListTile key={media.id}>
+            <ImageListItem key={media.id}>
               <Thumbnail media={media} size={groupSize.size} />
-            </GridListTile>
+            </ImageListItem>
           ))}
-      </GridList>
+      </ImageList>
     </Grid>
   );
 };

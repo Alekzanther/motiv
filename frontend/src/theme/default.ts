@@ -1,11 +1,11 @@
-import { createMuiTheme, Theme } from "@material-ui/core/styles";
-import { blue, purple } from "@material-ui/core/colors";
+import { createTheme, Theme, adaptV4Theme } from "@mui/material/styles";
+import { blue, purple } from "@mui/material/colors";
 
 const backgroundColor = "#202020";
 
-const motivDarkTheme: Theme = createMuiTheme({
+const motivDarkTheme: Theme = createTheme(adaptV4Theme({
   palette: {
-    type: "dark",
+    mode: "dark",
     common: {
       black: "#161616",
       white: "#fafafa",
@@ -46,6 +46,6 @@ const motivDarkTheme: Theme = createMuiTheme({
       },
     },
   },
-});
+}));
 
 export default motivDarkTheme;

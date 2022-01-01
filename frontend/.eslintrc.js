@@ -1,5 +1,6 @@
 module.exports = {
   ignorePatterns: ["**/queries/types/graphql.tsx", "serviceWorker.tsx"],
+  plugins: ["import"],
   extends: ["airbnb-typescript"],
   parserOptions: {
     project: "./tsconfig.json",

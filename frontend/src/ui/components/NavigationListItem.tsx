@@ -1,8 +1,7 @@
-import React from "react";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { useHistory, useLocation } from "react-router-dom";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface NavigationListItemProps {
   link: string;
@@ -13,13 +12,13 @@ interface NavigationListItemProps {
 
 const NavigationListItem = (props: NavigationListItemProps) => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const {
     link, title, icon, updatePageTitle,
   } = props;
 
   const navigationClick = (pageTitle = "Motiv") => {
-    history.push(link);
+    navigate(link);
     updatePageTitle(pageTitle);
   };
 
