@@ -20,10 +20,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - working-directory: frontend
-    - run:  yarn install
-    - run:  yarn build
-    - run:  yarn test
+    - run:  yarn install && yarn build && yarn test
+      working-directory: frontend
     - name: Build backend
       run: cargo build --manifest-path backend/Cargo.toml --verbose
     - name: Run backend tests
