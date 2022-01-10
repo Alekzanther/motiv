@@ -46,7 +46,7 @@ fn index_media_path(conn: &PgConnection, path: &str) -> Result<u32, Box<dyn Erro
         }
 
         let pathbuf = &entry.unwrap();
-        let media_type = get_media_type(&pathbuf);
+        let media_type = get_media_type(pathbuf);
         if let MediaType::Unknown = media_type {
             continue;
         }
@@ -75,14 +75,14 @@ fn index_media_path(conn: &PgConnection, path: &str) -> Result<u32, Box<dyn Erro
                     //has the file been modified?
                     //TODO: remove eventual cache files if the hash has changed
                     if media.modified != modified {
-                        hash = fetch_hash_from_path(&pathbuf)?;
+                        hash = fetch_hash_from_path(pathbuf)?;
                         media.hash != hash
                     } else {
                         false
                     }
                 }
                 None => {
-                    hash = fetch_hash_from_path(&pathbuf)?;
+                    hash = fetch_hash_from_path(pathbuf)?;
                     true
                 }
             };
@@ -92,8 +92,8 @@ fn index_media_path(conn: &PgConnection, path: &str) -> Result<u32, Box<dyn Erro
             let res = MediaManager::upsert(
                 conn,
                 &NewMedia {
-                    path: &path,
-                    name: &pathbuf.file_name().unwrap().to_str().unwrap(),
+                    path,
+                    name: pathbuf.file_name().unwrap().to_str().unwrap(),
                     processed: &false,
                     hash: hash.as_str(),
                     modified: &modified,

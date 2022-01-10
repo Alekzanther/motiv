@@ -50,14 +50,14 @@ impl Media {
     pub fn path(&self) -> &str {
         self.path.as_str()
     }
-    pub fn processed(&self) -> &bool {
-        &self.processed
+    pub fn processed(&self) -> bool {
+        self.processed
     }
     pub fn hash(&self) -> &str {
-        &self.hash.as_str()
+        self.hash.as_str()
     }
-    pub fn modified(&self) -> &i32 {
-        &self.modified
+    pub fn modified(&self) -> i32 {
+        self.modified
     }
 }
 
@@ -120,13 +120,13 @@ impl MediaManager {
 
     pub fn upsert(conn: &PgConnection, new_media: &NewMedia) -> FieldResult<Media> {
         let new_media = NewMedia {
-            path: &new_media.path,
-            name: &new_media.name,
-            processed: &new_media.processed,
-            hash: &new_media.hash,
-            modified: &new_media.modified,
-            timestamp: &new_media.timestamp,
-            media_type: &new_media.media_type,
+            path: new_media.path,
+            name: new_media.name,
+            processed: new_media.processed,
+            hash: new_media.hash,
+            modified: new_media.modified,
+            timestamp: new_media.timestamp,
+            media_type: new_media.media_type,
         };
 
         let res = diesel::insert_into(media::table)

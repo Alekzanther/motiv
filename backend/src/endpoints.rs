@@ -46,7 +46,7 @@ async fn get_original_media_by_id(
 ) -> Result<NamedFile, Error> {
     let content =
         MediaManager::get_media_file_by_id(&config, &pool.get().unwrap(), *media_id, -1);
-    return Ok(content.unwrap());
+    Ok(content.unwrap())
 }
 
 async fn get_processed_media_by_id(
@@ -61,7 +61,7 @@ async fn get_processed_media_by_id(
         params.1,
     );
     info!("Requested media with size {}", params.1);
-    return Ok(content.unwrap());
+    Ok(content.unwrap())
 }
 
 // The GraphQL Playground route.
