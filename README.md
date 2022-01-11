@@ -1,14 +1,16 @@
 [![CI](https://github.com/Alekzanther/motiv/actions/workflows/rust.yml/badge.svg)](https://github.com/Alekzanther/motiv/actions/workflows/rust.yml)
 
 # MOTIV
-
-A place for your family photos and videos... Some day!
+![Timeline screenshot](./screenshots/timeline.webp)
+_A place for your family photos and videos... Some day!_
 
 ## State 
 - Serves SPAs
 - Talks GraphQL
 - Stores in postgres
-- Doesn't crash. 
+- Caches images to WebP (ultra lightweight?)
+- Doesn't crash.
+- Lots of long hanging fruits...
 
 ## Development Prerequisites
  - yarn
