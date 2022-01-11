@@ -1,8 +1,8 @@
+use crate::api::context::GraphQLContext;
+use crate::api::graphql::create_schema;
+use crate::api::graphql::Schema;
 use crate::config::Config;
-use crate::data::context::GraphQLContext;
 use crate::data::db::PostgresPool;
-use crate::data::graphql::create_schema;
-use crate::data::graphql::Schema;
 use crate::models::media::MediaManager;
 use actix_files::NamedFile;
 use actix_web::{web, Error, HttpResponse};

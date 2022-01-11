@@ -1,4 +1,4 @@
-use crate::data::graphql::graphql_translate;
+use crate::api::graphql::graphql_translate;
 use crate::models::todo::{CreateTodoInput, NewTodo, Todo};
 use crate::schema::todos::dsl::*;
 use diesel::pg::PgConnection;

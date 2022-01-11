@@ -1,4 +1,4 @@
-use super::db::PostgresPool;
+use crate::data::db::PostgresPool;
 
 // The GraphQL context, which needs to provide everything necessary for
 // interacting with the database.

@@ -1,6 +1,6 @@
+use crate::api::context::GraphQLContext;
+use crate::api::graphql::graphql_translate;
 use crate::config::Config;
-use crate::data::context::GraphQLContext;
-use crate::data::graphql::graphql_translate;
 use crate::schema::media;
 use crate::schema::media::dsl::*;
 use actix_files::NamedFile;
