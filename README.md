@@ -10,7 +10,7 @@ _A place for your family photos and videos... Some day!_
 - Stores in postgres
 - Caches images to WebP (ultra lightweight?)
 - Doesn't crash.
-- Lots of long hanging fruits...
+- Lots of low hanging fruits...
 
 ## Development Prerequisites
  - yarn
