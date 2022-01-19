@@ -1,8 +1,11 @@
 FROM rust:latest as backend-builder
+RUN apt-get update && \
+		apt-get install -y postgresql-client 
 RUN USER=root
 RUN mkdir motiv
 WORKDIR /motiv
 ADD ./backend ./
+RUN cargo install --root /motiv diesel_cli --no-default-features --features postgres
 RUN cargo clean && \
     cargo build -vv --release
 
@@ -26,6 +29,7 @@ VOLUME /motiv
 WORKDIR /motiv
 COPY ./backend/motiv.toml /motiv/backend/motiv.toml
 COPY --from=backend-builder /motiv/target/release/motiv /motiv/backend/motiv
+COPY --from=backend-builder /motiv/bin/diesel /motiv/backend
 COPY --from=frontend-builder /motiv/build /motiv/frontend/build
 RUN chown -R $APP_USER:$APP_USER /motiv
 WORKDIR /motiv/backend
