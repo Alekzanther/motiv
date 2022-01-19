@@ -1,3 +1,4 @@
+use dotenv::dotenv;
 use serde::Deserialize;
 use std::fs;
 use std::io;
@@ -59,6 +60,14 @@ pub fn read_config(config_filename: String) -> Result<Config, io::Error> {
     }
 }
 
+fn get_database_config(fallback_url: String) -> PostgresCredentials {
+    dotenv().ok();
+    match std::env::var("DATABASE_URL") {
+        Ok(env_db_string) => PostgresCredentials { url: env_db_string },
+        Err(_) => PostgresCredentials { url: fallback_url },
+    }
+}
+
 fn add_defaults(cfg: Config) -> Config {
     Config {
         port: Some(cfg.port.unwrap_or(5000)),
@@ -78,7 +87,7 @@ fn add_defaults(cfg: Config) -> Config {
             medium_quality: Some(IMAGE_CACHE_FALLBACK_MEDIUM_Q),
             large_quality: Some(IMAGE_CACHE_FALLBACK_LARGE_Q),
         })),
-        database: cfg.database,
+        database: get_database_config(cfg.database.url),
         worker_threads: Some(cfg.worker_threads.unwrap_or(4)),
         webapp_path: cfg.webapp_path,
     }
