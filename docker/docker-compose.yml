@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  db:
+    image: "postgres:latest"
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+  motiv:
+    links:
+      - "db"
+    image: "motiv:latest"
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: "postgres://postgres:mysecretpassword@db:5432/postgres"
