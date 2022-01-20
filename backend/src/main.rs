@@ -19,8 +19,9 @@ extern crate rayon;
 extern crate serde;
 extern crate toml;
 
-//#[macro_use]
-//extern crate diesel_migrations;
+#[macro_use]
+extern crate diesel_migrations;
+embed_migrations!();
 
 use std::{env, io, thread};
 
@@ -74,8 +75,7 @@ async fn main() -> io::Result<()> {
     });
 
     //set bindstr from cfg (fallback 5000)
-    let bindstr =
-        "0.0.0.0:".to_string() + &(cfg.port.unwrap_or(5000)).to_string();
+    let bindstr = "0.0.0.0:".to_string() + &(cfg.port.unwrap_or(5000)).to_string();
     println!("Starting up on {}", bindstr);
 
     // Start up the server, passing in the config, db connection,

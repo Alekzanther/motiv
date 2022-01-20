@@ -30,6 +30,3 @@ actix-utils = "2.0.0"
 image = "0.23.9"
 blake2 = "0.9.0"
 thiserror = "1.0.24"
-
-
-
