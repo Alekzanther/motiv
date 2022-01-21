@@ -21,7 +21,6 @@ extern crate toml;
 
 #[macro_use]
 extern crate diesel_migrations;
-embed_migrations!();
 
 use std::{env, io, thread};
 
@@ -36,6 +35,7 @@ use std::sync::Arc;
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
+    embed_migrations!();
     logging_setup();
     let cfg_path = "./motiv.toml";
     let cfg = config::read_config(cfg_path.to_string());
