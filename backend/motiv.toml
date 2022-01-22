@@ -1,16 +1,14 @@
 port = 5000
 name = "My Motiv Library"
-cache_path = "../.cache"
+cache_path = "./cache"
 worker_threads = 2
 webapp_path = "../frontend/build"
 
 [[media]]
-#TODO: fix some proper "default" which can be used to run tests in the CLooUuud
-path = "/home/alexander/Cloud/Backgrounds"
+path = "./dummy-data/originals/videos"
 
-#[[media]]
-#TODO: fix some proper "default" which can be used to run tests in the CLooUuud
-#path = "./test/video"
+[[media]]
+path = "./dummy-data/originals/pictures"
 
 [database]
 url = "postgres://postgres:mysecretpassword@localhost:5432/postgres"
