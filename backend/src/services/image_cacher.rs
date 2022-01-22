@@ -27,6 +27,7 @@ pub fn cache_image(
     let img_bytes = img.to_rgba8();
     let (width, height) = img.dimensions();
     let aspect: f32 = (width as f32 / height as f32) as f32;
+    let wiggle_room = 0.8f32; //used to catch and process sizes very close to the defined limits
     let largest = {
         if width > height {
             width
@@ -68,7 +69,7 @@ pub fn cache_image(
         .small_quality
         .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE_Q);
 
-    if largest >= large_thumb {
+    if largest as f32 >= large_thumb as f32 * wiggle_room {
         let destination = format!("{}/{}_l.webp", destination_path, index_id);
         if !std::path::Path::new(destination.as_str()).exists() {
             let (nwidth, nheight) = get_new_dimensions(aspect, large_thumb);
@@ -90,7 +91,7 @@ pub fn cache_image(
             }
         }
     }
-    if largest >= medium_thumb {
+    if largest as f32 >= medium_thumb as f32 * wiggle_room {
         let destination = format!("{}/{}_m.webp", destination_path, index_id);
         if !(std::path::Path::new(destination.as_str()).exists()) {
             let (nwidth, nheight) = get_new_dimensions(aspect, medium_thumb);
@@ -111,7 +112,7 @@ pub fn cache_image(
             }
         }
     }
-    if largest >= small_thumb {
+    if largest as f32 >= small_thumb as f32 * wiggle_room {
         let destination = format!("{}/{}_s.webp", destination_path, index_id);
         if !std::path::Path::new(destination.as_str()).exists() {
             let (nwidth, nheight) = get_new_dimensions(aspect, small_thumb);
