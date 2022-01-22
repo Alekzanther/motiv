@@ -10,6 +10,7 @@ setup-dev-env:
 	# setup media folders
 	make fetch-dummy-data
 	make reset-db
+	cp backend/motiv.toml.example backend/motiv.toml
 	# print some helpful message
 
 build:
