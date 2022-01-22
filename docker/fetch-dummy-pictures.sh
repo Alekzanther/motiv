@@ -2,6 +2,8 @@
 cd $1
 for i in {1..10}
 do
-  wget -O dummy.$i.jpg https://source.unsplash.com/random?sig=100
+  timestamp=$(date +%s)
+  wget -O dummy.$timestamp.jpg https://source.unsplash.com/random?sig=$timestamp
   sleep 1
 done
+exit

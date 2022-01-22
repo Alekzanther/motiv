@@ -1,7 +1,10 @@
 CARGO = cargo
 YARN = yarn
 DOCKER = docker
-DUMMY_DATA_FOLDER = backend/dummy-data
+DUMMY_DATA_ROOT = backend/dummy-data
+DUMMY_PICTURES_PATH = $(DUMMY_DATA_ROOT)/originals/pictures
+DUMMY_VIDEOS_PATH = $(DUMMY_DATA_ROOT)/originals/videos
+DUMMY_CACHE_PATH = $(DUMMY_DATA_ROOT)/cache
 
 setup-dev-env:
 	# setup media folders
@@ -34,10 +37,12 @@ reset-db:
 	$(DOCKER) run --name motiv-dev-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
 fetch-dummy-data:
-	mkdir -p $(DUMMY_DATA_FOLDER)/originals/pictures
-	mkdir -p $(DUMMY_DATA_FOLDER)/originals/videos
-	mkdir -p $(DUMMY_DATA_FOLDER)/cache
-	bash docker/fetch-dummy-pictures.sh $(DUMMY_DATA_FOLDER)/originals/pictures
+	mkdir -p $(DUMMY_PICTURES_PATH)
+	mkdir -p $(DUMMY_VIDEOS_PATH)
+	mkdir -p $(DUMMY_CACHE_PATH)
+	./docker/fetch-dummy-pictures.sh $(DUMMY_PICTURES_PATH) 
+	./docker/fetch-dummy-gifs.sh $(DUMMY_VIDEOS_PATH) 
+	./docker/fetch-dummy-videos.sh $(DUMMY_VIDEOS_PATH) 
 
 run:
 	cd backend && $(CARGO) run 
