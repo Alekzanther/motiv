@@ -11,11 +11,11 @@ setup-dev-env:
 	make fetch-dummy-data
 	make reset-db
 	cp backend/motiv.toml.example backend/motiv.toml
+	make build
 	# print some helpful message
 
 build:
-	$(YARN) --cwd frontend install
-	$(YARN) --cwd frontend build
+	cd frontend && $(YARN) install && $(YARN) build
 	$(CARGO) build --manifest-path backend/Cargo.toml
 
 check:
