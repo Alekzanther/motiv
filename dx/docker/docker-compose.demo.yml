@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  db:
+    container_name: "motiv_demo_db"
+  server:
+    container_name: "motiv_demo_server"
+    volumes: 
+      - ./backend/dummy-data:/motiv/backend/dummy-data:rw
+      - ./backend/motiv.toml.example:/motiv/backend/motiv.toml
+    links:
+      - "db"
+    environment:
+      DATABASE_URL: "postgres://postgres:mysecretpassword@motiv_demo_db:5432/postgres"

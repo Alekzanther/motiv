@@ -1,10 +1,14 @@
 CARGO = cargo
 YARN = yarn
 DOCKER = docker
+DOCKER_COMPOSE = docker-compose
 DUMMY_DATA_ROOT = backend/dummy-data
 DUMMY_PICTURES_PATH = $(DUMMY_DATA_ROOT)/originals/pictures
 DUMMY_VIDEOS_PATH = $(DUMMY_DATA_ROOT)/originals/videos
 DUMMY_CACHE_PATH = $(DUMMY_DATA_ROOT)/cache
+
+demo-env:
+	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml up -d 
 
 setup-dev-env:
 	# setup media folders

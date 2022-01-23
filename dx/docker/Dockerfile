@@ -23,11 +23,12 @@ RUN apt-get update && \
 ENV APP_USER=appuser
 RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER
-RUN mkdir -p /motiv/backend
+RUN mkdir -p /motiv/backend/dummy-data
 RUN mkdir -p /motiv/frontend/build
 VOLUME /motiv
 WORKDIR /motiv
 COPY ./backend/motiv.toml /motiv/backend/motiv.toml
+COPY ./backend/migrations /motiv/backend/migrations
 COPY --from=backend-builder /motiv/target/release/motiv /motiv/backend/motiv
 COPY --from=backend-builder /motiv/bin/diesel /motiv/backend
 COPY --from=frontend-builder /motiv/build /motiv/frontend/build
