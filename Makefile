@@ -31,7 +31,7 @@ release:
 	$(CARGO) build --release --manifest-path backend/Cargo.toml
 
 docker-image: 
-	$(DOCKER) build -f docker/Dockerfile -t motiv:latest .  
+	$(DOCKER) build -f dx/docker/Dockerfile -t motiv:latest .  
 
 reset-db:
 	$(DOCKER) rm -f motiv-dev-db
@@ -41,9 +41,9 @@ fetch-dummy-data:
 	mkdir -p $(DUMMY_PICTURES_PATH)
 	mkdir -p $(DUMMY_VIDEOS_PATH)
 	mkdir -p $(DUMMY_CACHE_PATH)
-	./docker/fetch-dummy-pictures.sh $(DUMMY_PICTURES_PATH) 
-	./docker/fetch-dummy-gifs.sh $(DUMMY_VIDEOS_PATH) 
-	./docker/fetch-dummy-videos.sh $(DUMMY_VIDEOS_PATH) 
+	./dx/docker/fetch-dummy-pictures.sh $(DUMMY_PICTURES_PATH) 
+	./dx/docker/fetch-dummy-gifs.sh $(DUMMY_VIDEOS_PATH) 
+	./dx/docker/fetch-dummy-videos.sh $(DUMMY_VIDEOS_PATH) 
 
 run:
 	cd backend && $(CARGO) run 
