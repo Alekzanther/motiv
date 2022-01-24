@@ -7,8 +7,12 @@ DUMMY_PICTURES_PATH = $(DUMMY_DATA_ROOT)/originals/pictures
 DUMMY_VIDEOS_PATH = $(DUMMY_DATA_ROOT)/originals/videos
 DUMMY_CACHE_PATH = $(DUMMY_DATA_ROOT)/cache
 
-demo-env:
+demo:
 	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml up -d 
+
+remove-demo:
+	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml down --remove-orphans
+	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml rm --force -v 
 
 setup-dev-env:
 	# setup media folders
@@ -16,7 +20,6 @@ setup-dev-env:
 	make reset-db
 	cp backend/motiv.toml.example backend/motiv.toml
 	make build
-	# print some helpful message
 
 build:
 	cd frontend && $(YARN) install && $(YARN) build
