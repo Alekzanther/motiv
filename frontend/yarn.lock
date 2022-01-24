@@ -18,9 +18,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.5.7":
-  version: 3.5.7
-  resolution: "@apollo/client@npm:3.5.7"
+"@apollo/client@npm:^3.5.8":
+  version: 3.5.8
+  resolution: "@apollo/client@npm:3.5.8"
   dependencies:
     "@graphql-typed-document-node/core": ^3.0.0
     "@wry/context": ^0.6.0
@@ -43,7 +43,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: ddecf62b4bf402948892bf993d58933432fc743b6859ef557fcd137e9b9398c081279dce75e037396f9b22fd54bf578cb88819b4b55bd5e2c30428f100c519b6
+  checksum: c896153784ae7b3adbf378e087c2a3150966fd5f5ea029907965dc5987f4751f2058c55142fe0a8e53f6c38124421b0e7f955f7fa5a4c28840be23c53b3a7e64
   languageName: node
   linkType: hard
 
@@ -1736,9 +1736,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/cli@npm:2.3.1":
-  version: 2.3.1
-  resolution: "@graphql-codegen/cli@npm:2.3.1"
+"@graphql-codegen/cli@npm:2.4.0":
+  version: 2.4.0
+  resolution: "@graphql-codegen/cli@npm:2.4.0"
   dependencies:
     "@graphql-codegen/core": 2.4.0
     "@graphql-codegen/plugin-helpers": ^2.3.2
@@ -1786,7 +1786,7 @@ __metadata:
     gql-gen: bin.js
     graphql-code-generator: bin.js
     graphql-codegen: bin.js
-  checksum: 47be79301904d54ef5e57041dcfb63f002799421f354cdf439f2e1f2ea5ce54603a08516b3767e6648613e38c75dc002d0ca414c542e4ab650ae714fb441a447
+  checksum: 7fa914c07de4ee497eece33f11969317578ee6f46555bcdbbe3ef4d678ab3a1090d3d49b2956289b279ca2134596b3e4841a33491a5563aecd51f03e27cb744a
   languageName: node
   linkType: hard
 
@@ -2462,9 +2462,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/base@npm:5.0.0-alpha.65":
-  version: 5.0.0-alpha.65
-  resolution: "@mui/base@npm:5.0.0-alpha.65"
+"@mui/base@npm:5.0.0-alpha.66":
+  version: 5.0.0-alpha.66
+  resolution: "@mui/base@npm:5.0.0-alpha.66"
   dependencies:
     "@babel/runtime": ^7.16.7
     "@emotion/is-prop-valid": ^1.1.1
@@ -2480,13 +2480,13 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 2994e3c358d891f9e38f7eb5e35ea4cf6f6c853a5509ec341ca559b2c097638bb504617c48657a45deddfbe5fdb620804c417f6e4474a83338bf0c7943d82cd6
+  checksum: e035bda9215fb2e13500c4e49c094cc197b374c7d7a7e57d0ca6c7c99e83d5ffbb5183fe3f29b7fa63e59d856c887550d4fd47af6bdece9df36332dc133c7e79
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "@mui/icons-material@npm:5.3.0"
+"@mui/icons-material@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "@mui/icons-material@npm:5.3.1"
   dependencies:
     "@babel/runtime": ^7.16.7
   peerDependencies:
@@ -2496,16 +2496,16 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: c24cf47788264a7d429e335e0b0b6c61e121f686056353be23bea7e0baf8ef43e728ee80b17e79bf1a15f726a43a9153fa8a5649b2273aedeb4b7577f46ab6b1
+  checksum: b9073a0432734466fa61c0493505e36e8eb663cd58f006590bc8be932c218ff58d666cef20b50d9265afa8ab3579bd35c6a5ca1a158d07d55dc9680d544159cb
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "@mui/material@npm:5.3.0"
+"@mui/material@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "@mui/material@npm:5.3.1"
   dependencies:
     "@babel/runtime": ^7.16.7
-    "@mui/base": 5.0.0-alpha.65
+    "@mui/base": 5.0.0-alpha.66
     "@mui/system": ^5.3.0
     "@mui/types": ^7.1.0
     "@mui/utils": ^5.3.0
@@ -2529,7 +2529,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: cadebcb95eaa6d85a094d02e22793d6c87e38aa1bb58a7adb34e7ea97e9d33926dd043a6fc18d4c8c07755d0e486bef165384cdfb9a1079d0c7c1fb0845a688e
+  checksum: 2e98ae48a33b73198334395b590fed247767ed55db1c975d86be4593decb37c27b6865c86e7b1ffefc8973b7c800d822b9468c1ca31f40806594c9ea3db3032a
   languageName: node
   linkType: hard
 
@@ -10857,16 +10857,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "motiv@workspace:."
   dependencies:
-    "@apollo/client": ^3.5.7
+    "@apollo/client": ^3.5.8
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
-    "@graphql-codegen/cli": 2.3.1
+    "@graphql-codegen/cli": 2.4.0
     "@graphql-codegen/introspection": 2.1.1
     "@graphql-codegen/typescript": 2.4.2
     "@graphql-codegen/typescript-operations": 2.2.2
     "@graphql-codegen/typescript-react-apollo": 3.2.4
-    "@mui/icons-material": ^5.3.0
-    "@mui/material": ^5.3.0
+    "@mui/icons-material": ^5.3.1
+    "@mui/material": ^5.3.1
     "@mui/styles": ^5.3.0
     "@reduxjs/toolkit": ^1.7.1
     "@testing-library/jest-dom": ^5.16.1
@@ -10895,8 +10895,8 @@ __metadata:
     react-redux: ^7.2.6
     react-router-dom: ^6.2.1
     react-scripts: 5.0.0
-    typescript: ^4.5.4
-    web-vitals: ^2.1.3
+    typescript: ^4.5.5
+    web-vitals: ^2.1.4
   languageName: unknown
   linkType: soft
 
@@ -14974,23 +14974,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.5.4":
-  version: 4.5.4
-  resolution: "typescript@npm:4.5.4"
+"typescript@npm:^4.5.5":
+  version: 4.5.5
+  resolution: "typescript@npm:4.5.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 59f3243f9cd6fe3161e6150ff6bf795fc843b4234a655dbd938a310515e0d61afd1ac942799e7415e4334255e41c2c49b7dd5d9fd38a17acd25a6779ca7e0961
+  checksum: 506f4c919dc8aeaafa92068c997f1d213b9df4d9756d0fae1a1e7ab66b585ab3498050e236113a1c9e57ee08c21ec6814ca7a7f61378c058d79af50a4b1f5a5e
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.5.4#~builtin<compat/typescript>":
-  version: 4.5.4
-  resolution: "typescript@patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=493e53"
+"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+  version: 4.5.5
+  resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 2e488dde7d2c4a2fa2e79cf2470600f8ce81bc0563c276b72df8ff412d74456ae532ba824650ae936ce207440c79720ddcfaa25e3cb4477572b8534fa4e34d49
+  checksum: c05c318d79c690f101d7ffb34cd6c7d6bbd884d3af9cefe7749ad0cd6be43c7082f098280982ca945dcba23fde34a08fed9602bb26540936baf8c0520727d3ba
   languageName: node
   linkType: hard
 
@@ -15308,10 +15308,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-vitals@npm:^2.1.3":
-  version: 2.1.3
-  resolution: "web-vitals@npm:2.1.3"
-  checksum: 6d5d961b5e7eb5a3b0c4b05c9692b8765f469be9bc2c077331dbc3f2f38bf9bd5cbb4d1cad9129dfd7ce454c00a442851ce42c235f27678fd07e962bce4ac12e
+"web-vitals@npm:^2.1.4":
+  version: 2.1.4
+  resolution: "web-vitals@npm:2.1.4"
+  checksum: 03d3f47dbf55c3dce07beb0ff5de8ddd52e2d0a53a8df5c84e7a16dda93543341d67231fa79b1d9772b091419af4ec0fd395b8bcf451a0e26846e3f76b3d0efc
   languageName: node
   linkType: hard
 
