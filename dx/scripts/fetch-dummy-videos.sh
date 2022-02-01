@@ -11,5 +11,5 @@ curl -O "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Elepha
 # "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
 # "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.jpg"
 # "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4"
-curl -O "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4
+curl -O "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
 exit
