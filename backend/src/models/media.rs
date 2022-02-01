@@ -15,6 +15,7 @@ pub enum MediaType {
     Unknown = 0,
     Image,
     Video,
+    Gif,
 }
 
 #[derive(GraphQLEnum)]

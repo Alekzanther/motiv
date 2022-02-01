@@ -119,17 +119,22 @@ fn index_media_path(conn: &PgConnection, path: &str) -> Result<u32, Box<dyn Erro
 
 fn get_media_type(file_path: &Path) -> MediaType {
     let file_name = String::from(file_path.file_name().unwrap().to_str().unwrap());
-
-    for ending in &[".jpg", ".jpeg", ".png", ".gif", ".bmp", ".raw"] {
-        if file_name.ends_with(ending) {
-            return MediaType::Image;
-        }
+    if [".jpg", ".jpeg", ".png", ".bmp", ".raw"]
+        .iter()
+        .any(|ending| file_name.ends_with(ending))
+    {
+        return MediaType::Image;
     }
 
-    for ending in &[".mts", ".mp4", ".avi", ".mkv"] {
-        if file_name.ends_with(ending) {
-            return MediaType::Video;
-        }
+    if [".mts", ".mp4", ".avi", ".mkv"]
+        .iter()
+        .any(|ending| file_name.ends_with(ending))
+    {
+        return MediaType::Video;
+    }
+
+    if file_name.ends_with(".gif") {
+        return MediaType::Gif;
     }
 
     MediaType::Unknown
@@ -171,4 +176,37 @@ fn fetch_extended_info(file_path: &Path) -> Result<(), Box<dyn Error>> {
         );
     }
     Ok(())
+}
+
+#[test]
+fn file_endings_return_correct_media_type() {
+    assert_eq!(
+        MediaType::Image as i32,
+        get_media_type(Path::new(".png")) as i32
+    );
+    assert_eq!(
+        MediaType::Image as i32,
+        get_media_type(Path::new(".jpg")) as i32
+    );
+    assert_eq!(
+        MediaType::Image as i32,
+        get_media_type(Path::new(".bmp")) as i32
+    );
+    //    assert_eq!(MediaType::Gif, get_media_type(Path::new(".gif")) as i32);
+    assert_eq!(
+        MediaType::Video as i32,
+        get_media_type(Path::new(".mp4")) as i32
+    );
+    assert_eq!(
+        MediaType::Video as i32,
+        get_media_type(Path::new(".mkv")) as i32
+    );
+    assert_eq!(
+        MediaType::Video as i32,
+        get_media_type(Path::new(".avi")) as i32
+    );
+    assert_eq!(
+        MediaType::Gif as i32,
+        get_media_type(Path::new(".gif")) as i32
+    );
 }
