@@ -40,9 +40,9 @@ fetch-dummy-data:
 	mkdir -p $(DUMMY_PICTURES_PATH)
 	mkdir -p $(DUMMY_VIDEOS_PATH)
 	mkdir -p $(DUMMY_CACHE_PATH)
-	./dx/docker/fetch-dummy-pictures.sh $(DUMMY_PICTURES_PATH) 
-	./dx/docker/fetch-dummy-gifs.sh $(DUMMY_VIDEOS_PATH) 
-	./dx/docker/fetch-dummy-videos.sh $(DUMMY_VIDEOS_PATH) 
+	./dx/scripts/fetch-dummy-pictures.sh $(DUMMY_PICTURES_PATH) 
+	./dx/scripts/fetch-dummy-gifs.sh $(DUMMY_VIDEOS_PATH) 
+	./dx/scripts/fetch-dummy-videos.sh $(DUMMY_VIDEOS_PATH) 
 
 run:
 	cd backend && $(CARGO) run 
