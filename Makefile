@@ -8,6 +8,7 @@ DUMMY_VIDEOS_PATH = $(DUMMY_DATA_ROOT)/originals/videos
 DUMMY_CACHE_PATH = $(DUMMY_DATA_ROOT)/cache
 
 demo:
+	make fetch-dummy-data
 	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml up -d 
 
 remove-demo:
@@ -24,15 +25,6 @@ setup-dev-env:
 build:
 	cd frontend && $(YARN) install && $(YARN) build
 	$(CARGO) build --manifest-path backend/Cargo.toml
-
-check:
-	$(CARGO) check --manifest-path backend/Cargo.toml
-
-fmt:
-	$(CARGO) fmt --manifest-path backend/Cargo.toml
-
-open:
-	open http://localhost:5000/graphql
 
 release:
 	$(CARGO) build --release --manifest-path backend/Cargo.toml
