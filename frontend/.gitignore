@@ -46,10 +46,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # Yarn zero-installs
-frontend/.yarn/*
-!frontend/.yarn/cache
-!frontend/.yarn/patches
-!frontend/.yarn/plugins
-!frontend/.yarn/releases
-!frontend/.yarn/sdks
-!frontend/.yarn/versions
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
