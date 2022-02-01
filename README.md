@@ -25,8 +25,8 @@ _A place for your family photos and videos... Some day!_
 ### Frontend-only Build & Run 
 1. `make demo`
 1. Go into the frontend folder
-1. `yarn install && yarn build`
-1. `yarn run`
+1. `yarn install`
+1. `yarn start`
 
 ## Fullstack Development Prerequisites
 The following is a list of all things required to develop within all parts of motiv.
