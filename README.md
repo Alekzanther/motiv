@@ -9,8 +9,12 @@ _A place for your family photos and videos... Some day!_
 - Talks GraphQL
 - Stores in postgres
 - Caches images to WebP (ultra lightweight?)
-- Doesn't crash.
+- Doesn't crash
 - Lots of low hanging fruits...
+
+## Quickstart demo 
+1. Make sure your system has Make, docker, and docker-compose
+1. Run `make demo` from the root of this folder and you'll have a demo environment up and running with some sample data
 
 ## Development Prerequisites
  - yarn
