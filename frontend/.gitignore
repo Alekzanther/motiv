@@ -44,3 +44,12 @@ yarn-error.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Yarn zero-installs
+frontend/.yarn/*
+!frontend/.yarn/cache
+!frontend/.yarn/patches
+!frontend/.yarn/plugins
+!frontend/.yarn/releases
+!frontend/.yarn/sdks
+!frontend/.yarn/versions
