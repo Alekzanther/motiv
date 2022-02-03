@@ -57,8 +57,8 @@ async fn get_processed_media_by_id(
     let content = MediaManager::get_media_file_by_id(
         &config,
         &pool.get().unwrap(),
-        params.0,
-        params.1,
+        params.0 .0,
+        params.0 .1,
     );
     info!("Requested media with size {}", params.1);
     Ok(content.unwrap())
