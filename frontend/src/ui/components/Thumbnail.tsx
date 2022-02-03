@@ -5,7 +5,7 @@ import MediaTypes from "../../types/mediaType";
 
 const Thumbnail = (props: { media: MediaDisplayPropsFragment; size: number }) => {
   const { media, size } = props;
-  if (media.mediaType === MediaTypes.image) {
+  if (media.mediaType === MediaTypes.image || media.mediaType === MediaTypes.gif) {
     return <ThumbnailImage media={media} size={size} />;
   }
   return <ThumbnailVideo media={media} size={size} />;
