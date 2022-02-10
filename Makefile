@@ -11,6 +11,10 @@ demo:
 	make fetch-dummy-data
 	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml up -d 
 
+demo-refresh:
+	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml pull
+	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml up -d 
+
 remove-demo:
 	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml down --remove-orphans
 	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml rm --force -v 
