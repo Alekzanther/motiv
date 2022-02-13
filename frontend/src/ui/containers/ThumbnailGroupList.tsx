@@ -42,11 +42,16 @@ const ThumbnailGroupList = (props: {
     updateDimensions(); // update grid sizes
   }, []);
 
+  const thumbnailClicked = (media: MediaDisplayPropsFragment) => {
+    console.log("Clicked!!!", media);
+
+  };
+
   return (
     <div ref={targetRef}>
       {groupedMedia
         && Object.keys(groupedMedia).map((key) => (
-          <ThumbnailGroup key={key} title={key} data={groupedMedia[key]} groupSize={groupSize} />
+          <ThumbnailGroup thumbnailClickedCallback={thumbnailClicked} key={key} title={key} data={groupedMedia[key]} groupSize={groupSize} />
         ))}
     </div>
   );

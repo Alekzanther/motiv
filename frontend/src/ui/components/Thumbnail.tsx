@@ -4,12 +4,17 @@ import ThumbnailVideo from "./ThumbnailVideo";
 import ThumbnailGif from "./ThumbnailGif";
 import MediaTypes from "../../types/mediaType";
 
-const Thumbnail = (props: { media: MediaDisplayPropsFragment; size: number }) => {
-  const { media, size } = props;
-  switch (media.mediaType) {
-    case MediaTypes.gif : return <ThumbnailGif media={media} size={size} />; 
-    case MediaTypes.video : return <ThumbnailVideo media={media} size={size} />; 
-    default: return <ThumbnailImage media={media} size={size} />; 
+export type ThumbnailProps = {
+  media: MediaDisplayPropsFragment; 
+  size: number;
+  thumbnailClickedCallback: (media: MediaDisplayPropsFragment) => void;
+};
+
+const Thumbnail = (props: ThumbnailProps) => {
+  switch (props.media.mediaType) {
+    case MediaTypes.gif : return <ThumbnailGif {...props} />; 
+    case MediaTypes.video : return <ThumbnailVideo {...props} />; 
+    default: return <ThumbnailImage {...props}/>; 
   }
 };
 export default Thumbnail;

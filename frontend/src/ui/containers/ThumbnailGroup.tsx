@@ -18,6 +18,7 @@ const ThumbnailGroup = (props: {
   data: Array<MediaDisplayPropsFragment>;
   title: string;
   groupSize: { columns: number; size: number; spacing: number };
+  thumbnailClickedCallback: (media: MediaDisplayPropsFragment) => void;
 }) => {
   const { data, title, groupSize } = props;
   const classes = useStyles();
@@ -36,7 +37,7 @@ const ThumbnailGroup = (props: {
         {data
           && data.map((media) => (
             <ImageListItem key={media.id}>
-              <Thumbnail media={media} size={groupSize.size} />
+              <Thumbnail thumbnailClickedCallback={props.thumbnailClickedCallback} media={media} size={groupSize.size}  />
             </ImageListItem>
           ))}
       </ImageList>

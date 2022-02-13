@@ -2,7 +2,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import LazyLoad from "react-lazyload";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import makeStyles from "@mui/styles/makeStyles";
-import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
+import { ThumbnailProps } from "./Thumbnail";
 // fix performance of animation: https://tobiasahlin.com/blog/how-to-animate-box-shadow/
 const useStyles = makeStyles(() => ({
   thumbnail: {
@@ -17,12 +17,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ThumbnailImage = (props: { media: MediaDisplayPropsFragment; size: number }) => {
-  const { media, size } = props;
+const ThumbnailImage = (props: ThumbnailProps) => {
+  const { media, size, thumbnailClickedCallback } = props;
   const classes = useStyles();
   if (media.processed) {
     return (
       <LazyLoadImage
+        onClick={() => thumbnailClickedCallback(media)}
         className={classes.thumbnail}
         placeholderSrc={`/m/${media.id}/0`}
         alt={`/m/${media.id.toString()}/0`}
