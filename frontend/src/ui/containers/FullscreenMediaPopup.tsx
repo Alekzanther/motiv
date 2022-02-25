@@ -25,6 +25,8 @@ export type FullScreenMediaPopupProps = {
 const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
   const { open, media, closeAction } = props;
 
+  //div (display: flex; justify-content: center); img (height: 100vh)
+
   return (
     <Dialog
       fullScreen
@@ -35,6 +37,7 @@ const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
         <Fab sx={{ position: "absolute", margin: "16px", "z-index": 3000, "background-color": "#FFFFFF44" }} aria-label="close" size="large" onClick={() => closeAction()}>
           <CloseIcon fontSize="large" />
         </Fab>
+        
         <LazyLoadImage
           placeholderSrc={`/m/${media.id}/1`}
           alt={`/m/${media.id.toString()}/1`}
