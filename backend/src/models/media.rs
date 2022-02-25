@@ -36,6 +36,7 @@ pub struct Media {
     pub name: String,
     pub path: String,
     pub processed: bool,
+    pub processed_levels: i32,
     pub hash: String,
     pub modified: i32,
     pub timestamp: i32,
@@ -69,10 +70,20 @@ pub struct NewMedia<'a> {
     pub name: &'a str,
     pub path: &'a str,
     pub processed: &'a bool,
+    pub processed_levels: &'a i32,
     pub hash: &'a str,
     pub modified: &'a i32,
     pub timestamp: &'a i32,
     pub media_type: &'a i32,
+}
+
+// Used to update media
+#[derive(Identifiable, AsChangeset)]
+#[table_name = "media"]
+pub struct MediaUpdate<'a> {
+    pub id: &'a i32,
+    pub processed_levels: Option<i32>,
+    pub processed: Option<&'a bool>,
 }
 
 pub struct MediaManager {
@@ -124,6 +135,7 @@ impl MediaManager {
             path: new_media.path,
             name: new_media.name,
             processed: new_media.processed,
+            processed_levels: new_media.processed_levels,
             hash: new_media.hash,
             modified: new_media.modified,
             timestamp: new_media.timestamp,

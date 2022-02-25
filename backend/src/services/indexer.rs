@@ -95,6 +95,7 @@ fn index_media_path(conn: &PgConnection, path: &str) -> Result<u32, Box<dyn Erro
                     path,
                     name: pathbuf.file_name().unwrap().to_str().unwrap(),
                     processed: &false,
+                    processed_levels: &0,
                     hash: hash.as_str(),
                     modified: &modified,
                     timestamp: &modified,

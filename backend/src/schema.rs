@@ -4,6 +4,7 @@ table! {
         name -> Varchar,
         path -> Varchar,
         processed -> Bool,
+        processed_levels -> Int4,
         hash -> Varchar,
         modified -> Int4,
         timestamp -> Int4,
@@ -19,4 +20,7 @@ table! {
     }
 }
 
-allow_tables_to_appear_in_same_query!(media, todos,);
+allow_tables_to_appear_in_same_query!(
+    media,
+    todos,
+);

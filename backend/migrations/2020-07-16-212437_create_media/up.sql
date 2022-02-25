@@ -3,6 +3,7 @@ CREATE TABLE media (
   name VARCHAR NOT NULL,
   path VARCHAR UNIQUE NOT NULL,
   processed BOOLEAN NOT NULL DEFAULT 'f',
+  processed_levels INTEGER NOT NULL DEFAULT 0,
   hash VARCHAR NOT NULL,
   modified INTEGER NOT NULL,
   timestamp INTEGER NOT NULL,

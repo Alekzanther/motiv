@@ -1,5 +1,6 @@
 use super::image_cacher::cache_image;
 use crate::config::Config;
+use crate::models::media::MediaUpdate;
 use crate::models::media::{Media, MediaType};
 use crate::schema::media::dsl::*;
 use diesel::pg::PgConnection;
@@ -20,7 +21,17 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
                     unprocessed_media.path.as_str(),
                     unprocessed_media.id.to_string().as_str(),
                 ) {
-                    Ok(_thumbs_count) => Ok(unprocessed_media),
+                    Ok(thumbs_count) => {
+                        if thumbs_count == 0 {
+                            Err(())
+                        } else {
+                            Ok(MediaUpdate {
+                                id: &unprocessed_media.id,
+                                processed: Some(&true),
+                                processed_levels: Some(thumbs_count),
+                            })
+                        }
+                    }
                     Err(_e) => Err(()),
                 }
             })
@@ -28,10 +39,20 @@ pub fn process_unprocessed(config: Arc<Config>, conn: &PgConnection) {
             .collect();
 
         if !processed_media.is_empty() {
-            match update_processed_media(conn, &processed_media) {
-                Ok(result) => info!("Processed and updated {}", result),
-                Err(e) => error!("Error updating db with processed thumbs: {:?}", e),
-            }
+            let update_media_results = update_processed_media(conn, &processed_media);
+
+            let successful_updates = update_media_results
+                .iter()
+                .filter_map(|x| x.as_ref().ok())
+                .count();
+            info!("Processed and updated {}", successful_updates);
+
+            update_media_results
+                .iter()
+                .filter_map(|x| x.as_ref().err())
+                .for_each(|e| {
+                    error!("Error updating db with processed thumbs: {:?}", e)
+                });
         }
 
         if processed_media.len() != unprocessed.len() {
@@ -58,10 +79,14 @@ fn get_unprocessed_media(conn: &PgConnection) -> Vec<Media> {
 
 fn update_processed_media(
     conn: &PgConnection,
-    processed_media: &[&Media],
-) -> Result<usize, diesel::result::Error> {
-    let media_ids: Vec<i32> = processed_media.iter().map(|m| m.id).collect();
-    diesel::update(media.filter(id.eq_any(media_ids)))
-        .set(processed.eq(true))
-        .execute(conn)
+    processed_media: &Vec<MediaUpdate>,
+) -> Vec<Result<usize, diesel::result::Error>> {
+    processed_media
+        .iter()
+        .map(|m| {
+            diesel::update(media.filter(id.eq(m.id)))
+                .set(m)
+                .execute(conn)
+        })
+        .collect()
 }
