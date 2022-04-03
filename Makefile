@@ -14,7 +14,6 @@ help:
 	$(info demo-refresh        # makes sure the docker images are up to date and starts demo environment)
 	$(info remove-demo         # removes the demo environment)
 	$(info setup-dev-env       # fetches sample data, resets local dev-postgres, resets backend config, builds everything)
-	$(info setup-dev-env       # fetches sample data, resets local dev-postgres, resets backend config, builds everything)
 	$(info build               # builds frontend and backend)
 	$(info release             # builds backend with release flag)
 	$(info docker-image        # builds docker image and tags it with motiv:latest)
