@@ -6,6 +6,7 @@ export default gql`
     processed
     timestamp
     mediaType
+    processedLevels
   }
   query AllMedia($orderBy: MediaOrderBy) {
     allMedia(orderBy: $orderBy) {

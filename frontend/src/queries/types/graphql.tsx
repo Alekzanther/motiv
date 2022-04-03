@@ -96,14 +96,14 @@ export type Todo = {
   task: Scalars['String'];
 };
 
-export type MediaDisplayPropsFragment = { __typename?: 'Media', id: number, processed: boolean, timestamp: number, mediaType: number };
+export type MediaDisplayPropsFragment = { __typename?: 'Media', id: number, processed: boolean, timestamp: number, mediaType: number, processedLevels: number };
 
 export type AllMediaQueryVariables = Exact<{
   orderBy?: InputMaybe<MediaOrderBy>;
 }>;
 
 
-export type AllMediaQuery = { __typename?: 'Query', allMedia: Array<{ __typename?: 'Media', id: number, processed: boolean, timestamp: number, mediaType: number }> };
+export type AllMediaQuery = { __typename?: 'Query', allMedia: Array<{ __typename?: 'Media', id: number, processed: boolean, timestamp: number, mediaType: number, processedLevels: number }> };
 
 export const MediaDisplayPropsFragmentDoc = gql`
     fragment MediaDisplayProps on Media {
@@ -111,6 +111,7 @@ export const MediaDisplayPropsFragmentDoc = gql`
   processed
   timestamp
   mediaType
+  processedLevels
 }
     `;
 export const AllMediaDocument = gql`

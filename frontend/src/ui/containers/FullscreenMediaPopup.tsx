@@ -26,6 +26,7 @@ const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
   const { open, media, closeAction } = props;
 
   //div (display: flex; justify-content: center); img (height: 100vh)
+  const calculatedSrc = media.processed ? "/" + (media.processedLevels - 1) : "";
 
   return (
     <Dialog
@@ -42,7 +43,7 @@ const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
           placeholderSrc={`/m/${media.id}/1`}
           alt={`/m/${media.id.toString()}/1`}
           effect="blur"
-          src={`/m/${media.id.toString()}`}
+          src={`/m/${media.id.toString()}${calculatedSrc}`}
         />
       </Box>
     </Dialog>
