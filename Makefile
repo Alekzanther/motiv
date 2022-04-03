@@ -7,6 +7,19 @@ DUMMY_PICTURES_PATH = $(DUMMY_DATA_ROOT)/originals/pictures
 DUMMY_VIDEOS_PATH = $(DUMMY_DATA_ROOT)/originals/videos
 DUMMY_CACHE_PATH = $(DUMMY_DATA_ROOT)/cache
 
+help:
+	$(info commands:)
+	$(info fetch-dummy-data    # downloads sample data to backend/dummy-data)
+	$(info demo                # fetches sample data and starts demo environment)
+	$(info demo-refresh        # makes sure the docker images are up to date and starts demo environment)
+	$(info remove-demo         # removes the demo environment)
+	$(info setup-dev-env       # fetches sample data, resets local dev-postgres, resets backend config, builds everything)
+	$(info setup-dev-env       # fetches sample data, resets local dev-postgres, resets backend config, builds everything)
+	$(info build               # builds frontend and backend)
+	$(info release             # builds backend with release flag)
+	$(info docker-image        # builds docker image and tags it with motiv:latest)
+	$(info reset-db            # resets local dev db)
+
 demo:
 	make fetch-dummy-data
 	$(DOCKER_COMPOSE) --project-directory=./ -f dx/docker/docker-compose.yml -f dx/docker/docker-compose.demo.yml up -d 
