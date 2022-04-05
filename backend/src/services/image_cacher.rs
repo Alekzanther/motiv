@@ -51,23 +51,23 @@ pub fn cache_image(
         .cache_image_settings
         .unwrap()
         .medium_pixels
-        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_MEDIUM);
     let medium_thumb_q = config
         .cache_image_settings
         .unwrap()
         .medium_quality
-        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE_Q);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_MEDIUM_Q);
 
     let small_thumb = config
         .cache_image_settings
         .unwrap()
         .small_pixels
-        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_SMALL);
     let small_thumb_q = config
         .cache_image_settings
         .unwrap()
         .small_quality
-        .unwrap_or(IMAGE_CACHE_FALLBACK_LARGE_Q);
+        .unwrap_or(IMAGE_CACHE_FALLBACK_SMALL_Q);
 
     if largest as f32 >= large_thumb as f32 * wiggle_room {
         let destination = format!("{}/{}_l.webp", destination_path, index_id);
