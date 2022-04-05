@@ -8,7 +8,7 @@ DUMMY_VIDEOS_PATH = $(DUMMY_DATA_ROOT)/originals/videos
 DUMMY_CACHE_PATH = $(DUMMY_DATA_ROOT)/cache
 
 help:
-	$(info commands:)
+	$(info ------              )
 	$(info fetch-dummy-data    # downloads sample data to backend/dummy-data)
 	$(info demo                # fetches sample data and starts demo environment)
 	$(info demo-refresh        # makes sure the docker images are up to date and starts demo environment)
@@ -17,7 +17,7 @@ help:
 	$(info build               # builds frontend and backend)
 	$(info release             # builds backend with release flag)
 	$(info docker-image        # builds docker image and tags it with motiv:latest)
-	$(info reset-db            # resets local dev db)
+	$(info reset-db            # removes all cached images and resets local dev db)
 
 demo:
 	make fetch-dummy-data
@@ -49,6 +49,7 @@ docker-image:
 	$(DOCKER) build -f dx/docker/Dockerfile -t motiv:latest .  
 
 reset-db:
+	rm -rf backend/dummy-data/cache/*
 	$(DOCKER) rm -f motiv-dev-db
 	$(DOCKER) run --name motiv-dev-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
