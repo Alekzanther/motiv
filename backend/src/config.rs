@@ -5,9 +5,9 @@ use std::io;
 
 pub const IMAGE_CACHE_FALLBACK_LARGE: u32 = 1920;
 pub const IMAGE_CACHE_FALLBACK_LARGE_Q: u8 = 1;
-pub const IMAGE_CACHE_FALLBACK_MEDIUM: u32 = 512;
+pub const IMAGE_CACHE_FALLBACK_MEDIUM: u32 = 1080;
 pub const IMAGE_CACHE_FALLBACK_MEDIUM_Q: u8 = 1;
-pub const IMAGE_CACHE_FALLBACK_SMALL: u32 = 64;
+pub const IMAGE_CACHE_FALLBACK_SMALL: u32 = 128;
 pub const IMAGE_CACHE_FALLBACK_SMALL_Q: u8 = 1;
 
 //TODO: Instead of option everywhere, separate "parsed" configs (with option) from actually used
