@@ -37,6 +37,7 @@ const ThumbnailImage = (props: ThumbnailProps) => {
   return (
     <LazyLoad>
       <img
+        onClick={() => thumbnailClickedCallback(media)}
         className={classes.thumbnail}
         src={`/m/${media.id}`}
         width="100%"

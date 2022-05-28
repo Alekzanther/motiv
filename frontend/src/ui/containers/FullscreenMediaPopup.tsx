@@ -40,8 +40,8 @@ const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
         </Fab>
         
         <LazyLoadImage
-          placeholderSrc={`/m/${media.id}/1`}
-          alt={`/m/${media.id.toString()}/1`}
+          placeholderSrc={media.processed ? `/m/${media.id}/1` : ""}
+          alt={media.processed ? `/m/${media.id.toString()}/1` : ""}
           effect="blur"
           src={`/m/${media.id.toString()}${calculatedSrc}`}
         />
