@@ -13,7 +13,7 @@ FROM node:16 as frontend-builder
 RUN USER=root
 RUN mkdir motiv
 WORKDIR /motiv
-ADD ./frontend ./
+ADD ./frontend/react ./
 RUN yarn build
 
 FROM debian:stable-slim
@@ -24,14 +24,14 @@ ENV APP_USER=appuser
 RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER
 RUN mkdir -p /motiv/backend/dummy-data
-RUN mkdir -p /motiv/frontend/build
+RUN mkdir -p /motiv/frontend/react/build
 VOLUME /motiv
 WORKDIR /motiv
 COPY ./backend/motiv.toml /motiv/backend/motiv.toml
 COPY ./backend/migrations /motiv/backend/migrations
 COPY --from=backend-builder /motiv/target/release/motiv /motiv/backend/motiv
 COPY --from=backend-builder /motiv/bin/diesel /motiv/backend
-COPY --from=frontend-builder /motiv/build /motiv/frontend/build
+COPY --from=frontend-builder /motiv/build /motiv/frontend/react/build
 RUN chown -R $APP_USER:$APP_USER /motiv
 WORKDIR /motiv/backend
 CMD ["./motiv"]

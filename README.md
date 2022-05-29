@@ -24,7 +24,7 @@ _A place for your family photos and videos... Some day!_
 
 ### Frontend-only Build & Run 
 1. `make demo`
-1. Go into the frontend folder
+1. Go into the frontend/react folder
 1. `yarn install`
 1. `yarn start`
 
@@ -42,11 +42,11 @@ The following is a list of all things required to develop within all parts of mo
 1. fetches sample data to the backend folder
 1. sets up a postgres instance via docker
 1. sets up a sample motiv.toml config file (backend folder)
-1. builds the frontend (yarn) and backend (rust)
+1. builds the frontend (default react, yarn) and backend (rust)
 
 After all those steps have completed, `make run` will go into the backend folder and run the server. 
 
-You should now be able to visit the frontend at localhost:5000. There's a graphql-viewer at /graphql as well. 
+You should now be able to visit the (default react) frontend at localhost:5000. There's a graphql-viewer at /graphql as well. 
 
 ## Acknowledgements
 Special thanks to @lucperkins and his repository at https://github.com/lucperkins/rust-graphql-juniper-actix-diesel-postgres 

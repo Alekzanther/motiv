@@ -2,7 +2,7 @@ port = 5000
 name = "My Motiv Library"
 cache_path = "./dummy-data/cache"
 worker_threads = 2
-webapp_path = "../frontend/build"
+webapp_path = "../frontend/react/build"
 
 [[media]]
 path = "./dummy-data/originals/videos"

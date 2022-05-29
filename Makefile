@@ -14,7 +14,7 @@ help:
 	$(info demo-refresh        # makes sure the docker images are up to date and starts demo environment)
 	$(info remove-demo         # removes the demo environment)
 	$(info setup-dev-env       # fetches sample data, resets local dev-postgres, resets backend config, builds everything)
-	$(info build               # builds frontend and backend)
+	$(info build               # builds default frontend and backend)
 	$(info release             # builds backend with release flag)
 	$(info docker-image        # builds docker image and tags it with motiv:latest)
 	$(info reset-db            # removes all cached images and resets local dev db)
@@ -39,7 +39,7 @@ setup-dev-env:
 	make build
 
 build:
-	cd frontend && $(YARN) install && $(YARN) build
+	cd frontend/react && $(YARN) install && $(YARN) build
 	$(CARGO) build --manifest-path backend/Cargo.toml
 
 release:
