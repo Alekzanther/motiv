@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run:  yarn install && yarn build && yarn test
-      working-directory: frontend
+      working-directory: frontend/react
     - name: Build backend
       run: cargo build --manifest-path backend/Cargo.toml --verbose
     - name: Run backend tests
