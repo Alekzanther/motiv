@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
+import { VitePWA as pwa } from "vite-plugin-pwa";
+import manifest from "./public/manifest.json";
+import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths'
-import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: './',
   server: {
     proxy: {
       '/graphql': {
@@ -24,7 +25,13 @@ export default defineConfig({
     outDir: 'build',
   },
   plugins: [
-    react(),
     tsconfigPaths(),
+    react(),
+    pwa({
+      strategies: "injectManifest",
+      srcDir: "",
+      filename: "service-worker.js",
+      manifest,
+    }),
   ],
 })
