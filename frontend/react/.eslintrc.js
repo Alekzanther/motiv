@@ -7,6 +7,7 @@ module.exports = {
   },
   rules: {
     qoutes: "off",
+  "react/jsx-filename-extension": [0],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/quotes": ["warn", "double"],
     "comma-dangle": ["error", "always-multiline"],
