@@ -6,7 +6,6 @@ import MediaTypes from "../../types/mediaType";
 
 export type ThumbnailProps = {
   media: MediaDisplayPropsFragment; 
-  size: number;
   thumbnailClickedCallback: (media: MediaDisplayPropsFragment) => void;
 };
 

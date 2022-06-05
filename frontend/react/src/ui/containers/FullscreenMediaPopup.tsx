@@ -1,20 +1,7 @@
-import { forwardRef } from "react";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
-import Dialog from "@mui/material/Dialog";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Box, Fab } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Modal } from "@mantine/core";
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement;
-  },
-  ref: React.Ref<unknown>,
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export type FullScreenMediaPopupProps = {
   open: boolean;
@@ -29,15 +16,12 @@ const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
   const calculatedSrc = media.processed ? "/" + (media.processedLevels - 1) : "";
 
   return (
-    <Dialog
-      fullScreen
-      open={open}
-      TransitionComponent={Transition}
+    <Modal
+      centered
+      overflow="inside"
+      opened={open}
+      onClose={closeAction}
     >
-      <Box>
-        <Fab sx={{ position: "absolute", margin: "16px", "z-index": 3000, "background-color": "#FFFFFF44" }} aria-label="close" size="large" onClick={() => closeAction()}>
-          <CloseIcon fontSize="large" />
-        </Fab>
         
         <LazyLoadImage
           placeholderSrc={media.processed ? `/m/${media.id}/1` : ""}
@@ -45,8 +29,7 @@ const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
           effect="blur"
           src={`/m/${media.id.toString()}${calculatedSrc}`}
         />
-      </Box>
-    </Dialog>
+    </Modal>
   );
 };
 export default FullscreenMediaPopup;

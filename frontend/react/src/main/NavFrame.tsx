@@ -1,101 +1,24 @@
-import { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import Hidden from "@mui/material/Hidden";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import MenuIcon from "@mui/icons-material/Menu";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
-import {
-  DynamicFeed as DynamicFeedIcon,
-  Favorite as FavoriteIcon,
-  PhotoAlbum as AlbumIcon,
-  LocalOffer as TagIcon,
-  Settings as SettingsIcon,
-  AccountCircle as AccountCircleIcon,
-  CloudUpload as UploadIcon,
-} from "@mui/icons-material";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { Theme, useTheme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import createStyles from "@mui/styles/createStyles";
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-
+import {
+  AppShell,
+  Navbar,
+  Header,
+  MediaQuery,
+  Burger,
+  useMantineTheme,
+} from "@mantine/core";
 import Feed from "../ui/pages/Feed";
 import Favorites from "../ui/pages/Favorites";
 import Albums from "../ui/pages/Albums";
 import Tags from "../ui/pages/Tags";
 import NavigationListItem from "../ui/components/NavigationListItem";
-
-const drawerWidth = 220;
-
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    display: "flex",
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  drawer: {
-    [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
-    },
-  },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  menuBrandText: {
-    top: "34%",
-    position: "relative",
-    transform: "translateY(-50%)",
-    left: "16px",
-  },
-  menuBrandSpace: {
-    height: "72px",
-  },
-  drawerPaper: {
-    overflowX: "hidden",
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  drawerDivider: {
-    width: "25%",
-    marginLeft: "72px",
-  },
-}));
+import { BoxMultiple, Heart, News, Settings, Tags as TagsIcon } from "tabler-icons-react";
+import MotivText from "../ui/components/MotivText";
 
 const NavFrame = () => {
-  const theme = useTheme();
-  const drawerVisible = useMediaQuery(theme.breakpoints.up("sm"));
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
-  const [appBarElevation, setAppBarElevation] = useState(0);
-
-  const classes = useStyles();
-
-  useEffect(() => {
-    if (scrolled) {
-      setAppBarElevation(5);
-    } else {
-      setAppBarElevation(0);
-    }
-  }, [scrolled]);
+  const theme = useMantineTheme();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState("Timeline");
 
@@ -104,128 +27,75 @@ const NavFrame = () => {
   };
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setDrawerOpen(!drawerOpen);
   };
 
-  const drawer = (
+  const menu = (
     <div>
-      <List>
-        <div className={classes.menuBrandSpace}>
-          <Typography className={classes.menuBrandText} variant="h6" noWrap>
-            Motiv
-          </Typography>
-        </div>
         <NavigationListItem
           link="/"
           title="Timeline"
-          icon={<DynamicFeedIcon />}
+          icon={<News />}
           updatePageTitle={updatePageTitle}
         />
         <NavigationListItem
           link="/albums"
           title="Albums"
-          icon={<AlbumIcon />}
+          icon={<BoxMultiple />}
           updatePageTitle={updatePageTitle}
         />
         <NavigationListItem
           link="/tags"
           title="Tags"
-          icon={<TagIcon />}
+          icon={<TagsIcon />}
           updatePageTitle={updatePageTitle}
         />
         <NavigationListItem
           link="/favorites"
           title="Favorites"
-          icon={<FavoriteIcon />}
+          icon={<Heart />}
           updatePageTitle={updatePageTitle}
         />
-      </List>
-      <Divider className={classes.drawerDivider} />
-      <List>
         <NavigationListItem
           link="/settings"
           title="Settings"
-          icon={<SettingsIcon />}
+          icon={<Settings />}
           updatePageTitle={updatePageTitle}
         />
-      </List>
     </div>
   );
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" elevation={appBarElevation} className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-            size="large">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            {drawerVisible ? "Motiv" : currentPage}
-          </Typography>
-          <div className={classes.grow} />
-          <div>
-            <IconButton aria-label="upload" color="inherit" size="large">
-              <UploadIcon />
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-haspopup="true"
-              color="inherit"
-              size="large">
-              <AccountCircleIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
+    <AppShell
+      navbarOffsetBreakpoint="sm"
+      fixed
+      navbar={<Navbar p="md" hiddenBreakpoint="sm" hidden={!drawerOpen} width={{ sm: 200, lg: 300 }}>
+        {menu}
+      </Navbar>}
+      header={<Header height={70} p="md">
+        <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
+          <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+            <Burger
+              opened={drawerOpen}
+              onClick={() => handleDrawerToggle()}
+              size="sm"
+              color={theme.colors.gray[6]}
+              mr="xl" />
+          </MediaQuery>
 
-      <nav className={classes.drawer} aria-label="Media categories">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Routes>
-          <Route path="/" element={<Feed />} />
-          <Route path="/albums" element={<Albums />} />
-          <Route path="/tags" element={<Tags />} />
-          <Route path="/favorites" element={<Favorites />} />
-        </Routes>
-      </main>
-    </div>
+          <MotivText>
+            {drawerOpen ? "Motiv" : currentPage }
+          </MotivText>
+        </div>
+      </Header>}
+    >
+      <Routes>
+        <Route path="/" element={<Feed />} />
+        <Route path="/albums" element={<Albums />} />
+        <Route path="/tags" element={<Tags />} />
+        <Route path="/favorites" element={<Favorites />} />
+      </Routes>
+    </AppShell>
   );
 };
 

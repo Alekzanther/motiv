@@ -1,19 +1,10 @@
 import { useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import lozad from "lozad";
-import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
+import { ThumbnailProps } from "./Thumbnail";
 
-const useStyles = makeStyles({
-  thumbnail: {
-    objectFit: "cover",
-    borderRadius: "5px",
-  },
-});
-
-const ThumbnailVideo = (props: { media: MediaDisplayPropsFragment; size: number }) => {
+const ThumbnailVideo = (props: ThumbnailProps) => {
   const { observe } = lozad();
-  const { media, size } = props;
-  const classes = useStyles();
+  const { media } = props;
   useEffect(() => {
     observe(); // update grid sizes
   }, []);
@@ -21,9 +12,9 @@ const ThumbnailVideo = (props: { media: MediaDisplayPropsFragment; size: number 
   if (media.processed) {
     return (
       <video
-        height={size}
+        height="100%"
         width="100%"
-        className={`${classes.thumbnail} lozad`}
+        className={"lozad"}
         data-poster={`/m/${media.id}/0`}
       >
         <source data-src={`/m/${media.id}/1`} type="video/mp4" />
@@ -34,9 +25,9 @@ const ThumbnailVideo = (props: { media: MediaDisplayPropsFragment; size: number 
   return (
     <video
       src={`/m/${media.id}`}
-      height={size}
+      height="100%"
       width="100%"
-      className={`${classes.thumbnail} lozad`}
+      className={"lozad"}
     />
   );
 };

@@ -1,7 +1,6 @@
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Group, ThemeIcon, UnstyledButton, Text as MantineText } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
+
 
 interface NavigationListItemProps {
   link: string;
@@ -11,7 +10,6 @@ interface NavigationListItemProps {
 }
 
 const NavigationListItem = (props: NavigationListItemProps) => {
-  const location = useLocation();
   const navigate = useNavigate();
   const {
     link, title, icon, updatePageTitle,
@@ -22,16 +20,32 @@ const NavigationListItem = (props: NavigationListItemProps) => {
     updatePageTitle(pageTitle);
   };
 
+  // const location = useLocation();
+  // selected={location?.pathname === link}
   return (
-    <ListItem
-      button
+   <UnstyledButton 
+      sx={(theme) => ({
+        display: "block",
+        width: "100%",
+        padding: theme.spacing.xs,
+        borderRadius: theme.radius.sm,
+        color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+
+        "&:hover": {
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+        },
+      })}
       key={link}
-      selected={location?.pathname === link}
-      onClick={() => navigationClick(title)}
-    >
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={title} />
-    </ListItem>
+      onClick={() => navigationClick(title)}>
+      <Group>
+        <ThemeIcon variant="light">
+          {icon}
+        </ThemeIcon>
+
+        <MantineText size="sm">{title}</MantineText>
+      </Group>
+    </UnstyledButton>   
   );
 };
 export default NavigationListItem;

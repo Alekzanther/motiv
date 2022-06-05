@@ -1,47 +1,38 @@
-import {
-  Typography, Grid, ImageList, ImageListItem,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import Thumbnail from "../components/Thumbnail";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { SimpleGrid, Stack } from "@mantine/core";
+import MotivText from "../components/MotivText";
 
-const useStyles = makeStyles({
-  gridList: {
-    overflow: "visible",
-    "& .MuiGridListTile-tile": {
-      overflow: "visible",
-    },
-  },
-});
 const ThumbnailGroup = (props: {
   data: Array<MediaDisplayPropsFragment>;
   title: string;
-  groupSize: { columns: number; size: number; spacing: number };
   thumbnailClickedCallback: (media: MediaDisplayPropsFragment) => void;
 }) => {
-  const { data, title, groupSize } = props;
-  const classes = useStyles();
+  const { data, title } = props;
 
   return (
-    <Grid>
-      <Typography color="textPrimary" variant="h4">
+    <Stack>
+      <MotivText >
         {title}
-      </Typography>
-      <ImageList
-        className={classes.gridList}
-        rowHeight={groupSize.size}
-        gap={groupSize.spacing}
-        cols={groupSize.columns}
+      </MotivText>
+      <SimpleGrid
+        cols={4}
+        spacing="lg"
+        breakpoints={[
+          { maxWidth: 980, cols: 3, spacing: "md" },
+          { maxWidth: 755, cols: 2, spacing: "sm" },
+          { maxWidth: 600, cols: 1, spacing: "sm" },
+        ]}
       >
         {data
           && data.map((media) => (
-            <ImageListItem key={media.id}>
-              <Thumbnail thumbnailClickedCallback={props.thumbnailClickedCallback} media={media} size={groupSize.size}  />
-            </ImageListItem>
+            <div key={media.id}>
+              <Thumbnail thumbnailClickedCallback={props.thumbnailClickedCallback} media={media}/>
+            </div>
           ))}
-      </ImageList>
-    </Grid>
+      </SimpleGrid>
+    </Stack>
   );
 };
 export default ThumbnailGroup;
