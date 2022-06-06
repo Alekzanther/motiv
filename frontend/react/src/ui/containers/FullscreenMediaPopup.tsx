@@ -1,20 +1,13 @@
-import { forwardRef } from "react";
+/** @jsxImportSource @emotion/react */
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
-import Dialog from "@mui/material/Dialog";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Box, Fab } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Group, Modal } from "@mantine/core";
+import { css } from "@emotion/react";
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement;
-  },
-  ref: React.Ref<unknown>,
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const fullscreenImage = css`
+  max-width: 80vw;
+  max-height: 80vh;
+`;
 
 export type FullScreenMediaPopupProps = {
   open: boolean;
@@ -25,28 +18,28 @@ export type FullScreenMediaPopupProps = {
 const FullscreenMediaPopup = (props: FullScreenMediaPopupProps) => {
   const { open, media, closeAction } = props;
 
-  //div (display: flex; justify-content: center); img (height: 100vh)
   const calculatedSrc = media.processed ? "/" + (media.processedLevels - 1) : "";
 
   return (
-    <Dialog
-      fullScreen
-      open={open}
-      TransitionComponent={Transition}
+    <Modal
+      centered
+      overlayOpacity={0.55}
+      overlayBlur={3}
+      opened={open}
+      onClose={closeAction}
+      title={media.id}
+      size="auto"
     >
-      <Box>
-        <Fab sx={{ position: "absolute", margin: "16px", "z-index": 3000, "background-color": "#FFFFFF44" }} aria-label="close" size="large" onClick={() => closeAction()}>
-          <CloseIcon fontSize="large" />
-        </Fab>
-        
+      <Group position="center">
         <LazyLoadImage
+          css={ fullscreenImage }
           placeholderSrc={media.processed ? `/m/${media.id}/1` : ""}
           alt={media.processed ? `/m/${media.id.toString()}/1` : ""}
           effect="blur"
           src={`/m/${media.id.toString()}${calculatedSrc}`}
         />
-      </Box>
-    </Dialog>
+      </Group>
+    </Modal>
   );
 };
 export default FullscreenMediaPopup;
