@@ -1,7 +1,7 @@
 import { MediaDisplayPropsFragment } from "../../queries/types/graphql";
 import Thumbnail from "../components/Thumbnail";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { AspectRatio, SimpleGrid, Stack } from "@mantine/core";
+import { SimpleGrid, Stack } from "@mantine/core";
 import MotivText from "../components/MotivText";
 
 const ThumbnailGroup = (props: {
@@ -27,9 +27,7 @@ const ThumbnailGroup = (props: {
       >
         {data
           && data.map((media) => (
-            <AspectRatio ratio={1} key={media.id}>
-              <Thumbnail thumbnailClickedCallback={props.thumbnailClickedCallback} media={media}/>
-            </AspectRatio>
+            <Thumbnail key={media.id} thumbnailClickedCallback={props.thumbnailClickedCallback} media={media}/>
           ))}
       </SimpleGrid>
     </Stack>
