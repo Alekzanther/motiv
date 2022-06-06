@@ -7,6 +7,14 @@ import { css } from "@emotion/react";
 // fix performance of animation: https://tobiasahlin.com/blog/how-to-animate-box-shadow/
 //
 const thumbStyle = css`
+  &:hover, &:focus {
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    cursor: pointer;
+  }
+  overflow: visible;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 0.3s ease-in-out;
   border-radius: 5px;
   object-fit: cover;
 `;

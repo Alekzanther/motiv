@@ -24,6 +24,7 @@ const Thumbnail = (props: ThumbnailProps) => {
       <ThumbnailContent {...props}/>
     </AspectRatio>
   );
+
 };
 
 export default Thumbnail;
