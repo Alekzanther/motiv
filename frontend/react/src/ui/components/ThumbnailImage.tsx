@@ -4,8 +4,7 @@ import LazyLoad from "react-lazyload";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { ThumbnailProps } from "./Thumbnail";
 import { css } from "@emotion/react";
-// fix performance of animation: https://tobiasahlin.com/blog/how-to-animate-box-shadow/
-//
+
 const thumbStyle = css`
   &:hover, &:focus {
     border-radius: 10px;
@@ -36,7 +35,7 @@ const ThumbnailImage = (props: ThumbnailProps) => {
     );
   }
   return (
-    <LazyLoad>
+    <LazyLoad style={{ overflow: "visible" }} >
       <img
         css={ thumbStyle }
         onClick={() => thumbnailClickedCallback(media)}
