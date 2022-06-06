@@ -1,6 +1,6 @@
 import { MantineThemeOverride } from "@mantine/core";
 
-const motivDarkTheme: MantineThemeOverride = {
+const motivTheme: MantineThemeOverride = {
 };
 
-export default motivDarkTheme;
+export default motivTheme;
