@@ -8,6 +8,7 @@ import { css } from "@emotion/react";
 //
 const thumbStyle = css`
   border-radius: 5px;
+  object-fit: cover;
 `;
 
 const ThumbnailImage = (props: ThumbnailProps) => {
@@ -15,7 +16,6 @@ const ThumbnailImage = (props: ThumbnailProps) => {
   if (media.processed) {
     return (
       <LazyLoadImage
-        style={{ objectFit: "cover" }}
         css={ thumbStyle }
         onClick={() => thumbnailClickedCallback(media)}
         placeholderSrc={`/m/${media.id}/0`}
@@ -30,8 +30,7 @@ const ThumbnailImage = (props: ThumbnailProps) => {
   return (
     <LazyLoad>
       <img
-        style={{ objectFit: "cover" }}
-        className='image'
+        css={ thumbStyle }
         onClick={() => thumbnailClickedCallback(media)}
         src={`/m/${media.id}`}
         width="100%"
