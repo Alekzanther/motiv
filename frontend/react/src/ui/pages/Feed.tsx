@@ -1,3 +1,4 @@
+import { LoadingOverlay } from "@mantine/core";
 import { useEffect, useState } from "react";
 import {
   useAllMediaQuery,
@@ -36,7 +37,7 @@ const Feed = () => {
     }
   }, [data]);
 
-  if (loading) return <p>Loading... </p>;
+  if (loading) return <LoadingOverlay visible={true} />;
   if (error || !data) return <p>Error! :((( </p>;
 
   return <>{dates && <ThumbnailGroupList groupedMedia={dates} />}</>;
