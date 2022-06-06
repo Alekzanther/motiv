@@ -18,7 +18,7 @@ import MotivText from "../ui/components/MotivText";
 
 const NavFrame = () => {
   const theme = useMantineTheme();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(true);
 
   const [currentPage, setCurrentPage] = useState("Timeline");
 
