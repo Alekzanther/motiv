@@ -13,7 +13,10 @@ export default function App() {
   return (
     <Router>
       <ApolloProvider client={client}>
-        <MantineProvider theme={MotivTheme}>
+        <MantineProvider 
+          withGlobalStyles
+          withNormalizeCSS
+          theme={MotivTheme}>
           <NavFrame />
         </MantineProvider>
       </ApolloProvider>
