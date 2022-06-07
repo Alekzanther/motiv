@@ -29,9 +29,7 @@ const App: Component = () => {
         <ul class="menu p-4 overflow-y-auto w-80 bg-base-100">
           <li><a>Timeline</a></li>
           <li><a>Albums</a></li>
-
         </ul>
-
       </div>
     </div>   
   );
