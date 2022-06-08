@@ -1,4 +1,4 @@
-import {gql} from "@urql/core";
+import { gql } from "@urql/core";
 
 export default gql`
   fragment MediaDisplayProps on Media {
