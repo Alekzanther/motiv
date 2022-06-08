@@ -1,10 +1,23 @@
-import type { Component } from 'solid-js';
+import type { Client } from '@urql/core';
+import { Component, For } from 'solid-js';
+import { createResource } from 'solid-js';
+import allMediaQuery from '../queries/allMediaQuery';
 
-const Feed: Component = () => {
+export type FeedProps = {
+  client: Client;
+};
+
+const Feed = (props: FeedProps) => {
+
+  const [media] = createResource(() => props.client.query(allMediaQuery).toPromise().then(({data}) => data.AllMedia));
+
   return (
     <>
-      <p class="text-4xl text-center py-20">Motiv!</p>
-      <button class="btn btn-primary">Button that does absolutely NADA</button>
+      <For each={media()}>{
+        ({id}) =>
+          <p class="text-4xl text-center py-20">{id}</p>
+        }
+      </For>
     </>
   );
 };

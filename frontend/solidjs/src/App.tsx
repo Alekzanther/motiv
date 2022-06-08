@@ -1,5 +1,8 @@
+import { createClient } from '@urql/core';
 import type { Component } from 'solid-js';
 import Feed from './pages/Feed';
+
+const gqlClient = createClient({ url: "http://0.0.0.0:5000/graphql" });
 
 const App: Component = () => {
   return (
@@ -16,13 +19,13 @@ const App: Component = () => {
           <div class="flex-1 px-2 mx-2 text-xl">Motiv</div>
           <div class="flex-none hidden lg:block">
             <ul class="menu menu-horizontal">
-              {/* Navbar */}
+              {/* Navbar menu */}
               <li><a>Timeline</a></li>
               <li><a>Albums</a></li>
             </ul>
           </div>
         </div>
-        <Feed/>
+        <Feed client={ gqlClient }/>
       </div> 
       <div class="drawer-side">
         <label for="my-drawer-3" class="drawer-overlay"></label> 
