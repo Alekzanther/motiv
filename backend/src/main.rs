@@ -1,3 +1,4 @@
+extern crate actix_cors;
 extern crate actix_files;
 extern crate actix_rt;
 extern crate actix_utils;
@@ -22,6 +23,7 @@ extern crate toml;
 #[macro_use]
 extern crate diesel_migrations;
 
+use actix_cors::Cors;
 use std::{env, io, thread};
 
 use actix_web::{middleware, App, HttpServer};
@@ -81,9 +83,11 @@ async fn main() -> io::Result<()> {
     // Start up the server, passing in the config, db connection,
     // and set up for graphql and web serving
     HttpServer::new(move || {
+        let cors = Cors::permissive(); //TODO: this should only be enabled in dev mode, make it configurable
         App::new()
             .data(cfg.clone())
             .data(pool.clone())
+            .wrap(cors)
             .wrap(middleware::Logger::default())
             .configure(web_endpoints)
             .default_service(actix_files::Files::new("/", cfg.webapp_path.clone()))
