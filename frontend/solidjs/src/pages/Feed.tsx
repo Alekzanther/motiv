@@ -1,7 +1,8 @@
 import type { Client } from "@urql/core";
 import { For } from "solid-js";
 import { createResource } from "solid-js";
-import allMediaQuery from "../queries/allMediaQuery";
+import { AllMediaQuery } from "../queries/types/graphql";
+import AllMediaQueryString from "../queries/AllMediaQuery";
 
 export type FeedProps = {
   client: Client;
@@ -10,10 +11,13 @@ export type FeedProps = {
 const Feed = (props: FeedProps) => {
   const [media] = createResource(() =>
     props.client
-      .query(allMediaQuery)
+      .query<AllMediaQuery>(AllMediaQueryString)
       .toPromise()
       .then(({ data }) => data.allMedia)
-      .catch((err) => console.log(err)),
+      .catch((err) => {
+        console.log(err);
+        return [];
+      }),
   );
 
   return (

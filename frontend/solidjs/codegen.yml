@@ -1,0 +1,13 @@
+overwrite: true
+schema: "http://0.0.0.0:5000/graphql"
+documents: "src/queries/**/*.ts"
+withHooks: false
+urqlImportFrom: "@urql/core"
+generates:
+  src/queries/types/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

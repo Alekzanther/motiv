@@ -1,0 +1,75 @@
+Arguments: 
+  /home/alexander/.fnm/node-versions/v17.3.0/installation/bin/node /home/alexander/.node/corepack/yarn/1.22.15/bin/yarn.js add urql
+
+PATH: 
+  /tmp/fnm_multishells/6056_1654689318190/bin:/home/alexander/.zinit/polaris/bin:/home/alexander/.local/bin:/home/alexander/bin:/usr/local/bin:/home/alexander/.cargo/bin:/home/alexander/bin:/usr/local/bin:/usr/bin:/bin:/home/alexander/.fzf/bin
+
+Yarn version: 
+  1.22.15
+
+Node version: 
+  17.3.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@graphql-codegen%2ftypescript-urql-core: Not found
+      at Request.params.callback [as _callback] (/home/alexander/.node/corepack/yarn/1.22.15/lib/cli.js:66140:18)
+      at Request.self.callback (/home/alexander/.node/corepack/yarn/1.22.15/lib/cli.js:140885:22)
+      at Request.emit (node:events:390:28)
+      at Request.<anonymous> (/home/alexander/.node/corepack/yarn/1.22.15/lib/cli.js:141857:10)
+      at Request.emit (node:events:390:28)
+      at IncomingMessage.<anonymous> (/home/alexander/.node/corepack/yarn/1.22.15/lib/cli.js:141779:12)
+      at Object.onceWrapper (node:events:509:28)
+      at IncomingMessage.emit (node:events:402:35)
+      at endReadableNT (node:internal/streams/readable:1343:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "vite-template-solid",
+    "proxy": "http://0.0.0.0:5000",
+    "version": "0.0.0",
+    "description": "",
+    "scripts": {
+      "dev": "vite",
+      "start": "vite",
+      "build": "vite build",
+      "serve": "vite preview",
+      "codegen": "graphql-codegen"
+    },
+    "license": "MIT",
+    "devDependencies": {
+      "@graphql-codegen/cli": "^2.6.2",
+      "@graphql-codegen/introspection": "^2.1.1",
+      "@graphql-codegen/typescript": "^2.5.0",
+      "@graphql-codegen/typescript-operations": "^2.4.1",
+      "@graphql-codegen/typescript-urql-core": "^3.5.11",
+      "@typescript-eslint/eslint-plugin": "^5.27.1",
+      "@typescript-eslint/parser": "^5.27.1",
+      "autoprefixer": "^10.4.7",
+      "daisyui": "^2.15.2",
+      "eslint": "^8.17.0",
+      "eslint-config-airbnb-typescript": "^17.0.0",
+      "eslint-plugin-import": "^2.26.0",
+      "eslint-plugin-solid": "^0.6.1",
+      "graphql-tag": "^2.12.6",
+      "postcss": "^8.4.14",
+      "tailwindcss": "^3.0.24",
+      "typescript": "^4.7.3",
+      "vite": "^2.9.10",
+      "vite-plugin-solid": "^2.2.6"
+    },
+    "dependencies": {
+      "@urql/core": "^2.5.0",
+      "graphql": "^16.5.0",
+      "solid-js": "^1.4.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
