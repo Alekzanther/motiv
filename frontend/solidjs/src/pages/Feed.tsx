@@ -21,7 +21,7 @@ const Feed = (props: FeedProps) => {
   );
 
   return (
-    <div class="grid grid-cols-5 gap-4">
+    <div class="grid xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-4">
       <For each={media()}>
         {({ id, processed }) => <img src={processed ? `/m/${id}/0` : `/m/${id}`}></img>}
       </For>
