@@ -5,7 +5,7 @@ specifiers:
   '@graphql-codegen/introspection': ^2.1.1
   '@graphql-codegen/typescript': ^2.5.0
   '@graphql-codegen/typescript-operations': ^2.4.1
-  '@graphql-codegen/typescript-urql': ^3.5.11
+  '@solid-primitives/intersection-observer': ^1.3.0
   '@typescript-eslint/eslint-plugin': ^5.27.1
   '@typescript-eslint/parser': ^5.27.1
   '@urql/core': ^2.5.0
@@ -25,6 +25,7 @@ specifiers:
   vite-plugin-solid: ^2.2.6
 
 dependencies:
+  '@solid-primitives/intersection-observer': 1.3.0_solid-js@1.4.3
   '@urql/core': 2.5.0_graphql@16.5.0
   graphql: 16.5.0
   solid-js: 1.4.3
@@ -34,7 +35,6 @@ devDependencies:
   '@graphql-codegen/introspection': 2.1.1_graphql@16.5.0
   '@graphql-codegen/typescript': 2.5.0_graphql@16.5.0
   '@graphql-codegen/typescript-operations': 2.4.1_graphql@16.5.0
-  '@graphql-codegen/typescript-urql': 3.5.11_ubrtutz2urcxyhwqr2zvlqjzha
   '@typescript-eslint/eslint-plugin': 5.27.1_aq7uryhocdbvbqum33pitcm3y4
   '@typescript-eslint/parser': 5.27.1_ud6rd4xtew5bv4yhvkvu24pzm4
   autoprefixer: 10.4.7_postcss@8.4.14
@@ -806,23 +806,6 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript-urql/3.5.11_ubrtutz2urcxyhwqr2zvlqjzha:
-    resolution: {integrity: sha512-HVXBibhAFkszsB5FFhYnLphU5HQCmlvxhXQ2AEM66Vd+pqHlqAMmusmw0rXCSgsdmvoBdfL3IX0tw+u8GxZsdA==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-      graphql-tag: ^2.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 2.4.2_graphql@16.5.0
-      '@graphql-codegen/visitor-plugin-common': 2.9.0_graphql@16.5.0
-      auto-bind: 4.0.0
-      graphql: 16.5.0
-      graphql-tag: 2.12.6_graphql@16.5.0
-      tslib: 2.4.0
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: true
-
   /@graphql-codegen/typescript/2.5.0_graphql@16.5.0:
     resolution: {integrity: sha512-eCCebNyhV5NcNyfrNOdur1b4zPSyj2o89yaSliEMSShf4WolfFOv4aYpL4tFXjhkw3n2pR7MYFDUnrzmDpfmNw==}
     peerDependencies:
@@ -1256,6 +1239,23 @@ packages:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
     engines: {node: '>=6'}
     dev: true
+
+  /@solid-primitives/intersection-observer/1.3.0_solid-js@1.4.3:
+    resolution: {integrity: sha512-A0I/fmx7qBx4z7m7a1gEwdjlpDeRIu/OHMnZ6DKvuwV07r58bSAJ5LHdrkR4dPRa4U9HO359JRUKVUfe4l4ZUA==}
+    peerDependencies:
+      solid-js: ^1.3.1
+    dependencies:
+      '@solid-primitives/utils': 1.5.2_solid-js@1.4.3
+      solid-js: 1.4.3
+    dev: false
+
+  /@solid-primitives/utils/1.5.2_solid-js@1.4.3:
+    resolution: {integrity: sha512-dZUHjzasuqS2lDO+PQCY1+jFmtWHlaP3tUvkX1Jr06LI/Ipa2P/ZNVSvuIoqQ0Bg+Ny27LvtrXxflZNeGtptvA==}
+    peerDependencies:
+      solid-js: ^1.3.1
+    dependencies:
+      solid-js: 1.4.3
+    dev: false
 
   /@szmarczak/http-timer/1.1.2:
     resolution: {integrity: sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==}
