@@ -11,7 +11,7 @@ export type ThumbnailProps = {
 const Thumbnail = (props: ThumbnailProps) => {
   const { id, processed } = props.media;
   const [visible, setVisible] = createSignal(false);
-  const [sourceLoaded, setSourceLoaded] = createSignal(false);
+  const [sourceLoaded, setSourceLoaded] = createSignal(null);
   let thumbnailImage = new Image();
 
   const [observer] = createViewportObserver([], { threshold: 0.2 });
@@ -39,7 +39,7 @@ const Thumbnail = (props: ThumbnailProps) => {
         >
           <div
             style={`background-image:url('${thumbnailImage.src}')`}
-            class={"bg-cover aspect-square rounded-md xl:rounded-2xl w-full h-full"}
+            class={"bg-cover animate-fade-in aspect-square rounded-md xl:rounded-2xl w-full h-full"}
           />
         </Show>
       )}
