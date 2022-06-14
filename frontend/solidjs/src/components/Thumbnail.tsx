@@ -34,7 +34,11 @@ const Thumbnail = (props: ThumbnailProps) => {
         <Show
           when={sourceLoaded()}
           fallback={
-            <Skeleton icon={<IoImageOutline size="25%" color="hsl(var(--b3))" class="h-25%" />} />
+            <Skeleton
+              icon={
+                <IoImageOutline size="25%" color="hsl(var(--bc))" class="h-25% animate-wiggle" />
+              }
+            />
           }
         >
           <div
