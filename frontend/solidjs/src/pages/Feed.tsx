@@ -4,6 +4,7 @@ import { createResource } from "solid-js";
 import { AllMediaQuery } from "../queries/types/graphql";
 import AllMediaQueryString from "../queries/AllMediaQuery";
 import Thumbnail from "../components/Thumbnail";
+import MediaModal from "../components/MediaModal";
 
 export type FeedProps = {
   client: Client;
@@ -24,6 +25,7 @@ const Feed = (props: FeedProps) => {
   return (
     <div class="grid xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-4">
       <For each={mediaList()}>{(media) => <Thumbnail media={media} />}</For>
+      <MediaModal />
     </div>
   );
 };
