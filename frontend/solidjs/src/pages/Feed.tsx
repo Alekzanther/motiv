@@ -23,8 +23,14 @@ const Feed = (props: FeedProps) => {
   );
 
   return (
-    <div class="grid xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-4">
-      <For each={mediaList()}>{(media) => <Thumbnail media={media} />}</For>
+    <div class="grid xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-0">
+      <For each={mediaList()}>
+        {(media) => (
+          <div class="cursor-pointer p-2 hover:p-0 animate-fade-in transition-all hover:drop-shadow-2xl">
+            <Thumbnail media={media} />
+          </div>
+        )}
+      </For>
       <MediaModal />
     </div>
   );

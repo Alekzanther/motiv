@@ -14,6 +14,7 @@ const Thumbnail = (props: ThumbnailProps) => {
   const [sourceLoaded, setSourceLoaded] = createSignal(null);
   let thumbnailImage = new Image();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [observer] = createViewportObserver([], { threshold: 0.2 });
 
   const src = processed ? `/m/${id}/1` : `/m/${id}`;

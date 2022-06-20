@@ -10,7 +10,7 @@ const App: Component = () => {
     <div class="drawer drawer-mobile">
       <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content flex flex-col ">
-        <div class="navbar sticky top-0 z-10 drop-shadow bg-base-100">
+        <div class="navbar sticky top-0 z-10 bg-base-100">
           <div class="flex-1">
             <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
               ...
