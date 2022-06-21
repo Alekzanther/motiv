@@ -6,7 +6,7 @@ export type MediaModalProps = {
 
 const MediaModal = (props: MediaModalProps) => {
   return (
-    <div class="modal">
+    <div class="modal modal-open">
       <div class="modal-box">
         {props.content}
         <h3 class="font-bold text-lg">Congratulations random Interner user!</h3>

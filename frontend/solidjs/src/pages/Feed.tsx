@@ -31,7 +31,7 @@ const Feed = (props: FeedProps) => {
           </div>
         )}
       </For>
-      <MediaModal />
+      {/*<MediaModal />*/}
     </div>
   );
 };
